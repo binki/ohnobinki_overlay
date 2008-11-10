@@ -1,0 +1,45 @@
+# ChangeLog for dev-util/scons
+# Copyright 1999-2008 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/dev-util/scons/ChangeLog,v 1.64 2008/10/27 00:03:55 jer Exp $
+
+  08 Nov 2008; Nathan Brink <ohnobinki@ohnopublishing.net> (not Gentoo dev)
+  ChangeLog:
+  Version bump according to Gentoo bug #242532.
+
+  27 Oct 2008; Jeroen Roovers <jer@gentoo.org> scons-1.0.0.ebuild:
+  Stable for HPPA (bug #242766).
+
+  25 Oct 2008; nixnut <nixnut@gentoo.org> scons-1.0.0.ebuild:
+  Stable on ppc wrt bug 242766
+
+  21 Oct 2008; Raúl Porcel <armin76@gentoo.org> scons-1.0.0.ebuild:
+  alpha/ia64/sparc stable wrt #242766
+
+  19 Oct 2008; Markus Meier <maekke@gentoo.org> scons-1.0.0.ebuild:
+  amd64/x86 stable, bug #242766
+
+*scons-1.0.0 (19 Aug 2008)
+
+  19 Aug 2008; Jesus Rivero <neurogeek@gentoo.org> scons-0.97.ebuild,
+  -scons-0.98.3.ebuild, -scons-0.98.4.ebuild, -scons-0.98.5.ebuild,
+  +scons-1.0.0.ebuild:
+  Version bump. Removed old versions. Fixed 0.97 ebuild and this closes bug
+  #107013
+
+*scons-0.98.5 (19 Jul 2008)
+
+  19 Jul 2008; Ali Polatel <hawking@gentoo.org> +scons-0.98.5.ebuild:
+  Version bump.
+
+  14 Jun 2008; Zac Medico <zmedico@gentoo.org> scons-0.97.ebuild,
+  scons-0.98.3.ebuild, scons-0.98.4.ebuild:
+  Bug #226505 - For compatibity with phase execution order in
+  >=portage-2.1.5, call has_version inside pkg_preinst instead of
+  pkg_postinst.
+
+*scons-0.98.4 (29 May 2008)
+
+  29 May 2008; Ali Polatel <hawking@gentoo.org> -scons-0.96.1.ebuild,
+  -scons-0.96.94.ebuild, +scons-0.98.4.ebuild:
+  Version bump. Drop old.
+

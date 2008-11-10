@@ -1,0 +1,13 @@
+diff -c /var/tmp/portage/dev-util/mercurial-1.0.2/work/mercurial-1.0.2/mercurial/ui.py /tmp/buffer-content-25351rxn
+--- mercurial-1.0.2/mercurial/ui.py	2008-11-09 01:00:02.000000000 -0500
++++ /tmp/buffer-content-25351rxn	2008-11-09 01:00:11.000000000 -0500
+@@ -394,6 +394,7 @@
+         except IOError, inst:
+             if inst.errno != errno.EPIPE:
+                 raise
++        except AttributeError, inst: pass
+ 
+     def flush(self):
+         try: sys.stdout.flush()
+
+Diff finished.  Sun Nov  9 01:00:11 2008

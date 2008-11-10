@@ -1,0 +1,55 @@
+8
+
+dir
+6236
+http://overlays.gentoo.org/svn/proj/java/gcj-overlay/dev-java/gcj
+http://overlays.gentoo.org/svn/proj/java
+
+
+
+2008-03-16T14:19:38.237731Z
+6075
+geki
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+fe387f86-7aec-0310-8f44-a148a97195aa
+
+files
+dir
+
+Manifest
+file
+
+
+
+
+2008-03-18T15:54:34.000000Z
+d7125f29ede1f894355ffb7a7c0d94c1
+2008-03-16T14:19:38.237731Z
+6075
+geki
+
+gcj-4.3.0_alpha20080313.ebuild
+file
+
+
+
+
+2008-03-18T15:54:34.000000Z
+a415d345a11f5e57530dbe916130d14a
+2008-03-16T14:19:38.237731Z
+6075
+geki
+

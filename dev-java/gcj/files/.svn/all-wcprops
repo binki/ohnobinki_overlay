@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/proj/java/!svn/ver/5565/gcj-overlay/dev-java/gcj/files
+END
+gcj-4.3-tools.jar-path.diff
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/proj/java/!svn/ver/4021/gcj-overlay/dev-java/gcj/files/gcj-4.3-tools.jar-path.diff
+END
+gcj-config
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/proj/java/!svn/ver/5565/gcj-overlay/dev-java/gcj/files/gcj-config
+END
+gcc-configure-LANG.patch
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/proj/java/!svn/ver/2507/gcj-overlay/dev-java/gcj/files/gcc-configure-LANG.patch
+END
+gjar.diff
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/proj/java/!svn/ver/2700/gcj-overlay/dev-java/gcj/files/gjar.diff
+END
+rebuild-classmap-db
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/proj/java/!svn/ver/4600/gcj-overlay/dev-java/gcj/files/rebuild-classmap-db
+END
+gentoo-multilib-fixincludes.diff
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/proj/java/!svn/ver/5325/gcj-overlay/dev-java/gcj/files/gentoo-multilib-fixincludes.diff
+END

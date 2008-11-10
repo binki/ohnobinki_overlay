@@ -1,0 +1,97 @@
+--- netlogond/srv_netlogon_nt.c	9 Mar 2005 10:32:58 -0000	1.31
++++ netlogond/srv_netlogon_nt.c	19 Feb 2006 11:48:11 -0000
+@@ -722,15 +722,10 @@ uint32 _net_trust_dom_list(PRS_HANDLE *c
+ 
+ 	enumtrustdoms(&doms, &num_doms);
+ 	for (i = 0; i < num_doms; i++)
+ 		strupper(doms[i]);
+ 	make_buffer2_multi(uni_trust_dom_name, doms, num_doms);
+-	if (num_doms == 0)
+-	{
+-		uni_trust_dom_name->buf_max_len = 0x2;
+-		uni_trust_dom_name->buf_len = 0x2;
+-	}
+ 	uni_trust_dom_name->undoc = 0x1;
+ 	free_char_array(num_doms, doms);
+ 	return NT_STATUS_NOPROBLEMO;
+ }
+ 
+--- rpc_parse/parse_misc.c	23 Jan 2005 00:41:07 -0000	1.25
++++ rpc_parse/parse_misc.c	19 Feb 2006 13:45:13 -0000
+@@ -588,18 +588,18 @@ RPC_IO_DECLARE(smb_io_buffer5, BUFFER5, 
+ void free_buffer5(BUFFER5 *buf5)
+ {
+ 	safe_free(buf5->buffer);
+ }
+ 
+-/*******************************************************************
+-creates a BUFFER2 structure.
+-********************************************************************/
++/**
++ * creates a BUFFER2 for a multi-string
++ */
+ BOOL make_buffer2_multi(BUFFER2 *str, char *const* const buf, uint32 num)
+ {
+ 	size_t i;
+ 	char *dest;
+-	size_t max_len = 0;
++	size_t max_len = 4;
+ 
+ 	ZERO_STRUCTP(str);
+ 
+ 	str->buf_max_len = 0;
+ 	str->undoc       = 0;
+@@ -609,33 +609,45 @@ BOOL make_buffer2_multi(BUFFER2 *str, ch
+ 		size_t len = buf[i] != NULL ? strlen(buf[i]) : 0;
+ 
+ 		max_len += len * 2 + 2;
+ 	}
+ 
+-	str->buffer = g_malloc(max_len);
++	/* Just a bit of extra space for weird chars */
++	max_len += max_len / 4;
++
++	str->buffer = g_new0(char, max_len);
+ 	dest = str->buffer;
+ 
+ 	if (! dest)
+ 	{
+ 		DEBUG(0, ("make_buffer2_multi: no memory to allocate "
+ 			  "%u bytes\n", max_len));
+ 		return False;
+ 	}
+ 
++	/* str->buf_max_len = max_len; */
++
+ 	for (i = 0; i < num && max_len > 0; i++)
+ 	{
+-		size_t len = buf[i] != NULL ? strlen(buf[i]) : 0;
++		size_t len;
++		const char *ascstr = (buf[i] != NULL ? buf[i] : "");
+ 
+-		str->buf_max_len += len * 2;
+-		str->buf_len     += len * 2;
++		len = push_ucs2(NULL, dest, ascstr, max_len, STR_TERMINATE | STR_NOALIGN);
+ 
+-		ascii_to_unibuf(dest, buf[i], max_len);
+-	
+-		dest += len * 2 + 2;
+-		max_len -= len * 2 + 2;
++		str->buf_len += len;
++		dest         += len;
++		max_len      -= len;
++	}
++
++	/* Add final U+00 */
++	if (max_len > 0)
++	{
++		str->buf_len += push_ucs2(NULL, dest, "", max_len, STR_TERMINATE | STR_NOALIGN);
+ 	}
+ 
++	str->buf_max_len = str->buf_len;
++
+ 	return True;
+ }
+ 
+ /*******************************************************************
+ creates a BUFFER2 structure.

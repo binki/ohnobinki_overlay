@@ -1,0 +1,22 @@
+Index: acl-2.2.39/m4/package_attrdev.m4
+===================================================================
+--- acl-2.2.39.orig/m4/package_attrdev.m4
++++ acl-2.2.39/m4/package_attrdev.m4
+@@ -48,8 +48,6 @@ AC_DEFUN([AC_PACKAGE_NEED_GETXATTR_LIBAT
+     libattr="-lattr"
+     test -f `pwd`/../attr/libattr/libattr.la && \
+         libattr="`pwd`/../attr/libattr/libattr.la"
+-    test -f ${libexecdir}${libdirsuffix}/libattr.la && \
+-	libattr="${libexecdir}${libdirsuffix}/libattr.la"
+     AC_SUBST(libattr)
+   ])
+ 
+@@ -64,8 +62,6 @@ AC_DEFUN([AC_PACKAGE_NEED_ATTRGET_LIBATT
+     libattr="-lattr"
+     test -f `pwd`/../attr/libattr/libattr.la && \
+         libattr="`pwd`/../attr/libattr/libattr.la"
+-    test -f ${libexecdir}${libdirsuffix}/libattr.la && \
+-	libattr="${libexecdir}${libdirsuffix}/libattr.la"
+     AC_SUBST(libattr)
+   ])
+ 

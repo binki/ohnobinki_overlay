@@ -1,0 +1,11 @@
+--- libopensync-plugin-synce-0.22/src/synce_file.c	2007-03-27 08:14:24.000000000 -0400
++++ libopensync-plugin-synce-0.22/src/synce_file.c2	2008-06-01 00:16:57.000000000 -0400
+@@ -444,7 +444,7 @@
+ 	SyncePluginPtr	*env;
+ 	fileFormat			*ff;
+ 	HANDLE				h;
+-	uint32_t			rsz;
++	DWORD                           rsz;
+ 	WCHAR				*wfn;
+ 	int				r;
+         char       *lfn;

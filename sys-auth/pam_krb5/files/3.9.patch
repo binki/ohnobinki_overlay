@@ -1,0 +1,57 @@
+diff -ur pam-krb5-3.8.orig/auth.c pam-krb5-3.8/auth.c
+--- pam-krb5-3.8.orig/auth.c	2007-10-17 19:37:11.000000000 +0200
++++ pam-krb5-3.8/auth.c	2007-10-17 20:34:11.000000000 +0200
+@@ -322,7 +322,7 @@
+  * krb5_error_code.  If successful, the credentials will be stored in creds.
+  */
+ static krb5_error_code
+-pkinit_auth(struct pam_args *args, char *service, krb5_creds **creds)
++pkinit_auth(struct pam_args *args, const char *service, krb5_creds **creds)
+ {
+     struct context *ctx = args->ctx;
+     krb5_get_init_creds_opt *opts = NULL;
+@@ -410,7 +410,8 @@
+ {
+     krb5_verify_init_creds_opt opts;
+     krb5_keytab keytab = NULL;
+-    krb5_kt_cursor cursor = NULL;
++    krb5_kt_cursor cursor;
++    int cursor_valid = 0;
+     krb5_keytab_entry entry;
+     krb5_principal princ = NULL;
+     const char *message;
+@@ -430,8 +431,10 @@
+         }
+         if (retval == 0)
+             retval = krb5_kt_start_seq_get(c, keytab, &cursor);
+-        if (retval == 0)
++        if (retval == 0) {
++            cursor_valid = 1;
+             retval = krb5_kt_next_entry(c, keytab, &entry, &cursor);
++        }
+         if (retval == 0)
+             retval = krb5_copy_principal(c, entry.principal, &princ);
+         if (retval != 0) {
+@@ -442,7 +445,7 @@
+         }
+         if (entry.principal != NULL)
+             pamk5_compat_free_keytab_contents(c, &entry);
+-        if (cursor != NULL)
++        if (cursor_valid)
+             krb5_kt_end_seq_get(c, keytab, &cursor);
+     }
+     retval = krb5_verify_init_creds(c, creds, princ, keytab, NULL, &opts);
+diff -ur pam-krb5-3.8.orig/compat.c pam-krb5-3.8/compat.c
+--- pam-krb5-3.8.orig/compat.c	2007-10-17 19:37:11.000000000 +0200
++++ pam-krb5-3.8/compat.c	2007-10-17 20:23:35.000000000 +0200
+@@ -14,6 +14,10 @@
+ #ifdef HAVE_SECURITY_PAM_MODUTIL_H
+ # include <security/pam_modutil.h>
+ #endif
++#ifndef HAVE_PAM_MODUTIL_GETPWNAM
++# include <sys/types.h>
++# include <pwd.h>
++#endif
+ #include <stdlib.h>
+ 
+ #ifdef HAVE_KRB5_MIT

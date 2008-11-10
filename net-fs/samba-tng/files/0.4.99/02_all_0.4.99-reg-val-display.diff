@@ -1,0 +1,44 @@
+--- lib/util_unistr.c	15 Jan 2005 13:15:51 -0000	1.25
++++ lib/util_unistr.c	3 May 2006 22:11:36 -0000
+@@ -131,6 +131,24 @@ void unistr_to_ascii(char *dest, const u
+ }
+ 
+ 
++/**
++ * Convert UCS2 string to allocated unix cp
++ */
++char *tng_unibuflen_to_zunixcp(const void *src, size_t bytelen)
++{
++	char *retbuf;
++	size_t retval;
++	retval = convert_string_allocate(CH_UCS2, CH_UNIX, src, bytelen,
++					 (void **)&retbuf);
++	if (retval == (size_t)-1)
++		return NULL;
++	if (! g_xrenew(char, &retbuf, retval + 1))
++		retval--;
++	retbuf[retval] = '\0';
++	return retbuf;
++}
++
++
+ /*******************************************************************
+  Convert a UNISTR2 structure to an ASCII string
+  ********************************************************************/
+--- rpcclient/display_reg.c	1 Oct 2003 20:44:31 -0000	1.14
++++ rpcclient/display_reg.c	3 May 2006 22:09:29 -0000
+@@ -78,9 +78,11 @@ static void print_reg_value(FILE *out_hn
+ 		case REGVAL_SZ:
+ 		case REGVAL_EXPAND_SZ:
+ 		{
+-			unibuf_to_ascii(valstr, value->buffer,
+-					MIN(value->buf_len, sizeof(valstr)-1));
+-			report(out_hnd, "\t%s:\t%s:\t%s\n", val_name, type, valstr);
++			char *asciival;
++			asciival = tng_unibuflen_to_zunixcp(value->buffer,
++							    value->buf_len);
++			report(out_hnd, "\t%s:\t%s:\t%s\n", val_name, type, asciival);
++			safe_free(asciival);
+ 			break;
+ 		}
+ 

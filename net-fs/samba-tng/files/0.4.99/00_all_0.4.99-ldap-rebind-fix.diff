@@ -1,0 +1,44 @@
+Index: passdb/ldap.c
+===================================================================
+RCS file: /work/cvs/tng/source/passdb/ldap.c,v
+retrieving revision 1.51
+diff -u -p -r1.51 ldap.c
+--- passdb/ldap.c	3 Sep 2005 18:01:10 -0000	1.51
++++ passdb/ldap.c	15 Sep 2005 21:17:06 -0000
+@@ -72,6 +72,18 @@ static int rebindproc_with_state  (LDAP 
+ 	}
+ 	return 0;
+ }
++
++/**
++ * ldap rebindproc for 1.* with two args
++ */
++#  if LDAP_SET_REBIND_PROC_ARGS == 2     
++static int rebindproc (LDAP *ld, char **whop, char **credp,
++		       int *method, int freeit )
++{
++	return rebindproc_with_state(ld, whop, credp,
++				   method, freeit, NULL);
++}
++#  endif
+ #endif
+ 
+ /*******************************************************************
+@@ -93,17 +105,6 @@ static int rebindproc_connect_with_state
+ }
+ #endif /*defined(LDAP_API_FEATURE_X_OPENLDAP) && (LDAP_API_VERSION > 2000)*/
+ 
+-/*******************************************************************
+- Add a rebind function for authenticated referrals
+-******************************************************************/
+-#if LDAP_SET_REBIND_PROC_ARGS == 2     
+-static int rebindproc (LDAP *ld, char **whop, char **credp,
+-		       int *method, int freeit )
+-{
+-	return rebindproc_with_state(ld, whop, credp,
+-				   method, freeit, NULL);
+-}
+-#endif
+ 
+ /*******************************************************************
+  a rebind function for authenticated referrals

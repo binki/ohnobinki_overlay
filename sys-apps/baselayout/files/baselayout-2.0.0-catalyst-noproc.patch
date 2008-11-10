@@ -1,0 +1,27 @@
+diff -c /mnt/bacup/portagetmp/portage/sys-apps/baselayout-2.0.0/work/baselayout-2.0.0/Makefile /tmp/buffer-content-532WZC
+--- baselayout-2.0.0/Makefile	2008-03-22 21:40:55.000000000 -0400
++++ /tmp/buffer-content-532WZC	2008-10-18 11:36:17.000000000 -0400
+@@ -26,7 +26,7 @@
+ 
+ KEEP_DIRS-Linux += /dev /sys
+ KEEP_DIRS = $(KEEP_DIRS-$(OS)) \
+-	/boot /home /mnt /root /proc /etc/profile.d \
++	/boot /home /mnt /root /etc/profile.d \
+ 	/usr/local/bin /usr/local/sbin /usr/local/share/doc /usr/local/share/man \
+ 	/var/lock /var/run /var/empty
+ 
+@@ -37,8 +37,10 @@
+ install:
+ 	# These dirs may not exist from prior versions
+ 	for x in $(BASE_DIRS) ; do \
+-		$(INSTALL_DIR) $(DESTDIR)$$x || exit $$? ; \
+-		touch $(DESTDIR)$$x/.keep || exit $$? ; \
++		if test "x$$x" != "x/proc" ; then \
++			$(INSTALL_DIR) $(DESTDIR)$$x || exit $$? ; \
++			touch $(DESTDIR)$$x/.keep || exit $$? ; \
++		fi \
+ 	done
+ 
+ 	$(INSTALL_DIR) $(DESTDIR)/etc
+
+Diff finished.  Sat Oct 18 11:36:18 2008

@@ -1,0 +1,130 @@
+Index: include/rpc_netlogon.h
+===================================================================
+RCS file: /home/cvsroot/dcerpc/tng/source/include/rpc_netlogon.h,v
+retrieving revision 1.10
+diff -u -p -r1.10 rpc_netlogon.h
+--- include/rpc_netlogon.h	19 Jul 2004 16:46:12 -0000	1.10
++++ include/rpc_netlogon.h	20 Aug 2006 17:01:21 -0000
+@@ -217,7 +217,7 @@ typedef struct net_user_info_3
+ 	UNISTR2 uni_dir_drive;    /* home directory drive unicode string */
+ 
+ 	uint32 num_groups2;        /* num groups */
+-	DOM_GID gids[LSA_MAX_GROUPS]; /* group info */
++	DOM_GID *gids;		  /* group info */
+ 
+ 	UNISTR2 uni_logon_srv; /* logon server unicode string */
+ 	UNISTR2 uni_logon_dom; /* logon domain unicode string */
+Index: netlogond/srv_netlogon_nt.c
+===================================================================
+RCS file: /home/cvsroot/dcerpc/tng/source/netlogond/srv_netlogon_nt.c,v
+retrieving revision 1.34
+diff -u -p -r1.34 srv_netlogon_nt.c
+--- netlogond/srv_netlogon_nt.c	12 Jul 2006 20:49:09 -0000	1.34
++++ netlogond/srv_netlogon_nt.c	20 Aug 2006 17:01:24 -0000
+@@ -1284,6 +1284,7 @@ uint32 _net_sam_logon(PRS_HANDLE *con_hn
+ 				  validation_level));
+ 			return NT_STATUS_ACCESS_DENIED;
+ 		}
++		uctr->switch_value = 3;
+ 		uctr->usr.id3 = g_new(NET_USER_INFO_3, 1);
+ 		if (uctr->usr.id3 == NULL)
+ 		{
+@@ -1585,6 +1586,7 @@ uint32 _net_sam_logon(PRS_HANDLE *con_hn
+ 	{
+ 		case 2:
+ 		{
++			uctr->switch_value = 2;
+ 			uctr->usr.id2 = g_new(NET_USER_INFO_2, 1);
+ 			if (uctr->usr.id2 == NULL)
+ 			{
+@@ -1608,6 +1610,7 @@ uint32 _net_sam_logon(PRS_HANDLE *con_hn
+ 		}
+ 		case 3:
+ 		{
++			uctr->switch_value = 3;
+ 			uctr->usr.id3 = g_new(NET_USER_INFO_3, 1);
+ 			if (uctr->usr.id3 == NULL)
+ 			{
+Index: rpc_parse/parse_net.c
+===================================================================
+RCS file: /home/cvsroot/dcerpc/tng/source/rpc_parse/parse_net.c,v
+retrieving revision 1.27
+diff -u -p -r1.27 parse_net.c
+--- rpc_parse/parse_net.c	12 Jun 2005 21:34:57 -0000	1.27
++++ rpc_parse/parse_net.c	20 Aug 2006 17:01:30 -0000
+@@ -1478,7 +1478,7 @@ BOOL make_net_user_info3W(NET_USER_INFO_
+ 			  num_groups));
+ 	}
+ 
+-	SMB_ASSERT_ARRAY(usr->gids, num_groups);
++	usr->gids = g_new(DOM_GID, num_groups);
+ 
+ 	for (i = 0; i < num_groups; i++)
+ 	{
+@@ -1556,7 +1556,13 @@ RPC_IO_DECLARE(net_io_user_info3, NET_US
+ 	prs_align(ps);
+ 
+ 	prs_uint32("num_groups2   ", ps, depth, &(usr->num_groups2));	/* num groups */
+-	SMB_ASSERT_ARRAY(usr->gids, usr->num_groups2);
++
++	if (UNMARSHALLING(ps))
++		usr->gids = g_new(DOM_GID, usr->num_groups2);
++
++	if (! usr->gids)
++		return False;
++
+ 	for (i = 0; i < usr->num_groups2; i++)
+ 	{
+ 		RPC_MARSH_SUBCALL(smb_io_gid, usr, gids[i]);
+@@ -1583,6 +1589,15 @@ RPC_IO_DECLARE(net_io_user_info3, NET_US
+ 	return True;
+ }
+ 
++
++static void free_net_user_info_3(NET_USER_INFO_3 *lds)
++{
++	if (! lds)
++		return;
++	safe_free(lds->gids);
++	lds->gids = NULL;
++}
++
+ /*******************************************************************
+ reads or writes a structure.
+ ********************************************************************/
+@@ -1715,6 +1730,17 @@ void free_net_user_info_ctr(NET_USER_INF
+ 	if (ctr == NULL)
+ 		return;
+ 
++	switch (ctr->switch_value)
++	{
++		case 3:
++			free_net_user_info_3(ctr->usr.id3);
++			break;
++		default:
++			DEBUG(1, ("free_net_user_info_ctr: unknown level %u\n",
++				  ctr->switch_value));
++			break;
++	}
++
+ 	safe_free(ctr->usr.id);
+ 	ctr->usr.id = NULL;
+ }
+Index: rpcclient/cmd_netlogon.c
+===================================================================
+RCS file: /home/cvsroot/dcerpc/tng/source/rpcclient/cmd_netlogon.c,v
+retrieving revision 1.19
+diff -u -p -r1.19 cmd_netlogon.c
+--- rpcclient/cmd_netlogon.c	1 May 2006 12:33:56 -0000	1.19
++++ rpcclient/cmd_netlogon.c	20 Aug 2006 17:01:43 -0000
+@@ -256,7 +256,9 @@ static void display_net_user_info_3(cons
+ 	fprintf(out_hnd, "\tGroups:\n");
+ 	for (i = 0; i < usr->num_groups; i++)
+ 	{
+-		fprintf(out_hnd, "\t\t%d (0x%x), 0x%x\n", usr->gids[i].g_rid, usr->gids[i].g_rid, usr->gids[i].attr);
++		fprintf(out_hnd, "\t\t%d (0x%x), 0x%x\n",
++			usr->gids[i].g_rid, usr->gids[i].g_rid,
++			usr->gids[i].attr);
+ 	}
+ 	fprintf(out_hnd, "\tNumber of other SIDs: %d\n", usr->num_other_sids);
+ }

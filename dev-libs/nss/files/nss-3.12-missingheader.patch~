@@ -1,0 +1,15 @@
+diff -c /var/tmp/portage/dev-libs/nss-3.12/work/nss-3.12/mozilla/security/nss/lib/pk11wrap/pk11pub.h /tmp/buffer-content-25351CEc
+*** /var/tmp/portage/dev-libs/nss-3.12/work/nss-3.12/mozilla/security/nss/lib/pk11wrap/pk11pub.h	2008-03-10 16:16:46.000000000 -0400
+--- /tmp/buffer-content-25351CEc	2008-11-09 22:43:34.000000000 -0500
+***************
+*** 628,633 ****
+--- 628,634 ----
+  CERTCertList * PK11_ListCertsInSlot(PK11SlotInfo *slot);
+  CERTSignedCrl* PK11_ImportCRL(PK11SlotInfo * slot, SECItem *derCRL, char *url,
+      int type, void *wincx, PRInt32 importOptions, PRArenaPool* arena, PRInt32 decodeOptions);
++ PK11SlotList * PK11_GetAllSlotsForCert(CERTCertificate *c, void *arg);
+  
+  /**********************************************************************
+   *                   Sign/Verify 
+
+Diff finished.  Sun Nov  9 22:43:34 2008

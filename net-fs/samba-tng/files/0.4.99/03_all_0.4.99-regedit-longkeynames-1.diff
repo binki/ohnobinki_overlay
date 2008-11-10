@@ -1,0 +1,354 @@
+Index: lib/util.c
+===================================================================
+RCS file: /home/cvsroot/dcerpc/tng/source/lib/util.c,v
+retrieving revision 1.60
+retrieving revision 1.61
+diff -u -p -r1.60 -r1.61
+--- lib/util.c	22 Jul 2005 21:30:06 -0000	1.60
++++ lib/util.c	6 May 2006 16:04:57 -0000	1.61
+@@ -1396,7 +1396,8 @@ int set_maxfiles(int requested_max)
+ /*****************************************************************
+  splits out the start of the key (HKLM or HKU) and the rest of the key
+  *****************************************************************/
+-BOOL reg_split_key(const char *full_keyname, uint32 *reg_type, char *key_name)
++BOOL reg_split_key(const char *full_keyname, uint32 *reg_type,
++		   const char **key_name)
+ {
+ 	/* STRIP_CONST is safe because next_token treats its argument
+ 	   as 'const char **' - see comment in util_str.c */
+@@ -1428,16 +1429,13 @@ BOOL reg_split_key(const char *full_keyn
+ 
+ 	if (! (*reg_type = str_to_enum_field (tmp, well_known_hk, 0)))
+ 	{
+-		DEBUG(10, ("reg_split_key: unrecognised hive key %s\n", tmp));
++		DEBUG(2, ("reg_split_key: unrecognised hive key %s\n", tmp));
+ 		return False;
+ 	}
+ 
+-	if (!next_token(NULL, key_name, "\n\r", sizeof(fstring)))
+-	{
+-		key_name[0] = 0;
+-	}
++	*key_name = full_key_tmp;
+ 
+-	DEBUG(10, ("reg_split_key: name %s\n", key_name));
++	DEBUG(10, ("reg_split_key: name %s\n", *key_name));
+ 
+ 	return True;
+ }
+Index: rpc_client/cli_reg.c
+===================================================================
+RCS file: /home/cvsroot/dcerpc/tng/source/rpc_client/cli_reg.c,v
+retrieving revision 1.29
+retrieving revision 1.31
+diff -u -p -r1.29 -r1.31
+--- rpc_client/cli_reg.c	8 Jan 2005 16:47:16 -0000	1.29
++++ rpc_client/cli_reg.c	6 May 2006 19:11:09 -0000	1.31
+@@ -94,30 +94,32 @@ static uint32 reg_open_hkXX_int(struct c
+ /****************************************************************************
+ do a REG Open Policy
+ ****************************************************************************/
+-BOOL reg_connect(const char *srv_name,
+-				const char *full_keyname,
+-				char *key_name,
+-				uint32 access_mask,
+-				POLICY_HND *reg_hnd)
++NTSTATUS reg_connect_ex(const char *srv_name,
++			const char *full_keyname,
++			const char **sub_key_name,
++			uint32 access_mask,
++			POLICY_HND *reg_hnd)
+ {
+ 	NTSTATUS ret = NT_STATUS_UNSUCCESSFUL;
+ 	uint32 reg_type = 0;
++	const char *lkey_name;
+ 
+ 	struct cli_connection *con = NULL;
+ 
+ 	if (full_keyname == NULL)
+-	{
+-		return False;
+-	}
+-	if (!reg_split_key(full_keyname, &reg_type, key_name))
++		return STATUS_INVALID_PARAMETER;
++
++	if (!reg_split_key(full_keyname, &reg_type, &lkey_name))
+ 	{
+ 		DEBUG(0,("reg_connect: unrecognised key name %s\n",
+ 		          full_keyname));	
+-		return False;
++		return STATUS_INVALID_PARAMETER;
+ 	}
++	if (sub_key_name)
++		*sub_key_name = lkey_name;
+ 	if (!cli_connection_init(srv_name, PIPE_WINREG, &con))
+ 	{
+-		return False;
++		return STATUS_PRIMARY_TRANSPORT_CONNECT_FAILED;
+ 	}
+ 
+ 	ZERO_STRUCTP(reg_hnd);
+@@ -155,7 +157,7 @@ BOOL reg_connect(const char *srv_name,
+ 	else
+ 	{
+ 		DEBUG(0,("reg_connect: unrecognised hive key\n"));	
+-		return False;
++		return STATUS_INVALID_PARAMETER;
+ 	}
+ 
+ 	if (NT_STATUS_IS_OK(ret))
+@@ -171,9 +173,28 @@ BOOL reg_connect(const char *srv_name,
+ 		}
+ 	}
+ 
+-	return NT_STATUS_IS_OK(ret);
++	return ret;
+ }
+ 
++
++BOOL reg_connect(const char *srv_name,
++		 const char *full_keyname,
++		 char *fstr_sub_key_name,
++		 uint32 access_mask,
++		 POLICY_HND *reg_hnd)
++{
++	NTSTATUS status;
++	const char *subkeyname;
++
++	status = reg_connect_ex(srv_name, full_keyname, &subkeyname,
++				access_mask, reg_hnd);
++	if (! NT_STATUS_IS_OK(status))
++		return False;
++	fstrcpy(fstr_sub_key_name, subkeyname);
++	return True;
++}
++
++
+ /****************************************************************************
+ do a REG Unknown 0xB command.  sent after a create key or create value.
+ this might be some sort of "sync" or "refresh" command, sent after
+Index: rpcclient/cmd_reg.c
+===================================================================
+RCS file: /home/cvsroot/dcerpc/tng/source/rpcclient/cmd_reg.c,v
+retrieving revision 1.29
+diff -u -p -r1.29 cmd_reg.c
+--- rpcclient/cmd_reg.c	3 Sep 2005 17:49:30 -0000	1.29
++++ rpcclient/cmd_reg.c	6 May 2006 19:20:06 -0000
+@@ -338,16 +338,15 @@ NTSTATUS msrpc_reg_enum_keyname(const ch
+ 
+ 	POLICY_HND key_pol;
+ 	POLICY_HND pol_con;
+-	fstring key_name;
++	const char *key_name;
+ 
+ 	DEBUG(5, ("msrpc_reg_enum_keyname: %s\n", full_keyname));
+ 
+ 	/* open registry receive a policy handle */
+-	if (! reg_connect(srv_name, full_keyname, key_name,
+-			  SEC_RIGHTS_MAXIMUM_ALLOWED, &pol_con))
+-	{
+-		return NT_STATUS_UNSUCCESSFUL;
+-	}
++	status = reg_connect_ex(srv_name, full_keyname, &key_name,
++				SEC_RIGHTS_MAXIMUM_ALLOWED, &pol_con);
++	if (!NT_STATUS_IS_OK(status))
++		return status;
+ 
+ 	if (*key_name)
+ 	{
+@@ -439,7 +438,7 @@ NTSTATUS cmd_reg_query_info(struct clien
+ 	POLICY_HND pol_con;
+ 	pstring full_keyname;
+ 	pstring keyname;
+-	fstring key_name;
++	const char *key_name;
+ 	fstring val_name;
+ 
+ 	/*
+@@ -473,9 +472,11 @@ NTSTATUS cmd_reg_query_info(struct clien
+ 	}
+ 
+ 	/* open registry receive a policy handle */
+-	if (!reg_connect(srv_name, keyname, key_name,
+-			 SEC_RIGHTS_MAXIMUM_ALLOWED, &pol_con))
++	ret = reg_connect_ex(srv_name, keyname, &key_name,
++			     SEC_RIGHTS_MAXIMUM_ALLOWED, &pol_con);
++	if (! NT_STATUS_IS_OK(ret))
+ 		goto out;
++	ret = STATUS_UNSUCCESSFUL;
+ 
+ 	if (*key_name)
+ 	{
+@@ -521,7 +522,7 @@ NTSTATUS cmd_reg_query_key(struct client
+ 	POLICY_HND key_pol;
+ 	POLICY_HND pol_con;
+ 	pstring full_keyname;
+-	fstring key_name;
++	const char *key_name;
+ 
+ 	/*
+ 	 * query key info
+@@ -553,9 +554,11 @@ NTSTATUS cmd_reg_query_key(struct client
+ 	split_server_keyname(srv_name, full_keyname, argv[1]);
+ 
+ 	/* open registry receive a policy handle */
+-	if (!reg_connect(srv_name, full_keyname, key_name,
+-			 SEC_RIGHTS_MAXIMUM_ALLOWED, &pol_con))
++	ret = reg_connect_ex(srv_name, full_keyname, &key_name,
++			     SEC_RIGHTS_MAXIMUM_ALLOWED, &pol_con);
++	if (! NT_STATUS_IS_OK(ret))
+ 		goto out;
++	ret = STATUS_UNSUCCESSFUL;
+ 
+ 	if (*key_name)
+ 	{
+@@ -613,7 +616,7 @@ NTSTATUS cmd_reg_create_val(struct clien
+ 	POLICY_HND parent_pol;
+ 	POLICY_HND pol_con;
+ 	pstring keyname;
+-	fstring parent_name;
++	const char *parent_name;
+ 	fstring val_name;
+ 	uint32 val_type;
+ 	BUFFER3 value;
+@@ -703,9 +706,11 @@ NTSTATUS cmd_reg_create_val(struct clien
+ 	dump_data(10, (char *)value.buffer, value.buf_len);
+ 
+ 	/* open registry receive a policy handle */
+-	if (!reg_connect(srv_name, keyname, parent_name,
+-			 SEC_RIGHTS_MAXIMUM_ALLOWED, &pol_con))
++	ret = reg_connect_ex(srv_name, keyname, &parent_name,
++			     SEC_RIGHTS_MAXIMUM_ALLOWED, &pol_con);
++	if (!NT_STATUS_IS_OK(ret))
+ 		goto out;
++	ret = STATUS_UNSUCCESSFUL;
+ 
+ 	if (*parent_name)
+ 	{
+@@ -751,7 +756,7 @@ NTSTATUS cmd_reg_delete_val(struct clien
+ 	POLICY_HND parent_pol;
+ 	POLICY_HND pol_con;
+ 	pstring keyname;
+-	fstring parent_name;
++	const char *parent_name;
+ 	fstring val_name;
+ 
+ 	fstring srv_name;
+@@ -777,11 +782,13 @@ NTSTATUS cmd_reg_delete_val(struct clien
+ 	}
+ 
+ 	/* open registry receive a policy handle */
+-	if (!reg_connect(srv_name, keyname, parent_name,
+-			 SEC_RIGHTS_MAXIMUM_ALLOWED, &pol_con))
++	ret = reg_connect_ex(srv_name, keyname, &parent_name,
++			     SEC_RIGHTS_MAXIMUM_ALLOWED, &pol_con);
++	if (! NT_STATUS_IS_OK(ret))
+ 		goto out;
++	ret = STATUS_UNSUCCESSFUL;
+ 
+-	if (*val_name)
++	if (*parent_name)
+ 	{
+ 		if (!reg_open_entry(&pol_con, parent_name,
+ 				    SEC_RIGHTS_MAXIMUM_ALLOWED, &parent_pol))
+@@ -798,7 +805,7 @@ NTSTATUS cmd_reg_delete_val(struct clien
+ 		ret = NT_STATUS_OK;
+ 	}
+ 
+-	if (*val_name)
++	if (*parent_name)
+ 		reg_close(&parent_pol);
+ out1:
+ 	reg_close(&pol_con);
+@@ -825,7 +832,7 @@ NTSTATUS cmd_reg_delete_key(struct clien
+ 	POLICY_HND parent_pol;
+ 	POLICY_HND pol_con;
+ 	pstring parent_name;
+-	fstring key_name;
++	const char *key_name;
+ 	fstring subkey_name;
+ 
+ 	fstring srv_name;
+@@ -851,9 +858,11 @@ NTSTATUS cmd_reg_delete_key(struct clien
+ 	}
+ 
+ 	/* open registry receive a policy handle */
+-	if (!reg_connect(srv_name, parent_name, key_name,
+-			 SEC_RIGHTS_MAXIMUM_ALLOWED, &pol_con))
++	ret = reg_connect_ex(srv_name, parent_name, &key_name,
++			     SEC_RIGHTS_MAXIMUM_ALLOWED, &pol_con);
++	if (! NT_STATUS_IS_OK(ret))
+ 		goto out;
++	ret = STATUS_UNSUCCESSFUL;
+ 
+ 	if (*key_name)
+ 	{
+@@ -894,7 +903,7 @@ NTSTATUS cmd_reg_create_key(struct clien
+ 	POLICY_HND key_pol;
+ 	POLICY_HND pol_con;
+ 	pstring parent_key;
+-	fstring parent_name;
++	const char *parent_name;
+ 	fstring key_name;
+ 	fstring key_class;
+ 	SEC_ACCESS sam_access;
+@@ -934,9 +943,11 @@ NTSTATUS cmd_reg_create_key(struct clien
+ 	sam_access.mask = SEC_RIGHTS_READ;
+ 
+ 	/* open registry receive a policy handle */
+-	if (!reg_connect(srv_name, parent_key, parent_name,
+-			 SEC_RIGHTS_MAXIMUM_ALLOWED, &pol_con))
++	ret = reg_connect_ex(srv_name, parent_key, &parent_name,
++			     SEC_RIGHTS_MAXIMUM_ALLOWED, &pol_con);
++	if (! NT_STATUS_IS_OK(ret))
+ 		goto out;
++	ret = STATUS_UNSUCCESSFUL;
+ 
+ 	if (*parent_name)
+ 	{
+@@ -985,7 +996,7 @@ NTSTATUS cmd_reg_test_key_sec(struct cli
+ 	POLICY_HND key_pol;
+ 	POLICY_HND pol_con;
+ 	pstring full_keyname;
+-	fstring key_name;
++	const char *key_name;
+ 
+ 	/*
+ 	 * security info
+@@ -1010,9 +1021,11 @@ NTSTATUS cmd_reg_test_key_sec(struct cli
+ 	split_server_keyname(srv_name, full_keyname, argv[1]);
+ 
+ 	/* open registry receive a policy handle */
+-	if (!reg_connect(srv_name, full_keyname, key_name,
+-			 SEC_RIGHTS_MAXIMUM_ALLOWED, &pol_con))
++	ret = reg_connect_ex(srv_name, full_keyname, &key_name,
++			     SEC_RIGHTS_MAXIMUM_ALLOWED, &pol_con);
++	if (! NT_STATUS_IS_OK(ret))
+ 		goto out;
++	ret = STATUS_UNSUCCESSFUL;
+ 
+ 	if (*key_name)
+ 	{
+@@ -1076,7 +1089,7 @@ NTSTATUS cmd_reg_get_key_sec(struct clie
+ 	POLICY_HND key_pol;
+ 	POLICY_HND pol_con;
+ 	pstring full_keyname;
+-	fstring key_name;
++	const char *key_name;
+ 
+ 	/*
+ 	 * security info
+@@ -1101,9 +1114,11 @@ NTSTATUS cmd_reg_get_key_sec(struct clie
+ 	split_server_keyname(srv_name, full_keyname, argv[1]);
+ 
+ 	/* open registry receive a policy handle */
+-	if (!reg_connect(srv_name, full_keyname, key_name,
+-			 SEC_RIGHTS_MAXIMUM_ALLOWED, &pol_con))
++	ret = reg_connect_ex(srv_name, full_keyname, &key_name,
++			     SEC_RIGHTS_MAXIMUM_ALLOWED, &pol_con);
++	if (! NT_STATUS_IS_OK(ret))
+ 		goto out;
++	ret = STATUS_UNSUCCESSFUL;
+ 
+ 	if (*key_name)
+ 	{

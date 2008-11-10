@@ -1,0 +1,35 @@
+diff -u /home/ohnobinki/ivd/phidgetprogs/phidgetlinux/Phidgetlinux/phidget21/Makefile /tmp/buffer-content-3770FHU
+--- Makefile	Tue Sep 30 07:24:27 2008
++++ Makefile	Tue Sep 30 07:28:44 2008
+@@ -1,8 +1,9 @@
+ PREFIX=/usr
+ DEBUG?=n
+ DMALLOC?=n
+-JAVA?=y
++#JAVA?=y
+ CROSS_COMPILE?=
++JAVAFLAGS?=
+ ZEROCONF?=avahi
+ 
+ #ifeq ($(CROSSCOMPILE),y)
+@@ -14,12 +16,12 @@
+ LD=$(CROSS_COMPILE)ld
+ #endif
+ 
+-ifeq ($(JAVA),y)
+-JAVAHOME := /usr/java/j2sdk1.4.2_18
+-JAVAFLAGS=-I$(JAVAHOME)/include -I$(JAVAHOME)/include/linux
+-else
+-JAVAFLAGS=
+-endif
++#ifeq ($(JAVA),y)
++#JAVAHOME := /usr/java/j2sdk1.4.2_18
++#JAVAFLAGS=-I$(JAVAHOME)/include -I$(JAVAHOME)/include/linux
++#else
++#JAVAFLAGS=
++#endif
+ 
+ ifeq ($(DMALLOC),y)
+ DEBUGFLAGS=-DDMALLOC -DDMALLOC_FUNC_CHECK
+
+Diff finished.  Tue Sep 30 07:28:44 2008

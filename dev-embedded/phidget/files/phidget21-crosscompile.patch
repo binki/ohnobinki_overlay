@@ -1,0 +1,32 @@
+diff -c /home/ohnobinki/ivd/phidgetprogs/phidgetlinux/Phidgetlinux/phidget21/Makefile /tmp/buffer-content-3770Mkg
+--- Makefile	Mon Sep 22 14:48:19 2008
++++ Makefile	Tue Sep 30 07:10:04 2008
+@@ -2,17 +2,17 @@
+ DEBUG?=n
+ DMALLOC?=n
+ JAVA?=y
+-CROSSCOMPILE?=n
++CROSS_COMPILE?=
+ ZEROCONF?=avahi
+ 
+-ifeq ($(CROSSCOMPILE),y)
+-CC=arm-linux-gcc
+-NM=arm-linux-nm
+-AR=arm-linux-ar
+-CXX=arm-linux-g++
+-CPP=arm-linux-cpp
+-LD=arm-linux-ld
+-endif
++#ifeq ($(CROSSCOMPILE),y)
++CC=$(CROSS_COMPILE)gcc
++NM=$(CROSS_COMPILE)nm
++AR=$(CROSS_COMPILE)ar
++CXX=$(CROSS_COMPILE)g++
++CPP=$(CROSS_COMPILE)cpp
++LD=$(CROSS_COMPILE)ld
++#endif
+ 
+ ifeq ($(JAVA),y)
+ JAVAHOME := /usr/java/j2sdk1.4.2_18
+
+Diff finished.  Tue Sep 30 07:10:05 2008
