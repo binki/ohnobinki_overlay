@@ -15,7 +15,7 @@ SRC_URI="mirror://sourceforge/${PN}/${MY_P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="alpha amd64 hppa ia64 ppc ppc64 sparc x86 ~x86-fbsd"
+KEYWORDS="~alpha ~amd64 ~hppa ~ia64 ~ppc ~ppc64 ~sparc ~x86 ~x86-fbsd"
 IUSE="bzip2 crypt iconv mailwrapper milter nls selinux test ipv6"
 
 COMMON_DEPEND="bzip2? ( app-arch/bzip2 )
@@ -28,14 +28,17 @@ COMMON_DEPEND="bzip2? ( app-arch/bzip2 )
 	>=sys-apps/sed-4"
 
 DEPEND="${COMMON_DEPEND}
-	dev-util/pkgconfig
-	test? ( dev-libs/check dev-util/duma dev-util/valgrind >sys-apps/sandbox-1.2 )"
+	>=dev-util/pkgconfig-0.20
+	test? ( dev-libs/check >=dev-util/duma-2.5.13 dev-util/valgrind )"
 
 RDEPEND="${COMMON_DEPEND}
 	selinux? ( sec-policy/selinux-clamav )
 	sys-apps/grep"
 
 PROVIDE="virtual/antivirus"
+
+#until bug #235581 is cleared up:
+RESTRICT="test"
 
 pkg_setup() {
 	if use milter; then
