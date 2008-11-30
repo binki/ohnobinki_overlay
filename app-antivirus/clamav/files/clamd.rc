@@ -96,17 +96,17 @@ start() {
 stop() {
 	if [ "${START_CLAMD}" = "yes" ]; then
 		ebegin "Stopping clamd"
-		start-stop-daemon --stop --quiet --name clamd
+		start-stop-daemon --stop --quiet --exec /usr/sbin/clamd
 		eend $? "Failed to stop clamd"
 	fi
 	if [ "${START_FRESHCLAM}" = "yes" ]; then
 		ebegin "Stopping freshclam"
-		start-stop-daemon --stop --quiet --name freshclam
+		start-stop-daemon --stop --quiet --exec /usr/bin/freshclam
 		eend $? "Failed to stop freshclam"
 	fi
 	if [ "${START_MILTER}" = "yes" ]; then
 		ebegin "Stopping clamav-milter"
-		start-stop-daemon --stop --quiet --name clamav-milter
+		start-stop-daemon --stop --quiet --exec /usr/sbin/clamav-milter
 		eend $? "Failed to stop clamav-milter"
 	fi
 }
