@@ -1,0 +1,8 @@
+# ChangeLog for dev-embedded/phidget
+# Copyright 1999-2008 Nathan Brink; Distributed under the GPL v2
+# $Header: $
+
+*phidget-2.1.4.20080924 (17 November 2008)
+
+  17 Nov 2008; Nathan Phillip Brink <ohnobinki@ohnopublishing.net> +phidget-2.1.4.20080924.ebuild, +Manifest, +files/phidget21-crosscompile.patch, +file/phidget21-java.patch, +file/phidget21-libdir.patch :
+  Initial import.  Ebuild submitted by Nathan Phillip Brink <ohnobinki@ohnopublishing.net>.
