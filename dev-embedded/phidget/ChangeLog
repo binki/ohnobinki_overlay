@@ -2,6 +2,11 @@
 # Copyright 1999-2008 Nathan Brink; Distributed under the GPL v2
 # $Header: $
 
+  01 Dec 2008; Cron Daemon for Nathan Phillip Brink
+  <ohnobinki@ohnopublishing.net> ChangeLog:
+  Automatically bumped to phidget-2.1.5.20081023.ebuild from
+  phidget-2.1.4.20080924.ebuild
+
 *phidget-2.1.4.20080924 (17 November 2008)
 
   17 Nov 2008; Nathan Phillip Brink <ohnobinki@ohnopublishing.net> +phidget-2.1.4.20080924.ebuild, +Manifest, +files/phidget21-crosscompile.patch, +file/phidget21-java.patch, +file/phidget21-libdir.patch :
