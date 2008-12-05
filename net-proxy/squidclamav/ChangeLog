@@ -1,0 +1,8 @@
+# ChangeLog for net-proxy/squidclamav
+# Copyright 1999-2008 Nathan Brink; Distributed under the GPL v2
+# $Header: $
+
+*squidclamav-3.8 (05 December 2008)
+	
+  05 Dec 2008; Nathan Phillip Brink <ohnobinki@ohnopublishing.net> +files/squidclamav-3.8-gentoo.patch, +squidclamav-3.8.ebuild:
+  Bump to squidclamav-3.8 from squidclamav-3.5. Some changes had to be made from files/squidclamav-3.5-gentoo.patch after it was copied to files/squidclamav-3.8-gentoo.patch because of new features.
