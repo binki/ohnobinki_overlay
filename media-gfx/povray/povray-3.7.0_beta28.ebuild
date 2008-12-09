@@ -4,11 +4,13 @@
 
 inherit eutils autotools flag-o-matic versionator
 
-MY_PV=$(get_version_component_range 1-3)
-MY_MINOR_VER=$(get_version_component_range 4)
-if [ -n "$MY_MINOR_VER" ]; then
-	MY_MINOR_VER=${MY_MINOR_VER/beta/beta.}
-	MY_PV="${MY_PV}.${MY_MINOR_VER}"
+POVRAY_MAJOR_VER=$(get_version_component_range 1-3)
+POVRAY_MINOR_VER=$(get_version_component_range 4)
+if [ -n "$POVRAY_MINOR_VER" ]; then
+	POVRAY_MINOR_VER=${POVRAY_MINOR_VER/beta/beta.}
+	MY_PV="${POVRAY_MAJOR_VER}.${POVRAY_MINOR_VER}"
+else
+	MY_PV=${POVRAY_MAJOR_VER}
 fi
 
 DESCRIPTION="The Persistence of Vision Raytracer"
@@ -34,7 +36,8 @@ src_unpack() {
 	unpack ${A}
 	cd "${S}"
 
-	epatch "${FILESDIR}"/${P}-betacode.patch
+	# Remove POVRay's code that pointlessly aborts if the beta has ``expired''
+	epatch "${FILESDIR}"/${P}-remove-expiration.patch
 
 	# Change some destination directories that cannot be adjusted via configure
 	cp configure.ac configure.ac.orig
@@ -46,6 +49,10 @@ src_unpack() {
 	sed -i -e "s:^povlibdir = .*:povlibdir = @datadir@/${PN}:" Makefile.am
 	sed -i -e "s:^povdocdir = .*:povdocdir = @datadir@/doc/${PF}:" Makefile.am
 	sed -i -e "s:^povconfdir = .*:povconfdir = @sysconfdir@/${PN}:" Makefile.am
+
+	# The "+p" option on the test command line causes a pause and
+	# prompts the user to interact, so remove it.
+	sed -i -e"s:biscuit.pov -f +d +p:biscuit.pov -f +d:" Makefile.am
 
 	eautoreconf
 }
@@ -68,6 +75,7 @@ src_compile() {
 		$(use_with svga) \
 		$(use_with tiff) \
 		$(use_with X) \
+		--disable-strip \
 		|| die
 
 	emake || die
