@@ -2,6 +2,10 @@
 # Copyright 1999-2008 Nathan Brink; Distributed under the GPL v2
 # $Header: $
 
+*squidclamav-3.9 (16 December 2008)
+  16 Dec 2008; Nathan Phillip Brink <ohnobinki@ohnopublishing.net> +files/squidclamav-3.9-gentoo.patch +squidclamav-3.9.ebuild
+  Bump to squidclamav-3.9: minor features were added upstream, of course :-)
+	
 *squidclamav-3.8 (05 December 2008)
 	
   05 Dec 2008; Nathan Phillip Brink <ohnobinki@ohnopublishing.net> +files/squidclamav-3.8-gentoo.patch, +squidclamav-3.8.ebuild:
