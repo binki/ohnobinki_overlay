@@ -2,7 +2,8 @@
 # Copyright 1999-2008 Nathan Brink; Distributed under the GPL v2
 # $Header: $
 
-
+  19 Dec 2008; Nathan Phillip Brink <ohnobinki@ohnopublishing.net> +povray-3.7.0_beta29-r1.ebuild, -povray-3.7.0_beta29-r1.ebuild:
+  Moved povray ebuild because of change in the Gentoo Portage to revision -r1. There appear to be no significant changes except my patch to remove POVRay's expireation data between Portage's and my ebuild.
 	
 *povray-3.7.0_beta29 (08 December 2008)
 
