@@ -7,7 +7,11 @@ opts="logfix"
 
 depend() {
 	use net
-	provide antivirus
+	MYPROVIDE="antivirus"
+	if [ "${START_FRESHCLAM}" = "yes" ]; then
+	    MYPROVIDE="${MYPROVIDE} milter"
+	fi
+	provide ${MYPROVIDE}
 }
 
 start() {

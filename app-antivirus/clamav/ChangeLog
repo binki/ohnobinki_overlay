@@ -2,6 +2,9 @@
 # Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/app-antivirus/clamav/ChangeLog,v 1.308 2008/09/13 22:48:04 dertobi123 Exp $
 
+	27 Dec 2008; Nathan Brink <ohnobinki@ohnopublishing.net> files/clamd.rc:
+	Added "provide milter" to the init-script. Maybe this should be a conditional provide statement based on whether or not the milter is enabled or not.
+
 	30 Nov 2008; Nathan Brink <ohnobinki@ohnopublishing.net> clamav-0.94.2-r1.ebuild:
 	In response to Gentoo bug #249231 : pulls in changes to files/clamd.rc
 	
