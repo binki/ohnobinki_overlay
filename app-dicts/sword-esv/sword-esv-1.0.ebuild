@@ -6,7 +6,7 @@ SWORD_MODULE="ESV"
 
 inherit sword-module
 
-DESCRIPTION="King James Version (1769) with Strongs Numbers and Morphology"
+DESCRIPTION="English Standard Version Bible"
 HOMEPAGE="http://crosswire.org/sword/modules/ModInfo.jsp?modName=ESV"
 LICENSE="EnglishStandardVersion"
 KEYWORDS="~amd64 ~ppc ~x86 ~x86-fbsd"
