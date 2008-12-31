@@ -3,7 +3,6 @@ app-arch
 app-crypt
 app-dicts
 app-emacs
-app-emulation
 app-pda
 app-text
 dev-dotnet
