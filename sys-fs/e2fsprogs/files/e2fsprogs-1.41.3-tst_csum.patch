@@ -1,0 +1,36 @@
+--- /tmp/e2fsprogs-1.41.3.orig/work/e2fsprogs-1.41.3/lib/ext2fs/csum.c  2009-01-03 12:52:03.000000000 -0500
++++ /lib/ext2fs/csum.c    2009-01-03 13:00:47.000000000 -0500
+@@ -28,6 +28,7 @@
+ #define STATIC static
+ #endif
+ 
++#include "csum.h"
+ STATIC __u16 ext2fs_group_desc_csum(ext2_filsys fs, dgrp_t group)
+ {
+        __u16 crc = 0;
+--- /tmp/e2fsprogs-1.41.3.orig/work/e2fsprogs-1.41.3/lib/ext2fs/csum.h  1969-12-31 19:00:00.000000000 -0500
++++ /lib/ext2fs/csum.h    2009-01-03 13:00:25.000000000 -0500
+@@ -0,0 +1,13 @@
++/*
++  local definitions for csum.c and tst_csum, not to be put in /usr/include
++*/
++
++#ifndef STATIC
++#ifdef DEBUG
++#define STATIC
++#else
++#define STATIC static
++#endif
++#endif
++
++STATIC __u16 ext2fs_group_desc_csum(ext2_filsys fs, dgrp_t group);
+--- /tmp/e2fsprogs-1.41.3.orig/work/e2fsprogs-1.41.3/lib/ext2fs/tst_csum.c      2009-01-03 12:52:04.000000000 -0500
++++ /lib/ext2fs/tst_csum.c        2009-01-03 13:01:53.000000000 -0500
+@@ -16,6 +16,7 @@
+ #include "ext2fs/ext2_fs.h"
+ #include "ext2fs/ext2fs.h"
+ #include "ext2fs/crc16.h"
++#include "csum.h"
+ 
+ #ifndef offsetof
+ #define offsetof(TYPE, MEMBER) ((size_t) &((TYPE *)0)->MEMBER)
