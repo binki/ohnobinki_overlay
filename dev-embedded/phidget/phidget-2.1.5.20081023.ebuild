@@ -33,16 +33,17 @@ src_compile() {
 	echo cd "${S}"
 	cd "${S}"
 	if use java; then
-		emake CROSS_COMPILE=${CHOST}- JAVAFLAGS="$(java-pkg_get-jni-cflags)" jni || die "emake failed"
+		emake CROSS_COMPILE=${CHOST}- JAVA=y JAVAFLAGS="$(java-pkg_get-jni-cflags)" jni || die "emake failed"
 	else
-		emake CROSS_COMPILE=${CHOST}- || die "emake failed"
+		emake CROSS_COMPILE=${CHOST}- JAVA=n || die "emake failed"
 	fi
 }
 
 src_install() {
 
-	mkdir -p ${D}/usr/$(get_libdir)
-	mkdir -p ${D}/usr/include
-	make install INSTALLPREFIX=${D} PREFIX=usr LIBDIR=$(get_libdir)
-	java-pkg_regso "${D}"/usr/$(get_libdir)/lib${PN}${MY_PV}.so
+	#it seems that phidget's install stuff wants these dirs to exist
+	mkdir -p ${D}/usr/$(get_libdir) && \
+		mkdir -p ${D}/usr/include || die "mkdir failed in creation of destination directories"
+	emake install INSTALLPREFIX=${D} PREFIX=usr LIBDIR=$(get_libdir) || die "emake install failed"
+	use java && java-pkg_regso "${D}"/usr/$(get_libdir)/lib${PN}${MY_PV}.so || die "registering java .so file failed"
 }

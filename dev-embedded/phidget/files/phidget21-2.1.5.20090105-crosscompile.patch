@@ -1,0 +1,31 @@
+diff -u /var/tmp/portage/dev-embedded/phidget-2.1.5.20090105/work/Phidgetlinux/phidget21/Makefile /tmp/buffer-content-128429IH
+--- /Phidgetlinux/phidget21/Makefile	2009-01-06 17:20:07.000000000 -0500
++++ /Phidgetlinux/phidget21/Makefile	2009-01-06 17:46:57.000000000 -0500
+@@ -2,18 +2,16 @@
+ DEBUG?=n
+ DMALLOC?=n
+ JAVA?=y
+-CROSSCOMPILE?=n
++CROSS_COMPILE?=
+ ZEROCONF?=avahi
+ ZEROCONF_LOOKUP?=n
+ 
+-ifeq ($(CROSSCOMPILE),y)
+-CC=arm-linux-gcc
+-NM=arm-linux-nm
+-AR=arm-linux-ar
+-CXX=arm-linux-g++
+-CPP=arm-linux-cpp
+-LD=arm-linux-ld
+-endif
++CC=$(CROSS_COMPILE)gcc
++NM=$(CROSS_COMPILE)nm
++AR=$(CROSS_COMPILE)ar
++CXX=$(CROSS_COMPILE)g++
++CPP=$(CROSS_COMPILE)cpp
++LD=$(CROSS_COMPILE)ld
+ 
+ ifeq ($(JAVA),y)
+ JAVAHOME := /usr/java/j2sdk1.4.2_18
+
+Diff finished.  Tue Jan  6 17:46:57 2009

@@ -25,7 +25,7 @@ src_unpack() {
 	cd "${S}"
 
 	epatch "${FILESDIR}"/${PN}${MY_PV}-libdir.patch
-	epatch "${FILESDIR}"/${PN}${MY_PV}-crosscompile.patch
+	epatch "${FILESDIR}"/${PN}${MY_PV}-2.1.5.20090105-crosscompile.patch
 	use java && epatch "${FILESDIR}"/${PN}${MY_PV}-java.patch
 }
 
