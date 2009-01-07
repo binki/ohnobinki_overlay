@@ -42,8 +42,8 @@ src_compile() {
 src_install() {
 
 	#it seems that phidget's install stuff wants these dirs to exist
-	mkdir -p ${D}/usr/$(get_libdir) && \
-		mkdir -p ${D}/usr/include || die "mkdir failed in creation of destination directories"
+	dodir ${D}/usr/$(get_libdir) && \
+		dodir ${D}/usr/include || die "mkdir failed in creation of destination directories"
 	emake install INSTALLPREFIX=${D} PREFIX=usr LIBDIR=$(get_libdir) || die "emake install failed"
 	use java && java-pkg_regso "${D}"/usr/$(get_libdir)/lib${PN}${MY_PV}.so || die "registering java .so file failed"
 }
