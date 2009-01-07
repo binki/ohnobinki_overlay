@@ -47,7 +47,7 @@ src_unpack() {
 	    echo "echo \"-lssl -lcrypto\"" >> vsf_findlibs.sh
 	fi
 	if use pam; then
-	    echo "echo \"-lpam\"" >> vsf_findlibs.sh
+	    echo "\"-lpam\"" >> vsf_findlibs.sh
 	else
 	    echo "#undef VSF_BUILD_PAM" >> builddefs.h
 	fi
