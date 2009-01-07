@@ -12,7 +12,7 @@ HOMEPAGE="http://www.phidgets.com"
 
 SLOT="0"
 
-LICENSE="LGPL"
+LICENSE="as-is"
 KEYWORDS="x86 ~alpha ~ppc ~sparc ~hppa ~amd64"
 
 RDEPEND="java? ( >=virtual/jre-1.4 )"
