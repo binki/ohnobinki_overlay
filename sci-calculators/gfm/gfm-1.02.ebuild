@@ -20,9 +20,9 @@ RDEPEND=">=sci-calculators/tilp2-1.10
 	>=gnome-base/libglade-2
 	kde? ( kde-base/kdelibs:3.5 )
 	xinerama? ( x11-libs/libXinerama )"
-	
+
 DEPEND="${RDEPEND}
-	xinerama? (x11-libs/xineramaproto)"
+	xinerama? ( x11-libs/xineramaproto )"
 
 src_compile() {
 	econf \

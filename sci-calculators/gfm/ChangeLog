@@ -1,5 +1,8 @@
 # ChangeLog for sci-calculators/gfm
 # made by Nathan Brink <ohnobinki@ohnopublishing.homelinux.net>
 
+	07 jan 2009; Nathan Brink <ohnobinki@ohnopublishing.net> gfm-1.02.ebuild:
+	added spaces around the `(' character in dependencies because portage complained
+	
 	08 Feb 2008; Nathan Brink <ohnobinki@ohnopublishing.homelinux.net> +gfm-1.02.ebuild
 	creation
