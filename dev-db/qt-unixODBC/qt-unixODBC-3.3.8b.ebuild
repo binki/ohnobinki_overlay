@@ -38,7 +38,8 @@ src_unpack() {
 		   -e "s:\<QMAKE_CXX\>.*=.*:QMAKE_CXX=$(tc-getCXX):" \
 		   -e "s:\<QMAKE_LINK\>.*=.*:QMAKE_LINK=$(tc-getCXX):" \
 		   -e "s:\<QMAKE_LINK_SHLIB\>.*=.*:QMAKE_LINK_SHLIB=$(tc-getCXX):" \
-		   -e "s:_LIBDIR.*=[^/]*(.*/)lib:_LIBDIR=\1$(get_libdir):" \
+		   -e "s:^QMAKE_LIBDIR\>.*=.*:QMAKE_LIBDIR=/usr/$(get_libdir) /$(get_libdir):" \
+		   -e "s:_LIBDIR\(.*\)=[^/]*\(.*/\)lib:_LIBDIR\1=\2$(get_libdir):" \
 		   "${S}"/mkspecs/${PLATFORM}/qmake.conf || die "sed to fix CFLAGS failed"
 }
 
