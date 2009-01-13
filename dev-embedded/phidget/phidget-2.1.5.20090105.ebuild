@@ -47,5 +47,7 @@ src_install() {
 	USEJAVA=n
 	use java && USEJAVA=y
 	emake install INSTALLPREFIX=${D} PREFIX=usr LIBDIR=$(get_libdir) JAVA=${USEJAVA} || die "emake install failed"
-	use java && java-pkg_regso "${D}"/usr/$(get_libdir)/lib${PN}${MY_PV}.so || die "registering java .so file failed"
+	if use java; then
+		java-pkg_regso "${D}"/usr/$(get_libdir)/lib${PN}${MY_PV}.so || die "registering java .so file failed"
+	fi
 }
