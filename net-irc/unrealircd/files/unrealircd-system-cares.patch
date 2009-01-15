@@ -1,0 +1,84 @@
+diff -u /var/tmp/portage/net-irc/unrealircd-3.2.7-r2/work/Unreal3.2.7/configure.in /tmp/buffer-content-12842m3P
+--- /autoconf/configure.in	2009-01-14 22:57:09.000000000 -0500
++++ /tmp/buffer-content-12842m3P	2009-01-14 23:04:01.000000000 -0500
+@@ -461,35 +461,40 @@
+ dnl cd $cur_dir
+ PKG_CHECK_MODULES([TRE], tre)
+ 
+-dnl REMEMBER TO CHANGE WITH A NEW C-ARES RELEASE!
+-cares_version="1.4.0"
+-AC_MSG_RESULT(extracting c-ares resolver library)
+-cur_dir=`pwd`
+-cd extras
+-dnl remove old c-ares directory to force a recompile...
+-rm -rf c-ares-$cares_version
+-if test "x$ac_cv_path_GUNZIP" = "x" ; then
+-	tar xfz c-ares.tar.gz
+-else
+-	cp c-ares.tar.gz c-ares.tar.gz.bak
+-	gunzip -f c-ares.tar.gz
+-	cp c-ares.tar.gz.bak c-ares.tar.gz
+-	tar xf c-ares.tar
+-fi
+-AC_MSG_RESULT(configuring c-ares library)
+-cd c-ares-$cares_version
+-./configure --prefix=$cur_dir/extras/c-ares || exit 1
+-AC_MSG_RESULT(compiling c-ares resolver library)
+-$ac_cv_prog_MAKER || exit 1
+-AC_MSG_RESULT(installing c-ares resolver library)
+-$ac_cv_prog_MAKER install || exit 1
+-CARESINCDIR="$cur_dir/extras/c-ares/include"
+-AC_SUBST(CARESINCDIR)
+-CARESLIBDIR="-L../extras/c-ares/lib"
++dnl dnl REMEMBER TO CHANGE WITH A NEW C-ARES RELEASE!
++dnl cares_version="1.4.0"
++dnl AC_MSG_RESULT(extracting c-ares resolver library)
++dnl cur_dir=`pwd`
++dnl cd extras
++dnl dnl remove old c-ares directory to force a recompile...
++dnl rm -rf c-ares-$cares_version
++dnl if test "x$ac_cv_path_GUNZIP" = "x" ; then
++dnl 	tar xfz c-ares.tar.gz
++dnl else
++dnl 	cp c-ares.tar.gz c-ares.tar.gz.bak
++dnl 	gunzip -f c-ares.tar.gz
++dnl 	cp c-ares.tar.gz.bak c-ares.tar.gz
++dnl 	tar xf c-ares.tar
++dnl fi
++dnl AC_MSG_RESULT(configuring c-ares library)
++dnl cd c-ares-$cares_version
++dnl ./configure --prefix=$cur_dir/extras/c-ares || exit 1
++dnl AC_MSG_RESULT(compiling c-ares resolver library)
++dnl $ac_cv_prog_MAKER || exit 1
++dnl AC_MSG_RESULT(installing c-ares resolver library)
++dnl $ac_cv_prog_MAKER install || exit 1
++dnl CARESINCDIR="$cur_dir/extras/c-ares/include"
++dnl AC_SUBST(CARESINCDIR)
++dnl CARESLIBDIR="-L../extras/c-ares/lib"
++dnl AC_SUBST(CARESLIBDIR)
++dnl CARESLIBS="-lcares"
++dnl AC_SUBST(CARESLIBS)
++dnl cd $cur_dir
++CARESLIBDIR=""
+ AC_SUBST(CARESLIBDIR)
+ CARESLIBS="-lcares"
+ AC_SUBST(CARESLIBS)
+-cd $cur_dir
++
+ 
+ 
+ AC_OUTPUT(Makefile src/modules/Makefile unreal ircdcron/ircdchk)
+
+diff -u /var/tmp/portage/net-irc/unrealircd-3.2.7-r2/work/Unreal3.2.7/Makefile.in /tmp/buffer-content-12842zBW
+--- /Makefile.in	2009-01-14 22:57:09.000000000 -0500
++++ /tmp/buffer-content-12842zBW	2009-01-14 23:04:34.000000000 -0500
+@@ -38,7 +38,7 @@
+ CRYPTOLIB=@CRYPTOLIB@
+ OPENSSLINCLUDES=
+ 
+-XCFLAGS=@TRE_CFLAGS@ -I@CARESINCDIR@ @CARESLIBDIR@ @CFLAGS@
++XCFLAGS=@TRE_CFLAGS@ @CARESLIBDIR@ @CFLAGS@
+ #
+ # use the following on MIPS:
+ #CFLAGS= -systype bsd43 -DSYSTYPE_BSD43 -I$(INCLUDEDIR)
+

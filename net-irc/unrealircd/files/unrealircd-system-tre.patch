@@ -1,0 +1,102 @@
+diff -u /var/tmp/portage/net-irc/unrealircd-3.2.7-r2/work/Unreal3.2.7/autoconf/configure.in /tmp/buffer-content-12842aZ0
+--- /autoconf/configure.in	2007-06-11 20:06:33.000000000 -0400
++++ /tmp/buffer-content-12842aZ0	2009-01-14 17:06:18.000000000 -0500
+@@ -53,6 +53,9 @@
+ AC_SUBST(IRCDLIBS)
+ AC_SUBST(MKPASSWDLIBS)
+ 
++dnl for getting info about TRE
++PKG_PROG_PKG_CONFIG(0.17)
++
+ dnl module checking based on Hyb7's module checking code
+ AC_DEFUN([AC_ENABLE_DYN],
+ [
+@@ -425,38 +428,38 @@
+ ;;
+ esac
+ 
+-dnl REMEMBER TO CHANGE WITH A NEW TRE RELEASE!
+-tre_version="0.7.5"
+-AC_MSG_RESULT(extracting TRE regex library)
+-cur_dir=`pwd`
+-cd extras
+-dnl remove old tre directory to force a recompile...
+-rm -rf tre-$tre_version
+-if test "x$ac_cv_path_GUNZIP" = "x" ; then
+-	tar xfz tre.tar.gz
+-else
+-	cp tre.tar.gz tre.tar.gz.bak
+-	gunzip -f tre.tar.gz
+-	cp tre.tar.gz.bak tre.tar.gz
+-	tar xf tre.tar
+-fi
+-AC_MSG_RESULT(configuring TRE regex library)
+-cd tre-$tre_version
+-./configure --disable-agrep --disable-shared --disable-system-abi --disable-wchar --disable-multibyte --prefix=$cur_dir/extras/regexp || exit 1
+-AC_MSG_RESULT(compiling TRE regex library)
+-$ac_cv_prog_MAKER || exit 1
+-AC_MSG_RESULT(installing TRE regex library)
+-$ac_cv_prog_MAKER install || exit 1
+-TREINCDIR="$cur_dir/extras/regexp/include"
+-AC_SUBST(TREINCDIR)
+-if test "x$ac_cv_path_PKGCONFIG" = "x" ; then
+-	TRELIBS="-L../extras/regexp/lib -ltre"
+-else
+-	TRELIBS=`$ac_cv_path_PKGCONFIG --libs tre.pc`
+-fi
+-AC_SUBST(TRELIBS)
+-cd $cur_dir
+-
++dnl dnl REMEMBER TO CHANGE WITH A NEW TRE RELEASE!
++dnl tre_version="0.7.5"
++dnl AC_MSG_RESULT(extracting TRE regex library)
++dnl cur_dir=`pwd`
++dnl cd extras
++dnl dnl remove old tre directory to force a recompile...
++dnl rm -rf tre-$tre_version
++dnl if test "x$ac_cv_path_GUNZIP" = "x" ; then
++dnl	tar xfz tre.tar.gz
++dnl else
++dnl 	cp tre.tar.gz tre.tar.gz.bak
++dnl 	gunzip -f tre.tar.gz
++dnl 	cp tre.tar.gz.bak tre.tar.gz
++dnl 	tar xf tre.tar
++dnl fi
++dnl AC_MSG_RESULT(configuring TRE regex library)
++dnl cd tre-$tre_version
++dnl ./configure --disable-agrep --disable-shared --disable-system-abi --disable-wchar --disable-multibyte --prefix=$cur_dir/extras/regexp || exit 1
++dnl AC_MSG_RESULT(compiling TRE regex library)
++dnl $ac_cv_prog_MAKER || exit 1
++dnl AC_MSG_RESULT(installing TRE regex library)
++dnl $ac_cv_prog_MAKER install || exit 1
++dnl TREINCDIR="$cur_dir/extras/regexp/include"
++dnl AC_SUBST(TREINCDIR)
++dnl if test "x$ac_cv_path_PKGCONFIG" = "x" ; then
++dnl	TRELIBS="-L../extras/regexp/lib -ltre"
++dnl  else
++dnl	TRELIBS=`$ac_cv_path_PKGCONFIG --libs tre.pc`
++dnl fi
++dnl AC_SUBST(TRE_LIBS) AC_SUBST(TRE_CFLAGS)
++dnl cd $cur_dir
++PKG_CHECK_MODULES([TRE], tre)
+ 
+ dnl REMEMBER TO CHANGE WITH A NEW C-ARES RELEASE!
+ cares_version="1.4.0"
+
+
+--- /Makefile.in	2006-06-05 19:16:34.000000000 -0400
++++ /tmp/buffer-content-12842MjD	2009-01-14 17:07:21.000000000 -0500
+@@ -34,11 +34,11 @@
+ #
+ 
+ #XCFLAGS=-O -g -export-dynamic
+-IRCDLIBS=@IRCDLIBS@ @TRELIBS@ @CARESLIBS@
++IRCDLIBS=@IRCDLIBS@ @TRE_LIBS@ @CARESLIBS@
+ CRYPTOLIB=@CRYPTOLIB@
+ OPENSSLINCLUDES=
+ 
+-XCFLAGS=-I@TREINCDIR@ -I@CARESINCDIR@ @CARESLIBDIR@ @CFLAGS@
++XCFLAGS=@TRE_CFLAGS@ -I@CARESINCDIR@ @CARESLIBDIR@ @CFLAGS@
+ #
+ # use the following on MIPS:
+ #CFLAGS= -systype bsd43 -DSYSTYPE_BSD43 -I$(INCLUDEDIR)
