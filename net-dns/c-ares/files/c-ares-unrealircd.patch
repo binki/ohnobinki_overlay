@@ -1,0 +1,55 @@
+diff -ru c-ares-1.6.0/ares.h Unreal3.2/extras/c-ares-1.6.0/ares.h
+--- ares.h 2008-12-04 07:53:03.000000000 -0500
++++ Unreal3.2/extras/c-ares-1.6.0/ares.h        2008-12-14 08:06:38.000000000 -0500
+@@ -218,6 +218,13 @@
+   int nsort;
+ };
+ 
++struct ares_config_info {
++       int timeout;
++       int tries;
++       int numservers;
++       char **servers;
++};
++
+ struct hostent;
+ struct timeval;
+ struct sockaddr;
+@@ -314,6 +321,8 @@
+ void ares_free_hostent(struct hostent *host);
+ const char *ares_strerror(int code);
+ 
++int ares_get_config(struct ares_config_info *d, ares_channel c);
++
+ #ifdef  __cplusplus
+ }
+ #endif
+Only in Unreal3.2/extras/c-ares-1.6.0: ares.h.orig
+diff -ru c-ares-1.6.0/ares_init.c Unreal3.2/extras/c-ares-1.6.0/ares_init.c
+--- ares_init.c    2008-12-04 07:53:03.000000000 -0500
++++ Unreal3.2/extras/c-ares-1.6.0/ares_init.c   2008-12-14 08:06:38.000000000 -0500
+@@ -1562,3 +1562,24 @@
+   channel->sock_create_cb = cb;
+   channel->sock_create_cb_data = data;
+ }
++
++int ares_get_config(struct ares_config_info *d, ares_channel c)
++{
++       int i;
++       char *p;
++
++       memset(d, 0, sizeof(struct ares_config_info));
++
++       d->timeout = c->timeout;
++       d->tries = c->tries;
++       d->numservers = c->nservers;
++       d->servers = calloc(sizeof(char *), c->nservers);
++
++       for (i = 0; i < c->nservers; i++)
++       {
++               p = inet_ntoa(c->servers[i].addr);
++               d->servers[i] = p ? strdup(p) : NULL;
++       }
++
++       return ARES_SUCCESS;
++}
