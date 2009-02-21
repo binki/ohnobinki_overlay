@@ -31,10 +31,8 @@ src_unpack() {
 src_compile() {
 	emake x11 || die "emake failed"
 
-	#must be done after emake because the Makefile makes libglfw.pc.in
-	#most of the sed statement was grabbed from lib/x11/Makefile.x11
-	sed -e 's,\@PREFIX\@,/usr,' \
-		lib/x11/libglfw.pc.in > lib/x11/libglfw.pc || die "sed failed to create libglfw.pc"
+	cd lib/x11 && \
+		emake PREFIX=/usr -f Makefile.x11 libglfw.pc || die "emake libglfw.pc failed"
 }
 
 src_install() {
