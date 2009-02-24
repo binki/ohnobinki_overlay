@@ -4,6 +4,8 @@
 
 inherit eutils autotools flag-o-matic versionator
 
+EAPI=1
+
 POVRAY_MAJOR_VER=$(get_version_component_range 1-3)
 POVRAY_MINOR_VER=$(get_version_component_range 4)
 if [ -n "$POVRAY_MINOR_VER" ]; then
@@ -28,7 +30,7 @@ DEPEND="media-libs/libpng
 	sys-libs/zlib
 	X? ( x11-libs/libXaw )
 	svga? ( media-libs/svgalib )
-	>=dev-libs/boost-1.33"
+	dev-libs/boost:1.37"
 
 S="${WORKDIR}/${PN}-${MY_PV}"
 
