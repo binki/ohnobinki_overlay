@@ -17,7 +17,7 @@ diff -ru /var/tmp/portage/dev-libs/confuse-2.6-r3/work/confuse-2.6/Makefile.am .
 diff -ru /var/tmp/portage/dev-libs/confuse-2.6-r3/work/confuse-2.6/configure.ac ./configure.ac
 --- ./configure.ac	2009-02-28 20:54:04.000000000 -0500
 +++ ./configure.ac	2009-02-28 22:26:38.000000000 -0500
-@@ -24,6 +24,13 @@
+@@ -24,6 +24,12 @@
  AC_DISABLE_SHARED
  AC_PROG_LIBTOOL
  
@@ -27,7 +27,6 @@ diff -ru /var/tmp/portage/dev-libs/confuse-2.6-r3/work/confuse-2.6/configure.ac 
 +	[], [enable_examples=yes])
 +
 +AM_CONDITIONAL([ENABLE_EXAMPLES], [test "$enable_examples" = yes])
-+echo enable_examples=$enable_examples
  AM_CONDITIONAL([cc_is_gcc], test "$GCC" = "yes")
  
  AM_GNU_GETTEXT([external])
