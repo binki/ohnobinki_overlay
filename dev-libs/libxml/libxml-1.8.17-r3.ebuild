@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/dev-libs/libxml/libxml-1.8.17-r3.ebuild,v 1.1 2009/02/03 23:53:09 patrick Exp $
 
-inherit eutils flag-o-matic
+inherit eutils flag-o-matic libtool autotools
 
 DESCRIPTION="Version 1 of the library to manipulate XML files"
 HOMEPAGE="http://www.xmlsoft.org/"
@@ -23,6 +23,9 @@ src_unpack() {
 	cd "${S}"
 	epatch "${FILESDIR}"/configure-LANG.patch
 	epatch "${FILESDIR}"/open_call_fix.patch
+	epatch "${FILESDIR}"/as-needed.patch
+	elibtoolize
+	eautoreconf
 }
 
 src_compile() {
