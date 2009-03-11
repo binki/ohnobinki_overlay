@@ -43,6 +43,7 @@ src_unpack() {
 	eautoconf
 	cd "${S}"
 	epatch "${FILESDIR}"/${P}-cflags.patch
+	epatch "${FILESDIR}"/${P}-guile18.patch
 	sed -i -e 's:glame.png:glame-logo.jpg:' src/gui/glame.desktop
 }
 

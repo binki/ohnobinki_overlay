@@ -1,6 +1,9 @@
 # ChangeLog for media-sound/glame
 # Copyright 2002-2007 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/media-sound/glame/ChangeLog,v 1.36 2007/07/15 19:14:07 drac Exp $
+  10 Mar 2009; Nathan Phillip Brink <ohnobinki@ohnopublishing.net>
+  glame-2.0.1.ebuild, +files/glame-2.0.1-guile18.patch
+  Fixed glame's guile compat code to support guile-1.8.5
 
   15 Jul 2007; Samuli Suominen <drac@gentoo.org> glame-2.0.1.ebuild:
   Add built_with_use check for bug 164514, missing quotes, and more.
