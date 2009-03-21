@@ -17,7 +17,7 @@ IUSE="examples"
 DEPEND=""
 RDEPEND="virtual/latex-base
 	virtual/ghostscript
-	|| ( dev-tex/mh =dev-texlive/texlive-mathextra-2007* )
+	|| ( dev-tex/mh dev-texlive/texlive-mathextra )
 	sci-mathematics/maxima"
 
 SITEFILE="50${PN}-gentoo.el"
