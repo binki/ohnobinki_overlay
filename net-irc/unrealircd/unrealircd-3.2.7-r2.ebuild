@@ -21,7 +21,7 @@ RDEPEND="ssl? ( dev-libs/openssl )
 	zlib? ( sys-libs/zlib )
 	curl? ( net-misc/curl )
 	dev-libs/tre
-	>=net-dns/c-ares-1.5.3-r1"
+	>=net-dns/c-ares-1.5.3"
 DEPEND="${RDEPEND}
 	>=sys-apps/sed-4"
 
