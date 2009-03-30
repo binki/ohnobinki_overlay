@@ -14,7 +14,7 @@ SRC_URI="http://unreal.brueggisite.de/${MY_P}.tar.gz
 
 SLOT="0"
 LICENSE="GPL-2"
-KEYWORDS="~amd64 ~mips ~ppc ~sparc ~x86 ~x86-fbsd"
+KEYWORDS="~amd64 ~mips ppc sparc x86 ~x86-fbsd"
 IUSE="hub ipv6 ssl zlib curl prefixaq showlistmodes"
 
 RDEPEND="ssl? ( dev-libs/openssl )
@@ -25,7 +25,7 @@ RDEPEND="ssl? ( dev-libs/openssl )
 DEPEND="${RDEPEND}
 	>=sys-apps/sed-4"
 
-S="${WORKDIR}/Unreal${PV}"
+S="${WORKDIR}/Unreal$(get_version_component_range 1-2)"
 
 pkg_setup() {
 	if use curl && ( ! built_with_use net-misc/curl ares || built_with_use net-misc/curl ipv6 )
@@ -54,7 +54,7 @@ src_unpack() {
 		include/config.h
 
 	epatch "${FILESDIR}"/unrealircd-system-tre.patch
-	epatch "${FILESDIR}"/unrealircd-system-cares-3.2.7.patch
+	epatch "${FILESDIR}"/unrealircd-system-cares-3.2.8.patch
 
 	mv autoconf/configure.in ./
 	mv autoconf/aclocal.m4 ./acinclude.m4
