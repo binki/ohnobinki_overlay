@@ -2,6 +2,8 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/dev-tcltk/mysqltcl/mysqltcl-3.02.ebuild,v 1.3 2008/04/10 18:31:56 fmccor Exp $
 
+inherit multilib
+
 DESCRIPTION="TCL MySQL Interface"
 HOMEPAGE="http://www.xdobry.de/mysqltcl/"
 SRC_URI="http://www.xdobry.de/mysqltcl/${P}.tar.gz"
@@ -19,4 +21,9 @@ src_install() {
 	dodoc AUTHORS COPYING README README-msqltcl ChangeLog
 	dohtml doc/mysqltcl.html
 	prepalldocs
+}
+
+src_compile() {
+	econf --with-mysql-lib=/usr/$(get_libdir)/mysql || die
+	emake || die
 }
