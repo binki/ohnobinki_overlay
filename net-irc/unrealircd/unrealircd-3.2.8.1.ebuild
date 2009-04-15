@@ -2,6 +2,8 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: net-irc/unrealircd/unrealircd-3.2.8.1.ebuild,v 1.5 2009/04/15 08:57:36 j0inty Exp $
 
+EAPI="2"
+
 inherit eutils autotools ssl-cert versionator multilib
 
 MY_P=Unreal${PV}
@@ -15,50 +17,23 @@ SRC_URI="http://unrealircd.icedslash.com/${MY_P}.tar.gz
 SLOT="0"
 LICENSE="GPL-2"
 KEYWORDS="~amd64 ~mips ~ppc ~sparc ~x86 ~x86-fbsd"
+IUSE="-curl disableusermod +hub -ipv6 no-operoverride -nospoof operoverride-verify +prefixaq showlistmodes shunnotices -ssl topicisnuhost -zlib"
 
-## USE Flags
-
-# nospoof        Enable spoofing protection
-# prefixaq       Enable chanadmin and chanowner prefixes
-# hub            Compile as a hub server
-# ssl=           enable ssl will check /usr/local/ssl /usr/lib/ssl /usr/ssl /usr/pkg /usr/local /usr
-# zlib       enable ziplinks will check /usr/local /usr /usr/pkg
-# curl    enable libcurl (remote include) support
-# static   --disable-dynamic-linking Make the IRCd dynamically link shared objects rather than statically (NOTE: Not avalaible atm)
-# ipv6          Make the IRCd support IPv6
-# showlistmodes    Specify whether modes are shown in /list
-# topicisnuhost    Display nick!user@host as the topic setter
-# shunnotices      Notify a user when he/she is no longer shunned
-# no-operoverride  Disable OperOverride
-# disableusermod   Disable /set* and /chg*
-# operoverride-verify  Require opers to invite themselves to +s/+p channels
-IUSE="hub ipv6 ssl zlib curl prefixaq nospoof disableusermod no-operoverride operoverride-verify showlistmodes topicisnuhost shunnotices"
-
-DEPEND="ssl? ( dev-libs/openssl )
+RDEPEND="ssl? ( dev-libs/openssl )
 	zlib? ( sys-libs/zlib )
-	curl? ( net-misc/curl )
+	curl? ( net-misc/curl[ares,-ipv6] )
 	dev-libs/tre
-	>=net-dns/c-ares-1.6.0
+	>=net-dns/c-ares-1.5.3"
+DEPEND="${RDEPEND}
 	>=sys-apps/sed-4"
 
-S="${WORKDIR}/Unreal3.2"
+S="${WORKDIR}/Unreal$(get_version_component_range 1-2)"
 
 pkg_setup() {
-	if use curl && ( ! built_with_use net-misc/curl ares || built_with_use net-misc/curl ipv6 ) ;
-	then
-		eerror "You need net-misc/curl compiled with the ares USE flag to be able to use"
-		eerror "net-irc/unrealircd with the curl USE flag. Please note that ares support"
-		eerror "for net-misc/curl is incompatible with the ipv6 USE flag."
-		die "need net-misc/curl with ares support"
-	fi
-
 	enewuser unrealircd
 }
 
-src_unpack() {
-	unpack ${A}
-	cd "${S}"
-
+src_prepare() {
 #QA check against bundled pkgs:
 	rm extras/*.gz
 
@@ -71,7 +46,7 @@ src_unpack() {
 
 	# http://bugs.unrealircd.org/view.php?id=3842
 	epatch "${FILESDIR}"/unrealircd-system-tre.patch || die "epatch failed"
-	
+
 	epatch "${FILESDIR}"/unrealircd-system-cares.patch || die "epatch failed"
 
 	mv autoconf/configure.in ./
@@ -81,7 +56,21 @@ src_unpack() {
 	eautoconf || die "eautoconf failed"
 }
 
-src_compile() {
+src_configure() {
+	local myconf=""
+	use curl     && myconf="${myconf} --enable-libcurl=/usr"
+	use ipv6     && myconf="${myconf} --enable-inet6"
+	use zlib     && myconf="${myconf} --enable-ziplinks"
+	use hub      && myconf="${myconf} --enable-hub"
+	use ssl      && myconf="${myconf} --enable-ssl"
+	use prefixaq && myconf="${myconf} --enable-prefixaq"
+	use nospoof  && myconf="${myconf} --enable-nospoof"
+	use showlistmodes && myconf="${myconf} --enable-showlistmodes"
+	use topicisnuhost && myconf="${myconf} --enable-topicisnuhost"
+	use shunnotices && myconf="${myconf} --with-shunnotices"
+	use no-operoverride && myconf="${myconf} --with-no-operoverride"
+	use operoverride-verify && myconf="${myconf} --with-operoverride-verify"
+	use disableusermod && myconf="${myconf} --with-disableusermod"
 
 	econf \
 		--with-listen=5 \
@@ -96,26 +85,16 @@ src_compile() {
 		--with-system-cares \
 		--with-system-tre \
 		--enable-dynamic-linking \
-		$(use_enable curl libcurl /usr) \
-		$(use_enable ipv6 inet6) \
-		$(use_enable zlib ziplinks) \
-		$(use_enable ssl) \
-		$(use_enable hub) \
-		$(use_enable prefixaq) \
-		$(use_enable nospoof) \
-		$(use_with showlistmodes) \
-	       	$(use_with topicisnuhost) \
-		$(use_with shunnotices) \
-		$(use_with no-operoverride) \
-		$(use_with operoverride-verify) \
-		$(use_with disableusermod) \
+		${myconf} \
 		|| die "econf failed"
 
 	sed -i \
 		-e "s:${D}::" \
 		include/setup.h \
 		ircdcron/ircdchk
+}
 
+src_compile() {
 	emake MAKE=make IRCDDIR=/etc/unrealircd || die "emake failed"
 }
 
