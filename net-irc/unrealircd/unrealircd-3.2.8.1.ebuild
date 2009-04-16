@@ -21,7 +21,7 @@ IUSE="-curl disableusermod +hub -ipv6 no-operoverride -nospoof operoverride-veri
 
 RDEPEND="ssl? ( dev-libs/openssl )
 	zlib? ( sys-libs/zlib )
-	curl? ( net-misc/curl[ares,-ipv6] )
+	curl? ( net-misc/curl )
 	dev-libs/tre
 	>=net-dns/c-ares-1.5.3"
 DEPEND="${RDEPEND}
