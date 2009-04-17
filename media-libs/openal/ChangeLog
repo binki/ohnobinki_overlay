@@ -2,6 +2,11 @@
 # Copyright 2002-2009 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/media-libs/openal/ChangeLog,v 1.108 2009/04/08 20:11:46 hanno Exp $
 
+*openal-1.8.396_pre (17 Apr 2009)
+
+  17 Apr 2009; Nathan Phillip Brink <ohnobinki@ohnopublishing.net> +openal-1.8.396_pre.ebuild:
+  Bumped to version that supports pulseaudio, added pulseaudio useflag.
+
 *openal-1.7.411 (08 Apr 2009)
 
   08 Apr 2009; Hanno Boeck <hanno@gentoo.org>
