@@ -17,7 +17,10 @@ LICENSE="LGPL-2"
 SLOT="0"
 KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~sparc ~x86 ~x86-fbsd"
 IUSE="alsa debug examples oss portaudio pulseaudio"
-DEPEND="alsa? ( media-libs/alsa-lib )"
+DEPEND="alsa? ( media-libs/alsa-lib )
+		portaudio? ( media-libs/portaudio )
+		pulseaudio? ( media-sound/pulseaudio )"
+
 RDEPEND="${DEPEND}"
 S=${WORKDIR}/${MY_P}
 
