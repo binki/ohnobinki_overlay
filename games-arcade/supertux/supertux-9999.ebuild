@@ -15,7 +15,7 @@ ESVN_PROJECT="${PN}"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS=""
-IUSE="debug opengl curl"
+IUSE="opengl curl debug"
 
 RDEPEND="media-libs/libsdl[joystick]
 	media-libs/sdl-image[png,jpeg]
@@ -48,6 +48,6 @@ src_compile() {
 
 src_install() {
 	cmake-utils_src_install
-	dodoc AUTHORS ChangeLog LEVELDESIGN README TODO WHATSNEW.txt data/credits.txt
+	dodoc README TODO WHATSNEW.txt data/credits.txt
 	prepgamesdirs
 }
