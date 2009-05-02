@@ -3,6 +3,11 @@
 # $Header: /var/cvsroot/gentoo-x86/app-antivirus/clamav/ChangeLog,v 1.308 2008/09/13 22:48:04 dertobi123 Exp $
 
   02 May 2009; Nathan Phillip Brink <ohnobinki@gentoo.org>
+  -clamav-0.94.1_rc1.ebuild:
+  Removing old clamav-0.94.1_rc1.
+
+
+  02 May 2009; Nathan Phillip Brink <ohnobinki@gentoo.org>
   clamav-0.94.1_rc1.ebuild, clamav-0.94.1.ebuild, clamav-0.94.2.ebuild,
   clamav-0.94.2-r1.ebuild:
   Fixed automagic depenency on gmp and [R]DEPEND syntax, reset KEYWORDS.
