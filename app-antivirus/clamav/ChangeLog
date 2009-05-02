@@ -1,16 +1,21 @@
 # ChangeLog for app-antivirus/clamav
-# Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
+# Copyright 1999-2009 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/app-antivirus/clamav/ChangeLog,v 1.308 2008/09/13 22:48:04 dertobi123 Exp $
 
-	27 Dec 2008; Nathan Brink <ohnobinki@ohnopublishing.net> files/clamd.rc:
-	Added "provide milter" to the init-script. Maybe this should be a conditional provide statement based on whether or not the milter is enabled or not.
+  02 May 2009; Nathan Phillip Brink <ohnobinki@gentoo.org>
+  clamav-0.94.1_rc1.ebuild, clamav-0.94.1.ebuild, clamav-0.94.2.ebuild,
+  clamav-0.94.2-r1.ebuild:
+  Fixed automagic depenency on gmp and [R]DEPEND syntax, reset KEYWORDS.
 
-	30 Nov 2008; Nathan Brink <ohnobinki@ohnopublishing.net> clamav-0.94.2-r1.ebuild:
-	In response to Gentoo bug #249231 : pulls in changes to files/clamd.rc
-	
-	30 Nov 2008; Nathan Brink <ohnobinki@ohnopublishing.net> clamav-0.94.2.ebuild:
-	In response to bump for Gentoo bug #248798
-	
+  27 Dec 2008; Nathan Brink <ohnobinki@ohnopublishing.net> files/clamd.rc:
+  Added "provide milter" to the init-script. Maybe this should be a conditional provide statement based on whether or not the milter is enabled or not.
+
+  30 Nov 2008; Nathan Brink <ohnobinki@ohnopublishing.net> clamav-0.94.2-r1.ebuild:
+  In response to Gentoo bug #249231 : pulls in changes to files/clamd.rc
+
+  30 Nov 2008; Nathan Brink <ohnobinki@ohnopublishing.net> clamav-0.94.2.ebuild:
+  In response to bump for Gentoo bug #248798
+
   13 Sep 2008; Tobias Scherbaum <dertobi123@gentoo.org> clamav-0.94.ebuild:
   Add missing buildtime dep on dev-util/pkgconfig, #237552
 

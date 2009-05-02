@@ -1,4 +1,4 @@
-# Copyright 1999-2008 Gentoo Foundation
+# Copyright 1999-2009 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/app-antivirus/clamav/clamav-0.94.ebuild,v 1.10 2008/09/13 22:48:04 dertobi123 Exp $
 
@@ -15,15 +15,14 @@ SRC_URI="mirror://sourceforge/${PN}/${MY_P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~hppa ~ia64 ~ppc ~ppc64 ~sparc ~x86 ~x86-fbsd"
+KEYWORDS="~amd64"
 IUSE="bzip2 crypt iconv mailwrapper milter nls selinux test ipv6"
 
 COMMON_DEPEND="bzip2? ( app-arch/bzip2 )
-	crypt? ( >=dev-libs/gmp-4.1.2 )
+	crypt? ( dev-libs/gmp )
 	milter? ( || ( mail-filter/libmilter mail-mta/sendmail ) )
 	iconv? ( virtual/libiconv )
 	nls? ( sys-devel/gettext )
-	dev-libs/gmp
 	>=sys-libs/zlib-1.2.1-r3
 	>=sys-apps/sed-4"
 
@@ -95,6 +94,7 @@ src_compile() {
 		$(use_enable bzip2) \
 		$(use_enable nls) \
 		$(use_enable ipv6) \
+		$(use_enable crypt dsig) \
 		$(use_with iconv) \
 		--disable-experimental \
 		--with-dbdir=/var/lib/clamav || die
