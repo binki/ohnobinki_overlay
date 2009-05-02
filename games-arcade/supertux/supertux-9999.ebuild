@@ -25,6 +25,8 @@ RDEPEND="media-libs/libsdl[joystick]
 	x11-libs/libXt
 	opengl? ( virtual/opengl )
 	curl? ( net-misc/curl )"
+
+#supertux's CMakeLists.txt needs the svnversion command
 DEPEND="${RDEPEND}
 	dev-util/cmake
 	dev-util/subversion"
@@ -33,9 +35,15 @@ src_unpack() {
 	subversion_src_unpack
 }
 
+src_prepare() {
+	epatch "${FILESDIR}/supertux-cmake.patch"
+}
+
 src_configure() {
-	local mycmakeargs="$(cmake-utils_use_enable opengl OPENGL)
-			 -DWERROR=OFF
+	local mycmakeargs="-DWERROR=OFF
+			 -DINSTALL_SUBDIR_BIN=games/bin
+			 -DINSTALL_SUBDIR_DOC=share/doc/${P}
+			 $(cmake-utils_use_enable opengl OPENGL)
 			 $(cmake-utils_use_enable debug SQDBG)
 			 $(cmake-utils_use debug DEBUG)"
 
