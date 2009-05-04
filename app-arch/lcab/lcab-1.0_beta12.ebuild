@@ -1,4 +1,4 @@
-# Copyright 1999-2007 Gentoo Foundation
+# Copyright 1999-2009 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: Exp $
 
@@ -8,7 +8,7 @@ MY_PV="${PV/_beta/b}"
 
 DESCRIPTION="CAB file creation tool"
 HOMEPAGE="http://lcab.move-to-cork.com"
-SRC_URI="http://lcab.move-to-cork.com/sources/${PN}-${MY_PV}.tar.gz"
+SRC_URI="mirror://ohnoproto/${PN}-${MY_PV}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -16,6 +16,7 @@ KEYWORDS="~amd64 ~x86"
 IUSE=""
 
 DEPEND="virtual/libc"
+RDEPEND="${DEPEND}"
 
 S="${WORKDIR}/${PN}-${MY_PV}"
 
@@ -28,5 +29,5 @@ src_unpack() {
 
 src_install() {
 	make DESTDIR="${D}" install || die
-	dodoc README COPYING
+	dodoc README
 }

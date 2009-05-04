@@ -1,0 +1,8 @@
+# ChangeLog for app-arch/lcab
+# Copyright 1999-2009 Gentoo Foundation; Distributed under the GPL v2
+# $Header: $
+
+  04 May 2009; Nathan Phillip Brink <ohnobinki@gentoo.org>
+  lcab-1.0_beta12.ebuild, +metadata.xml:
+  Set SRC_URI to refer to ohnoproto mirrors, added metadata.xml,
+  added RDEPEND, removed useless dodoc
