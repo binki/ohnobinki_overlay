@@ -3,6 +3,11 @@
 # $Header: $
 
   04 May 2009; Nathan Phillip Brink <ohnobinki@gentoo.org>
+  mit-krb5-1.6.3-r4.ebuild:
+  removed untested KEYWORDS
+
+
+  04 May 2009; Nathan Phillip Brink <ohnobinki@gentoo.org>
   -mit-krb5-1.6.2.ebuild:
   Removed old package.
 
