@@ -10,8 +10,8 @@ SRC_URI="ftp://vsftpd.beasts.org/users/cevans/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="amd64 x86"
-IUSE="caps logrotate pam tcpd ssl selinux xinetd"
+KEYWORDS="amd64 ~x86"
+IUSE="caps pam tcpd ssl selinux xinetd"
 
 DEPEND="caps? ( sys-libs/libcap )
 	pam? ( virtual/pam )
@@ -19,7 +19,6 @@ DEPEND="caps? ( sys-libs/libcap )
 	ssl? ( >=dev-libs/openssl-0.9.7d )"
 RDEPEND="${DEPEND}
 	net-ftp/ftpbase
-	logrotate? ( app-admin/logrotate )
 	selinux? ( sec-policy/selinux-ftpd )
 	xinetd? ( sys-apps/xinetd )"
 
@@ -87,10 +86,8 @@ src_install() {
 	insinto /etc/vsftpd
 	newins vsftpd.conf vsftpd.conf.example
 
-	if use logrotate ; then
-		insinto /etc/logrotate.d
-		newins "${FILESDIR}/vsftpd.logrotate" vsftpd
-	fi
+	insinto /etc/logrotate.d
+	newins "${FILESDIR}/vsftpd.logrotate" vsftpd
 
 	if use xinetd ; then
 		insinto /etc/xinetd.d

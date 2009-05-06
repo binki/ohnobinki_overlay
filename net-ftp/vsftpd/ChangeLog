@@ -1,6 +1,12 @@
 # ChangeLog for net-ftp/vsftpd
-# Copyright 2002-2009 Gentoo Foundation; Distributed under the GPL v2
+# Copyright 1999-2009 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/net-ftp/vsftpd/ChangeLog,v 1.107 2009/01/02 16:33:32 cla Exp $
+
+  06 May 2009; Nathan Phillip Brink <ohnobinki@ohnopublishing.net>
+  vsftpd-2.0.7-r1.ebuild, +vsftpd-2.0.7-r2.ebuild, +metadata.xml:
+  Removed many KEYWORDS, stabilized x86 for 2.0.7-r1, added 2.0.7-r2
+  corresponding to Gentoo's 2.0.7-r1, described logrotate useflag in
+  metadata.xml, whitespace changes
 
   05 Jan 2009; Nathan Brink <ohnobinki@ohnopublishing.net>
 Initial import from Gentoo's Portage. Fixed issue with linking when {/usr/lib and /usr/lib64} and {/lib64 and lib} are not symlinked.
