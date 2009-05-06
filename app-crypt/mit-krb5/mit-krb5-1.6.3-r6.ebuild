@@ -21,7 +21,7 @@ IUSE="krb4 ldap tcl doc"
 
 RDEPEND="!virtual/krb5
 	sys-libs/e2fsprogs-libs
-	sys-libs/db:4.5
+	sys-libs/db:3
 	ldap? ( net-nds/openldap )"
 DEPEND="${RDEPEND}
 	doc? ( virtual/latex-base )"
@@ -56,8 +56,8 @@ src_configure() {
 	# needed to work with sys-libs/e2fsprogs-libs <- should be removed!!
 	append-flags "-I/usr/include/et"
 
-	export DB_HEADER="db4.5/db_185.h"
-	export DB_LIB="-ldb-4.5"
+	export DB_HEADER="db3/db_185.h"
+	export DB_LIB="-ldb-3"
 	econf \
 		$(use_with krb4) \
 		$(use_with ldap) \

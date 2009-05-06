@@ -2,6 +2,10 @@
 # Copyright 1999-2009 Gentoo Foundation; Distributed under the GPL v2
 # $Header: $
 
+  06 May 2009; Nathan Phillip Brink <ohnobinki@ohnopublishing.net>
+  mit-krb5-1.6.3-r6.ebuild:
+  Trying sys-libs/db:3 because mit-krb5 doesn't start with db:4.5
+
   06 May 2009; Nathan Phillip Brink <ohnobinki@gentoo.org>
   mit-krb5-1.6.3-r6.ebuild, metadata.xml:
   Removed ipv6 description, moved to EAPI="2", added --with-system-db (and
