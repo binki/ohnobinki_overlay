@@ -18,10 +18,6 @@
     Some of the unit-tests in the build tree rely upon using a program
     in Tcl. This flag is marked for removal.
   </flag>
-  <flag name="ipv6">
-    Enables ipv6 support which is default in actual releases. This
-    flag is marked for removal.
-  </flag>
   <flag name="ldap">
     Enables ldap backend support in krb5.
   </flag>

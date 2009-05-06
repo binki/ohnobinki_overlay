@@ -2,6 +2,8 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/app-crypt/mit-krb5/mit-krb5-1.6.3-r4.ebuild,v 1.9 2008/11/02 10:56:53 dertobi123 Exp $
 
+EAPI="2"
+
 inherit eutils flag-o-matic versionator autotools
 
 PATCHV="0.5"
@@ -15,10 +17,11 @@ SRC_URI="http://web.mit.edu/kerberos/dist/krb5/${P_DIR}/${MY_P}-signed.tar
 LICENSE="as-is"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="krb4 doc ldap"
+IUSE="krb4 ldap tcl doc"
 
 RDEPEND="!virtual/krb5
-	>=sys-libs/e2fsprogs-libs-1.41.0
+	sys-libs/e2fsprogs-libs
+	sys-libs/db:4.5
 	ldap? ( net-nds/openldap )"
 DEPEND="${RDEPEND}
 	doc? ( virtual/latex-base )"
@@ -30,10 +33,13 @@ PROVIDE="virtual/krb5"
 src_unpack() {
 	unpack ${A}
 	unpack ./${MY_P}.tar.gz
-	cd "${S}"
+}
+
+src_prepare() {
 	EPATCH_SUFFIX="patch" epatch "${PATCHDIR}"
 	epatch "${FILESDIR}/CVE-2009-0844+CVE-2009-0847.patch"
 	epatch "${FILESDIR}/CVE-2009-0846.patch"
+
 	einfo "Regenerating configure scripts (be patient)"
 	local subdir
 	for subdir in $(find . -name configure.in \
@@ -46,17 +52,25 @@ src_unpack() {
 	done
 }
 
-src_compile() {
+src_configure() {
 	# needed to work with sys-libs/e2fsprogs-libs <- should be removed!!
 	append-flags "-I/usr/include/et"
+
+	export DB_HEADER="db4.5/db_185.h"
+	export DB_LIB="-ldb-4.5"
 	econf \
 		$(use_with krb4) \
 		$(use_with ldap) \
+		$(use_with tcl) \
 		--enable-shared \
-		--with-system-et --with-system-ss \
+		--with-system-et \
+		--with-system-ss \
+		--with-system-db \
 		--enable-dns-for-realm \
 		--enable-kdc-replay-cache || die
+}
 
+src_compile() {
 	emake -j1 || die
 
 	if use doc ; then

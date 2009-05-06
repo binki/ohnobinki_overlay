@@ -2,6 +2,11 @@
 # Copyright 1999-2009 Gentoo Foundation; Distributed under the GPL v2
 # $Header: $
 
+  06 May 2009; Nathan Phillip Brink <ohnobinki@gentoo.org>
+  mit-krb5-1.6.3-r6.ebuild, metadata.xml:
+  Removed ipv6 description, moved to EAPI="2", added --with-system-db (and
+  dependencies)
+
   05 May 2009; Nathan Phillip Brink <ohnobinki@gentoo.org>
   +mit-krb5-1.6.3-r6.ebuild, +files/CVE-2009-0844+CVE-2009-0847.patch,
   +files/CVE-2009-0846.patch:
