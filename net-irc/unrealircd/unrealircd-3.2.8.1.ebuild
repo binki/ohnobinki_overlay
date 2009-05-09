@@ -1,4 +1,4 @@
-# Copyright 1999-2008 Gentoo Foundation
+# Copyright 1999-2009 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: net-irc/unrealircd/unrealircd-3.2.8.1.ebuild,v 1.5 2009/04/15 08:57:36 j0inty Exp $
 
@@ -16,7 +16,7 @@ SRC_URI="http://unrealircd.icedslash.com/${MY_P}.tar.gz
 
 SLOT="0"
 LICENSE="GPL-2"
-KEYWORDS="~amd64 ~mips ~ppc ~sparc ~x86 ~x86-fbsd"
+KEYWORDS="~amd64 ~x86"
 IUSE="-curl disableusermod +hub -ipv6 no-operoverride -nospoof operoverride-verify +prefixaq showlistmodes shunnotices -ssl topicisnuhost -zlib"
 
 RDEPEND="ssl? ( dev-libs/openssl )

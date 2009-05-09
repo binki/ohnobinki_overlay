@@ -1,6 +1,11 @@
 # ChangeLog for net-irc/unrealircd
-# Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
+# Copyright 1999-2009 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/net-irc/unrealircd/ChangeLog,v 1.70 2008/08/23 01:20:34 cardoe Exp $
+
+  09 May 2009; Nathan Phillip Brink <ohnobinki@ohnopublishing.net>
+  -unrealircd-3.2.7-r2.ebuild, -unrealircd-3.2.8.ebuild,
+  unrealircd-3.2.8.1.ebuild:
+  Removed old unrealircds - gentoo bug 260806, reduced KEYWORDS.
 
   14 Jan 2009; Nathan Phillip Brink <ohnobinki@ohnopublishing.net> +unrealircd-system-tre.patch +unrealircd-system-cares.patch:
   Imported from portage tree, added patch that prevents unrealircd from statically linking to a bundled dev-libs/tre and net-dns/c-ares.
