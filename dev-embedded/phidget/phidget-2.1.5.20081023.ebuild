@@ -12,8 +12,10 @@ HOMEPAGE="http://www.phidgets.com"
 
 SLOT="0"
 
-LICENSE="LGPL"
+LICENSE="LGPL-3"
 KEYWORDS="x86 ~alpha ~ppc ~sparc ~hppa ~amd64"
+
+IUSE="java"
 
 RDEPEND="java? ( >=virtual/jre-1.4 )"
 DEPEND="java? ( >=virtual/jdk-1.4 )"
@@ -44,7 +46,7 @@ src_install() {
 	#it seems that phidget's install stuff wants these dirs to exist
 	dodir /usr/$(get_libdir) && \
 		dodir /usr/include || die "mkdir failed in creation of destination directories"
-	emake install INSTALLPREFIX=${D} PREFIX=usr LIBDIR=$(get_libdir) || die "emake install failed"
+	emake install INSTALLPREFIX="${D}" PREFIX=usr LIBDIR=$(get_libdir) || die "emake install failed"
 	if use java; then
 		java-pkg_regso "${D}"/usr/$(get_libdir)/lib${PN}${MY_PV}.so || die "registering java .so file failed"
 	fi

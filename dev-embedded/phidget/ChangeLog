@@ -1,11 +1,19 @@
 # ChangeLog for dev-embedded/phidget
-# Copyright 1999-2008 Nathan Brink; Distributed under the GPL v2
+# Copyright 1999-2009 Nathan Brink; Distributed under the GPL v2
 # $Header: $
 
+*phidget-2.1.5.20090430 (09 April 2009)
+
+  09 May 2009; Nathan Phillip Brink <ohnobinki@ohnopublishing.net>
+  phidget-2.1.4.20080924.ebuild, phidget-2.1.5.20081023.ebuild,
+  phidget-2.1.5.20090105.ebuild, +phidget-2.1.6.20090430.ebuild, +metadata.xml:
+  Version bump, added metadata.xml, fixed ChangeLog somewhat, fixed licenses, added IUSE,
+  added quoting.
+
   06 Jan 2009; Nathan Phillip Brink <ohnobinki@ohnopublishing.net> +phidget-2.1.5.20090105.ebuild, +files/phidget21-2.1.5.20090105-crosscompile.patch, phidget-2.1.4.20080924.ebuild, phidget-2.1.5.20081023.ebuild
-	Bumped to new version - needed to create a new files/phidget-crosscompile.patch for this version because the Makefile changed. 
-	Updated logic in the all of the ebuilds - they are all identical except for which patches are referenced. Fixed references to things like make=>emake and calling java stuff when the java use-flag was disabled
-	
+  Bumped to new version - needed to create a new files/phidget-crosscompile.patch for this version because the Makefile changed.
+  Updated logic in the all of the ebuilds - they are all identical except for which patches are referenced. Fixed references to things like make=>emake and calling java stuff when the java use-flag was disabled
+
   01 Dec 2008; Cron Daemon for Nathan Phillip Brink
   <ohnobinki@ohnopublishing.net> ChangeLog:
   Automatically bumped to phidget-2.1.5.20081023.ebuild from
