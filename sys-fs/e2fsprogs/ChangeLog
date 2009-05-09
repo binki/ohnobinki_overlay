@@ -1,0 +1,13 @@
+# ChangeLog for sys-fs/e2fsprogs
+# Copyright 1999-2009 Gentoo Foundation; Distributed under the GPL v2
+# $Header: $
+
+  09 May 2009; Nathan Phillip Brink <ohnobinki@ohnopublishing.net>
+  -e2fsprogs-1.41.2.ebuild, e2fsprogs-1.41.4.ebuild, +metadata.xml:
+  Removed olderversion, modified 1.41.4 to reflect Portage, added empty
+  metadata.xml
+
+  09 May 2009; Nathan Phillip Brink <ohnobinki@ohnopublishing.net>
+  -e2fsprogs-1.41.2.ebuild, e2fsprogs-1.41.4.ebuild:
+  Removed old version, modified new version to reflect portage.
+

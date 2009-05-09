@@ -50,9 +50,7 @@ src_unpack() {
 src_compile() {
 	# Keep the package from doing silly things
 	addwrite /var/cache/fonts
-	export LDCONFIG=:
 	export CC=$(tc-getCC)
-	export STRIP=:
 
 	# We want to use the "bsd" libraries while building on Darwin, but while
 	# building on other Gentoo/*BSD we prefer elf-naming scheme.
@@ -96,8 +94,7 @@ pkg_preinst() {
 }
 
 src_install() {
-	emake DESTDIR="${D}" install || die
-	emake DESTDIR="${D}" install-libs || die
+	emake LDCONFIG=true STRIP=: DESTDIR="${D}" install install-libs || die
 	dodoc README RELEASE-NOTES
 
 	# Move shared libraries to /lib/, install static libraries to /usr/lib/,
