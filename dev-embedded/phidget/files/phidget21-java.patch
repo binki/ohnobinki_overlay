@@ -1,4 +1,5 @@
-diff -u /home/ohnobinki/ivd/phidgetprogs/phidgetlinux/Phidgetlinux/phidget21/Makefile /tmp/buffer-content-3770FHU
+Allows the ebuild to specify java variables
+
 --- Makefile	Tue Sep 30 07:24:27 2008
 +++ Makefile	Tue Sep 30 07:28:44 2008
 @@ -1,8 +1,9 @@

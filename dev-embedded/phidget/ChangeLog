@@ -2,6 +2,15 @@
 # Copyright 1999-2009 Nathan Brink; Distributed under the GPL v2
 # $Header: $
 
+  10 May 2009; Nathan Phillip Brink <ohnobinki@ohnopublishing.net>
+  files/phidget21-crosscompile.patch, -phidget-2.1.4.20080924.ebuild,
+  files/phidget21-java.patch, -phidget-2.1.5.20081023.ebuild,
+  files/phidget21-libdir.patch, phidget-2.1.5.20090105.ebuild,
+  -files/phidget21-2.1.5.20090105-crosscompile.patch,
+  phidget-2.1.6.20090430.ebuild:
+  Removed old versions and patch, fixed ebuild syntax, commented on each
+  patch's function.
+
 *phidget-2.1.5.20090430 (09 April 2009)
 
   09 May 2009; Nathan Phillip Brink <ohnobinki@ohnopublishing.net>

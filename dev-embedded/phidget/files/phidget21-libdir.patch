@@ -1,4 +1,5 @@
-diff -c /home/ohnobinki/ivd/phidgetprogs/phidgetlinux/Phidgetlinux/phidget21/Makefile /tmp/buffer-content-3770fbg
+Allows support for me (I seem to be the only Gentoo amd64 user without a symlink from /usr/lib to /usr/lib64)
+
 --- Makefile	Mon Sep 22 14:48:19 2008
 +++ -content-3770fbg	Tue Sep 30 09:27:29 2008
 @@ -150,7 +150,7 @@
