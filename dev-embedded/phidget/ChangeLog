@@ -3,6 +3,10 @@
 # $Header: $
 
   10 May 2009; Nathan Phillip Brink <ohnobinki@ohnopublishing.net>
+  phidget-2.1.5.20090105.ebuild:
+  Forgot to propagate all changes to old version.
+
+  10 May 2009; Nathan Phillip Brink <ohnobinki@ohnopublishing.net>
   files/phidget21-crosscompile.patch, -phidget-2.1.4.20080924.ebuild,
   files/phidget21-java.patch, -phidget-2.1.5.20081023.ebuild,
   files/phidget21-libdir.patch, phidget-2.1.5.20090105.ebuild,

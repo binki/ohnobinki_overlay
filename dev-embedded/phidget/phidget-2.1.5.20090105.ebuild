@@ -22,7 +22,6 @@ DEPEND="java? ( >=virtual/jdk-1.4 )"
 RDEPEND="java? ( >=virtual/jre-1.4 )"
 
 S=${WORKDIR}/${MY_PN}/${PN}${MY_PV}
-DOCS=../README udev/99-phidgets.rules
 
 src_prepare() {
 	epatch "${FILESDIR}"/${PN}${MY_PV}-libdir.patch
@@ -50,4 +49,8 @@ src_install() {
 		|| die "emake install failed"
 
 	use java && java-pkg_regso "${D}"/usr/$(get_libdir)/lib${PN}${MY_PV}.so
+
+	dodoc ../README udev/99-phidgets.rules
+	docinto examples
+	dodoc examples/*
 }
