@@ -3,6 +3,10 @@
 # $Header: $
 
   10 May 2009; Nathan Phillip Brink <ohnobinki@ohnopublishing.net>
+  metadata.xml:
+  Reset herd to maintainer-wanted.
+
+  10 May 2009; Nathan Phillip Brink <ohnobinki@ohnopublishing.net>
   phidget-2.1.5.20090105.ebuild:
   Forgot to propagate all changes to old version.
 
