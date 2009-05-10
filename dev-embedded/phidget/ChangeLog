@@ -3,6 +3,10 @@
 # $Header: $
 
   10 May 2009; Nathan Phillip Brink <ohnobinki@ohnopublishing.net>
+  phidget-2.1.5.20090105.ebuild, phidget-2.1.6.20090430.ebuild:
+  Edited ebuilds to use PATCHES variable.
+
+  10 May 2009; Nathan Phillip Brink <ohnobinki@ohnopublishing.net>
   metadata.xml:
   Reset herd to maintainer-wanted.
 

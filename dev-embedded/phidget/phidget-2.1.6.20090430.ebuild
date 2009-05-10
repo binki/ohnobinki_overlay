@@ -4,7 +4,8 @@
 
 EAPI="2"
 
-inherit versionator eutils java-pkg-opt-2
+#base must be last to get base_src_prepare()
+inherit versionator java-pkg-opt-2 base
 
 MY_PV="$(get_major_version)$(get_version_component_range 2)"
 MY_PN="Phidgetlinux"
@@ -23,11 +24,9 @@ RDEPEND="java? ( >=virtual/jre-1.4 )"
 
 S=${WORKDIR}/${MY_PN}/${PN}${MY_PV}
 
-src_prepare() {
-	epatch "${FILESDIR}"/${PN}${MY_PV}-libdir.patch
-	epatch "${FILESDIR}"/${PN}${MY_PV}-crosscompile.patch
-	epatch "${FILESDIR}"/${PN}${MY_PV}-java.patch
-}
+PATCHES=( "${FILESDIR}"/${PN}${MY_PV}-libdir.patch \
+	"${FILESDIR}"/${PN}${MY_PV}-crosscompile.patch \
+	"${FILESDIR}"/${PN}${MY_PV}-java.patch )
 
 src_compile() {
 	if use java; then
