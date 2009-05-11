@@ -2,6 +2,11 @@
 # Copyright 1999-2009 Nathan Brink; Distributed under the GPL v2
 # $Header: $
 
+  11 May 2009; Nathan Phillip Brink <ohnobinki@ohnopublishing.net>
+  phidget-2.1.5.20090105.ebuild, phidget-2.1.6.20090430.ebuild:
+  Restructured ebuilds with help from chithead and hwoarang on
+  #gentoo-sunrise.
+
   10 May 2009; Nathan Phillip Brink <ohnobinki@ohnopublishing.net>
   phidget-2.1.5.20090105.ebuild, phidget-2.1.6.20090430.ebuild:
   Edited ebuilds to use PATCHES variable.

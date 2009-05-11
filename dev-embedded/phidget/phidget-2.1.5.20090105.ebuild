@@ -5,7 +5,7 @@
 EAPI="2"
 
 #base must be last to get base_src_prepare()
-inherit versionator java-pkg-opt-2 base
+inherit versionator multilib java-pkg-opt-2 base
 
 MY_PV="$(get_major_version)$(get_version_component_range 2)"
 MY_PN="Phidgetlinux"
@@ -14,9 +14,9 @@ DESCRIPTION="Phidget USB hardware interface library"
 HOMEPAGE="http://www.phidgets.com"
 SRC_URI="http://www.phidgets.com/downloads/libraries/${MY_PN}_${PV}.tar.gz"
 
-LICENSE="LGPL-2"
+LICENSE="LGPL-3"
 SLOT="0"
-KEYWORDS="~x86 ~amd64"
+KEYWORDS="~amd64 ~x86"
 IUSE="java"
 
 DEPEND="java? ( >=virtual/jdk-1.4 )"
@@ -29,11 +29,18 @@ PATCHES=( "${FILESDIR}"/${PN}${MY_PV}-libdir.patch \
 	"${FILESDIR}"/${PN}${MY_PV}-java.patch )
 
 src_compile() {
+	local javaflags usejava maketarget
 	if use java; then
-		emake CROSS_COMPILE=${CHOST}- JAVA=y JAVAFLAGS="$(java-pkg_get-jni-cflags)" jni || die "emake failed"
+		javaflags="$(java-pkg_get-jni-cflags)"
+		usejava=y
+		maketarget=jni
 	else
-		emake CROSS_COMPILE=${CHOST}- JAVA=n || die "emake failed"
+		javaflags=
+		usejava=n
+		maketarget=all
 	fi
+
+	emake CROSS_COMPILE=${CHOST}- JAVA="${usejava}" JAVAFLAGS="${javaflags}" "${maketarget}" || die "emake failed"
 }
 
 src_install() {
@@ -49,7 +56,7 @@ src_install() {
 
 	use java && java-pkg_regso "${D}"/usr/$(get_libdir)/lib${PN}${MY_PV}.so
 
-	dodoc ../README udev/99-phidgets.rules
+	dodoc ../README udev/99-phidgets.rules || die
 	docinto examples
-	dodoc examples/*
+	dodoc examples/* || die "failed to install examples"
 }
