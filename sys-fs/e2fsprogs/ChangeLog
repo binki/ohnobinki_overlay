@@ -2,6 +2,10 @@
 # Copyright 1999-2009 Gentoo Foundation; Distributed under the GPL v2
 # $Header: $
 
+  11 May 2009; Nathan Phillip Brink <ohnobinki@ohnopublishing.net>
+  +e2fsprogs-1.41.3-r1.ebuild, +files/e2fsprogs-1.41.3-tune2fs-opt.patch:
+  Added a modified version of portage's e2fsprogs-1.41.3-r1.
+
   09 May 2009; Nathan Phillip Brink <ohnobinki@ohnopublishing.net>
   -e2fsprogs-1.41.2.ebuild, e2fsprogs-1.41.4.ebuild, +metadata.xml:
   Removed olderversion, modified 1.41.4 to reflect Portage, added empty
