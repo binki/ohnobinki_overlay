@@ -12,7 +12,8 @@ MY_PN="Phidgetlinux"
 
 DESCRIPTION="Phidget USB hardware interface library"
 HOMEPAGE="http://www.phidgets.com"
-SRC_URI="http://www.phidgets.com/downloads/libraries/${MY_PN}_${PV}.tar.gz"
+SRC_URI="http://www.phidgets.com/downloads/libraries/${MY_PN}_${PV}.tar.gz
+http://www.phidgets.com/downloads/libraries/phidget${MY_PV}jar_${PV}.zip"
 
 LICENSE="LGPL-3"
 SLOT="0"
@@ -54,7 +55,10 @@ src_install() {
 	emake install INSTALLPREFIX="${D}" PREFIX=usr LIBDIR=$(get_libdir) JAVA=${usejava} \
 		|| die "emake install failed"
 
-	use java && java-pkg_regso "${D}"/usr/$(get_libdir)/lib${PN}${MY_PV}.so
+	if use java; then
+		java-pkg_regso "${D}"/usr/$(get_libdir)/lib${PN}${MY_PV}.so
+		java-pkg_dojar "${WORKDIR}/phidget${MY_PV}.jar"
+	fi
 
 	dodoc ../README udev/99-phidgets.rules || die
 	docinto examples

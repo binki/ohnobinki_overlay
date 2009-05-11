@@ -4,6 +4,10 @@
 
   11 May 2009; Nathan Phillip Brink <ohnobinki@ohnopublishing.net>
   phidget-2.1.5.20090105.ebuild, phidget-2.1.6.20090430.ebuild:
+  Added installation of a jar to facilitate use of JNI.
+
+  11 May 2009; Nathan Phillip Brink <ohnobinki@ohnopublishing.net>
+  phidget-2.1.5.20090105.ebuild, phidget-2.1.6.20090430.ebuild:
   Restructured ebuilds with help from chithead and hwoarang on
   #gentoo-sunrise.
 
