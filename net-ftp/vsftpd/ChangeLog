@@ -2,6 +2,10 @@
 # Copyright 1999-2009 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/net-ftp/vsftpd/ChangeLog,v 1.107 2009/01/02 16:33:32 cla Exp $
 
+  16 May 2009; Nathan Phillip Brink (ohnobinki)
+  <ohnobinki@ohnopublishing.net> vsftpd-2.1.0.ebuild:
+  Added missing "echo"...
+
 *vsftpd-2.1.0 (06 Mar 2009)
 
   06 May 2009; Nathan Phillip Brink <ohnobinki@ohnopublishing.net>
