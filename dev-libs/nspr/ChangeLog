@@ -3,6 +3,10 @@
 # $Header: /var/cvsroot/gentoo-x86/dev-libs/nspr/ChangeLog,v 1.122 2009/05/01 14:03:12 maekke Exp $
 
   12 Jun 2009; Nathan Phillip Brink (ohnobinki)
+  <ohnobinki@ohnopublishing.net> nspr-4.8.ebuild:
+  Dropped most KEYWORDS as I should have earlier.
+
+  12 Jun 2009; Nathan Phillip Brink (ohnobinki)
   <ohnobinki@ohnopublishing.net> -nspr-4.6.8.ebuild, -nspr-4.7.3.ebuild,
   -nspr-4.7.4.ebuild, +nspr-4.8.ebuild:
   Imported, bumped to 4.8
