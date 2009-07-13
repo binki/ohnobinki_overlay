@@ -17,26 +17,26 @@ SRC_URI="mirror://sourceforge/${PN}/${MY_P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="alpha amd64 hppa ia64 ppc ppc64 sparc x86 ~x86-fbsd"
-IUSE="bzip2 clamdtop iconv milter selinux ipv6"
+KEYWORDS="~amd64"
+IUSE="bzip2 clamdtop iconv milter selinux ipv6 test"
 
 COMMON_DEPEND="bzip2? ( app-arch/bzip2 )
 	milter? ( || ( mail-filter/libmilter mail-mta/sendmail ) )
 	iconv? ( virtual/libiconv )
 	clamdtop? ( sys-libs/ncurses )
 	>=sys-libs/zlib-1.2.1-r3
-	>=sys-apps/sed-4"
+	>=sys-apps/sed-4
+	dev-libs/libtommath"
 
 DEPEND="${COMMON_DEPEND}
-	>=dev-util/pkgconfig-0.20"
+	>=dev-util/pkgconfig-0.20
+	test? ( dev-libs/check )"
 
 RDEPEND="${COMMON_DEPEND}
 	selinux? ( sec-policy/selinux-clamav )
 	sys-apps/grep"
 
 PROVIDE="virtual/antivirus"
-
-RESTRICT="test"
 
 pkg_setup() {
 	enewgroup clamav
@@ -57,6 +57,7 @@ src_configure() {
 		$(use_enable clamdtop) \
 		$(use_enable milter) \
 		$(use_with iconv) \
+		--with-system-tommath \
 		--disable-experimental \
 		--enable-id-check \
 		--disable-zlib-vcheck \
@@ -66,8 +67,15 @@ src_configure() {
 src_install() {
 	emake DESTDIR="${D}" install || die
 	dodoc AUTHORS BUGS NEWS README ChangeLog FAQ
+
 	newconfd "${FILESDIR}/clamd.conf" clamd
 	newinitd "${FILESDIR}/clamd.rc" clamd
+	newconfd "${FILESDIR}/freshclam.conf" freshclam
+	newinitd "${FILESDIR}/freshclam.rc" freshclam
+	if use milter; then
+		newconfd "${FILESDIR}/clamav-milter.conf" clamav-milter
+		newinitd "${FILESDIR}/clamav-milter.rc" clamav-milter
+	fi
 
 	dodir /var/run/clamav
 	keepdir /var/run/clamav
