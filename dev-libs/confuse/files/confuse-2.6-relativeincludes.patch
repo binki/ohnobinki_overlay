@@ -1,0 +1,56 @@
+--- a/src/lexer.l
++++ b/src/lexer.l
+@@ -298,12 +298,51 @@ int cfg_lexer_include(cfg_t *cfg, const char *filename)
+     cfg_include_stack[cfg_include_stack_ptr].line = cfg->line;
+     cfg_include_stack_ptr++;
+ 
+-    xfilename = cfg_tilde_expand(filename);
++    xfilename = NULL;
++
++    if(filename[0] != '/'
++       && filename[0] != '~'
++       /* ensure that the existing file has directories in it */
++#ifdef _WIN32
++       && (strchr(cfg->filename, '\\')
++	   || strchr(cfg->filename, '/'))
++#else
++       && cfg->filename[0] == '/'
++#endif
++       )
++      /* then this path is relative to the file it was included from */
++      {
++	char *lastslash;
++	size_t prefixlen;
++
++	lastslash = strrchr(cfg->filename, '/');
++#ifdef _WIN32
++	{
++	  char *win32slash;
++
++	  win32slash = strrchr(cfg->filename, '\\');
++	  if(!lastslash
++	     || win32slash > lastslash)
++	    lastslash = win32slash;
++	}
++#endif
++	assert(lastslash);
++	prefixlen = lastslash - cfg->filename + 1; /* length of prefix including slash */
++	xfilename = malloc(prefixlen
++			   + strlen(filename)
++			   + 1); /* NULL terminator */
++	assert(xfilename);
++	strncpy(xfilename, cfg->filename, prefixlen);
++	strcpy(xfilename + prefixlen, filename);
++      }
++
++    if(!xfilename)
++      xfilename = cfg_tilde_expand(filename);
+ 
+     cfg_yyin = fopen(xfilename, "r");
+ 
+     if(!cfg_yyin) {
+-        cfg_error(cfg, "%s: %s", xfilename, strerror(errno));
++        cfg_error(cfg, "%s (expanded from %s): %s", xfilename, filename, strerror(errno));
+         free(xfilename);
+         return 1;
+     }

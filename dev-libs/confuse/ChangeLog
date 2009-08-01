@@ -1,6 +1,10 @@
 # ChangeLog for dev-libs/confuse
-# Copyright 1999-2008 Gentoo Foundation; Distributed under the GPL v2
+# Copyright 1999-2009 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/dev-libs/confuse/ChangeLog,v 1.39 2008/12/17 22:09:10 maekke Exp $
+
+  01 Aug 2009; Nathan Brink <ohnobinki@gentoo.org> +confuse-2.6-r4.ebuild,
+  +files/confuse-2.6-relativeincludes.patch:
+  Added relative includes patch
 
   28 Feb 2009; Nathan Phillip Brink <ohnobinki@ohnopublishing.net> -confuse-2.6.ebuild, -confuse-2.6-r2.ebuild, 
   Initial import into ohnobinki_overlay from Gentoo Portage, disabled building of non-installed/unused examples to support crosscompiling to mingw32
