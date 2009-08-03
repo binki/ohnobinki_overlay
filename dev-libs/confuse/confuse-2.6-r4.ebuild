@@ -36,9 +36,13 @@ src_unpack() {
 	epatch "${FILESDIR}"/${P}-solaris.patch
 	# don't compile examples:
 	epatch "${FILESDIR}"/${P}-noexamples.patch
+
 	#relative cfg_include()s
 	epatch "${FILESDIR}"/${P}-relativeincludes.patch
-	# drop -Werror, bug #208095
+	#force regeneration of lexer.c
+	rm src/lexer.c
+
+	# drop -Werror, bug #208095 (in confuse-2.7)
 	sed -i -e 's/-Werror//' */Makefile.* || die
 
 	eautoreconf
