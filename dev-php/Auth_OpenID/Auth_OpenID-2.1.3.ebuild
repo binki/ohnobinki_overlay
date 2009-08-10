@@ -14,6 +14,7 @@ SRC_URI="http://openidenabled.com/files/php-openid/packages/php-openid-${PV}.tar
 LICENSE="Apache-2.0"
 SLOT="0"
 IUSE=""
+PHP_LIB_NAME="Auth"
 
 MY_PN=php-openid
 MY_S=${WORKDIR}/${MY_PN}-${PV}
@@ -23,7 +24,7 @@ virtual/php[curl]"
 
 src_install()
 {
-	cd ${MY_S}
+	cd "${MY_S}"/Auth
 
-	php-lib-r1_src_install . Auth/* Auth/*/*
+	php-lib-r1_src_install . * */*
 }
