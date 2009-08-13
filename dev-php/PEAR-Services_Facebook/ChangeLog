@@ -1,0 +1,8 @@
+# ChangeLog for dev-php/PEAR-Services_Facebook
+# Copyright 1999-2009 Gentoo Foundation; Distributed under the GPL v2
+# $Header: $
+
+  13 Aug 2009; Nathan Brink <ohnobinki@gentoo.org>
+  +PEAR-Services_Facebook-0.2.8.ebuild, +metadata.xml:
+  Added PEAR ebuild for Services/Facebook
+
