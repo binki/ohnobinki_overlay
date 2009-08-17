@@ -27,4 +27,8 @@ src_install()
 	cd "${MY_S}"/Auth
 
 	php-lib-r1_src_install . * */*
+
+	cd "${MY_S}"
+	insinto /usr/share/doc/${PF}/examples
+	doins -r examples/*
 }
