@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/dev-tcltk/tclxml/tclxml-3.0-r1.ebuild,v 1.6 2007/05/18 22:06:54 welp Exp $
 
-inherit eutils
+inherit eutils multilib
 
 DESCRIPTION="Pure Tcl implementation of an XML parser."
 HOMEPAGE="http://tclxml.sourceforge.net/"
@@ -18,6 +18,8 @@ DEPEND=">=dev-lang/tcl-8.2
 	xml? ( >=dev-libs/libxml2-2.6.9 )
 	expat? ( dev-libs/expat )
 	!dev-tcltk/tclxml-expat"
+#test scripts rely on tclsh8.4 existing
+RESTRICT="test"
 
 MAKEOPTS="${MAKEOPTS} -j1"
 
@@ -30,7 +32,7 @@ src_unpack() {
 }
 
 src_compile() {
-	local myconf=""
+	local myconf="--with-tcl=/usr/$(get_libdir)"
 
 	use threads && myconf="${myconf} --enable-threads"
 
@@ -39,7 +41,7 @@ src_compile() {
 
 	if use xml ; then
 		cd ${S}/libxml2
-		econf ${myconf} --with-Tclxml=.. || die
+		econf ${myconf} --with-Tclxml=.. --with-libxml2-lib=/usr/$(get_libdir) || die
 		emake || die
 	fi
 	if use expat ; then
