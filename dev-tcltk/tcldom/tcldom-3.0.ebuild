@@ -1,8 +1,10 @@
-# Copyright 1999-2006 Gentoo Foundation
+# Copyright 1999-2009 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/dev-tcltk/tcldom/tcldom-3.0.ebuild,v 1.3 2006/06/03 19:56:32 matsuu Exp $
 
-inherit eutils
+EAPI="2"
+
+inherit eutils multilib
 
 DESCRIPTION="Document Object Model For Tcl"
 HOMEPAGE="http://tclxml.sourceforge.net/tcldom.html"
@@ -17,30 +19,36 @@ DEPEND=">=dev-lang/tcl-8.3.3
 	>=dev-tcltk/tcllib-1.2
 	~dev-tcltk/tclxml-3.0
 	expat? ( dev-libs/expat )"
+RDEPEND="${DEPEND}"
 
-src_unpack() {
-	unpack ${A}
-
-	cd ${S}/library
+src_prepare() {
+	cd library
 	sed -e "s/@VERSION@/${PV}/" \
 		-e "s/@Tcldom_LIB_FILE@@/UNSPECIFIED/" \
 		< pkgIndex.tcl.in > pkgIndex.tcl
 }
 
-src_compile() {
-	local myconf=""
+src_configure() {
+	local myconf="--with-tcl=/usr/$(get_libdir)"
 
 	use threads && myconf="${myconf} --enable-threads"
 
 	if use xml ; then
-		cd ${S}/src-libxml2
-		econf ${myconf} || die
-		emake || die
+		cd "${S}"/src-libxml2
+		econf ${myconf} --with-libxml2-lib=/usr/$(get_libdir)
 	fi
 	if use expat ; then
-		cd ${S}/src
-		econf ${myconf} || die
-		emake || die
+		cd "${S}"/src
+		econf ${myconf}
+	fi
+}
+
+src_compile() {
+	if use xml ; then
+		emake -C src-libxml2 || die
+	fi
+	if use expat ; then
+		emake -C src || die
 	fi
 }
 
@@ -49,15 +57,15 @@ src_install() {
 	doins library/*.tcl || die
 
 	if use xml ; then
-		cd ${S}/src-libxml2
-		make DESTDIR=${D} install || die
+		cd "${S}"/src-libxml2
+		emake DESTDIR="${D}" install || die
 	fi
 	if use expat ; then
-		cd ${S}/src
-		make DESTDIR=${D} install || die
+		cd "${S}"/src
+		emake DESTDIR="${D}" install || die
 	fi
 
-	cd ${S}
+	cd "${S}"
 	dodoc ChangeLog LICENSE README RELNOTES
 	docinto examples; dodoc examples/*
 	dohtml docs/*.html
