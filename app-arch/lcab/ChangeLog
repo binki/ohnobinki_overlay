@@ -2,6 +2,11 @@
 # Copyright 1999-2009 Gentoo Foundation; Distributed under the GPL v2
 # $Header: $
 
+  25 Oct 2009; Nathan Phillip Brink (ohnobinki)
+  <ohnobinki@ohnopublishing.net> lcab-1.0_beta12.ebuild:
+  changes requested in #gentoo-sunrise, in sunrise for review
+  (r9418)
+
   04 May 2009; Nathan Phillip Brink <ohnobinki@gentoo.org>
   lcab-1.0_beta12.ebuild, +metadata.xml:
   Set SRC_URI to refer to ohnoproto mirrors, added metadata.xml,
