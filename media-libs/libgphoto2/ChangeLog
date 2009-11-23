@@ -1,9 +1,0 @@
-# ChangeLog for media-libs/libgphoto2
-# Copyright 1999-2008 Nathan Brink; Distributed under the GPL v2
-# $Header: $
-
-*libgphoto2-2.4.2 (16 December 2008)
-	
-  16 Dec 2008; Nathan Phillip Brink <ohnobinki@ohnopublishing.net> +files/libgphoto2-2.4.2-listlen.patch +files/libgphoto2-2.4.0-rpm.patch +files/gphoto2-ixany.patch +ChangeLog +libgphoto2-2.4.2.ebuild:
-	Initial import of libgphoto2-2.4.2 from Gentoo's portage
-	Added files/libgphoto2-2.4.2-listlen.patch which multiplies the length of the list of files libgphoto2 can read from a camera by 16, from just 1024 which isn't enough for many cameras with merely 4GB of memory.
