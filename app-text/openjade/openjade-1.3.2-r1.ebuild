@@ -21,11 +21,11 @@ DEPEND="dev-lang/perl
 src_unpack() {
 	unpack ${A}
 	cd "${S}"
-	epatch "${FILESDIR}"/${P}-la-fix.patch
 	epatch "${FILESDIR}"/${P}-msggen.pl.patch
 	epatch "${FILESDIR}"/${P}-ldflags.patch
 	epatch "${FILESDIR}"/${P}-lib64-fix.patch
 	epatch "${FILESDIR}"/${P}-deplibs.patch
+	epatch "${FILESDIR}"/${P}-la-fix.patch
 }
 
 src_compile() {
