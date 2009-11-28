@@ -35,10 +35,6 @@ src_unpack() {
 	subversion_src_unpack
 }
 
-src_prepare() {
-	epatch "${FILESDIR}/supertux-cmake.patch"
-}
-
 src_configure() {
 	local mycmakeargs="-DWERROR=OFF
 			 -DINSTALL_SUBDIR_BIN=games/bin
