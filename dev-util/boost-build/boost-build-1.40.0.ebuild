@@ -4,7 +4,7 @@
 
 EAPI="2"
 
-inherit flag-o-matic toolchain-funcs versionator
+inherit eutils flag-o-matic toolchain-funcs versionator
 
 MY_PV=$(replace_all_version_separators _)
 MAJOR_PV="$(replace_all_version_separators _ $(get_version_component_range 1-2))"
@@ -29,6 +29,9 @@ src_unpack() {
 }
 
 src_prepare() {
+	# bug 293652
+	epatch "${FILESDIR}"/boost-build-flags-unescape.patch || die
+
 	# Remove stripping option
 	cd "${S}/jam/src"
 	sed -i -e 's|-s\b||' \
