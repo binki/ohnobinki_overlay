@@ -5,7 +5,7 @@
 EAPI="2"
 
 # we need webapp's default pkg_setup()
-inherit webapp
+inherit eutils webapp
 
 DESCRIPTION="An uncomplicated web-based bug tracking system"
 HOMEPAGE="http://flyspray.org/"
@@ -15,17 +15,22 @@ LICENSE="LGPL-2.1"
 KEYWORDS="~amd64"
 IUSE="graphviz"
 
-COMMON_DEPEND="virtual/httpd-php[xml]
+# need_apache and friends not used because they aren't EAPI="2" friendly
+DEPEND="app-arch/unzip"
+RDEPEND="graphviz? ( media-gfx/graphviz )
+	virtual/httpd-php[xml]
 	|| ( virtual/httpd-php[mysql]
 		virtual/httpd-php[mysqli]
-		virtual/httpd-php[postgres] )"
-DEPEND="app-arch/unzip
-	${COMMON_DEPEND}"
-RDEPEND="graphviz? ( media-gfx/graphviz )
-	${COMMON_DEPEND}"
+		virtual/httpd-php[postgres]
+	dev-php/adodb"
 
 src_prepare () {
+	epatch "${FILESDIR}"/${P}-system-adodb.patch
+
 	mv htaccess.dist .htaccess || die
+	touch ${PN}.conf.php || die
+
+	rm -r adodb || die "removing bundled dev-php/adodb"
 }
 
 src_install () {
@@ -37,8 +42,8 @@ src_install () {
 	insinto "${MY_HTDOCSDIR}"
 	doins -r . || die
 
-	webapp_serverowned "${MY_HTDOCSDIR}"/{attachments,cache}
-	webapp_configfile "${MY_HTDOCSDIR}"/.htaccess
+	webapp_serverowned "${MY_HTDOCSDIR}"/{attachments,cache,${PN}.conf.php}
+	webapp_configfile "${MY_HTDOCSDIR}"/{.htaccess,${PN}.conf.php}
 
 	webapp_postinst_txt en "${FILESDIR}"/postinstall-en.txt
 	webapp_src_install
