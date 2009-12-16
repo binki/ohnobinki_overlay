@@ -25,6 +25,7 @@ RDEPEND="graphviz? ( media-gfx/graphviz )
 	dev-php/adodb"
 
 src_prepare () {
+	#http://bugs.flyspray.org/task/1617
 	epatch "${FILESDIR}"/${P}-system-adodb.patch
 
 	mv htaccess.dist .htaccess || die
