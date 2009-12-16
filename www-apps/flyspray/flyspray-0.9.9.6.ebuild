@@ -21,7 +21,7 @@ RDEPEND="graphviz? ( media-gfx/graphviz )
 	virtual/httpd-php[xml]
 	|| ( virtual/httpd-php[mysql]
 		virtual/httpd-php[mysqli]
-		virtual/httpd-php[postgres]
+		virtual/httpd-php[postgres] )
 	dev-php/adodb"
 
 src_prepare () {
