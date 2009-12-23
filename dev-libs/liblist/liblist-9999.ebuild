@@ -42,7 +42,7 @@ src_install() {
 	if use examples; then
 		dolib.a examples/cache/libcache.a || die
 		dobin examples/cache/cachetest || die
-		newman cache.3 lcache.3 || die
+		newman examples/cache/cache.3 lcache.3 || die
 		insinto /usr/share/doc/${P}/examples
 		doins examples/{*.c,Makefile,README} || die
 		insinto /usr/share/doc/${P}/examples/cache
