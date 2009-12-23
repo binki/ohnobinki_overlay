@@ -1,13 +1,13 @@
 --- Makefile.orig	2009-11-27 12:04:33.000000000 -0800
 +++ Makefile	2009-11-27 12:11:47.786739617 -0800
-@@ -25,12 +25,22 @@
+@@ -25,19 +25,39 @@
+ 
  LIBS	= -L. -llist
  #LIBS	= -L . -llist   # Use this for HP-UX; great loader guys!
- CPP	= cpp -E -P -C
 +CC	= cc
 +LD	= cc
  MANDIR	= /usr/share/man
- LIBDIR	= /usr/lib64
+ LIBDIR	= /usr/lib
  INCDIR	= /usr/include
  
  #add macro for ranlib 4/96 *kob* - ranlib doesn't exist on solaris
@@ -21,9 +21,8 @@
 +MKSO = -shared -Wl,-soname,$(SHARED)
 +SOVER = 0.0
  
- # We specify some goofy dependencies between the man pages and the source,
- # because the man page reflects whether USE_MACROS was specified.  Thus,
-@@ -42,8 +52,16 @@
+-all:		liblist.a 
++all:		liblist.a liblist.so
  		(cd examples; make)
  
  liblist.a:	list.o
@@ -31,6 +30,8 @@
  		ar rc liblist.a list.o
  		$(RANLIB) liblist.a
 +		@echo "done"
++
++liblist.so:	list.o
 +		@echo "Making shared lib $(SHARED) ..."
 +		$(MKOBJ) -I.
 +		$(LD) -I. $(MKSO) list.o -o $(SHARED).$(SOVER) $(LDFLAGS)
@@ -52,6 +53,6 @@
  		install -c stack.3 $(DESTDIR)$(MANDIR)/man3
  
  clean:
--		rm -f *.o *.a list.h *.3 core
-+		rm -f *.o *.a *.so list.h *.3 core
+-		rm -f *.o *.a core
++		rm -f *.o *.a *.so core
  		(cd examples; make clean)

@@ -2,6 +2,13 @@
 # Copyright 1999-2009 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/dev-libs/liblist/ChangeLog,v 1.2 2009/12/05 22:32:30 nerdboy Exp $
 
+  23 Dec 2009; Nathan Phillip Brink (ohnobinki)
+  <ohnobinki@ohnopublishing.net> -liblist-2.1.ebuild,
+  -liblist-2.1-r1.ebuild, -files/liblist-2.1-sharedlib.patch,
+  +liblist-9999.ebuild, +files/liblist-9999-sharedlib.patch:
+  Added live ebuild -- removed in-portage ebuilds. Fixed dynamic lib patch
+  to work with the mercurial version.
+
 *liblist-2.1-r1 (05 Dec 2009)
 
   05 Dec 2009; Steve Arnold <nerdboy@gentoo.org> +liblist-2.1-r1.ebuild,
