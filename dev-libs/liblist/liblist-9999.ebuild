@@ -4,10 +4,10 @@
 
 EAPI="2"
 
-inherit eutils mercurial toolchain-funcs
+inherit autotools mercurial
 
 DESCRIPTION="This package provides generic linked-list manipulation routines, plus queues and stacks."
-HOMEPAGE="http://ohnopub.net/hg/liblist/-unbased"
+HOMEPAGE="http://ohnopub.net/hg/liblist-unbased"
 SRC_URI=""
 EHG_REPO_URI="http://ohnopub.net/hg/liblist-unbased"
 
@@ -19,39 +19,24 @@ IUSE="doc examples"
 S=${WORKDIR}/${PN}-unbased
 
 src_prepare() {
-	epatch "${FILESDIR}"/${P}-sharedlib.patch
-	sed -i -e "s:/usr/lib:/usr/$(get_libdir):g" Makefile \
-		examples/cache/Makefile || die "sed 1 failed"
+	eautoreconf
 }
 
-src_compile() {
-	make CC="$(tc-getCC)" LD="$(tc-getCC)" \
-		|| die "make failed"
+src_configure() {
+	econf $(use_enable doc docs) \
+		$(use_enable examples)
 }
 
 src_install() {
-	newman list.3 llist.3 || die
-	newman stack.3 lstack.3 || die
-	newman queue.3 lqueue.3 || die
-	dolib.a ${PN}.a || die
-	dolib.so ${PN}.so* || die
-	insinto /usr/include
-	doins list.h queue.h stack.h || die
+	emake DESTDIR="${D}" install || die
+
 	dodoc README || die
 
 	if use examples; then
-		dolib.a examples/cache/libcache.a || die
-		dobin examples/cache/cachetest || die
-		newman examples/cache/cache.3 lcache.3 || die
 		insinto /usr/share/doc/${P}/examples
 		doins examples/{*.c,Makefile,README} || die
 		insinto /usr/share/doc/${P}/examples/cache
 		doins examples/cache/{*.c,Makefile,README} || die
-	fi
-
-	if use doc; then
-		insinto /usr/share/doc/${P}
-		doins paper/paper.ps || die
 	fi
 }
 
