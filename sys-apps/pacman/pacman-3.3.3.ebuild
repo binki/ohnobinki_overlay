@@ -40,3 +40,7 @@ src_configure() {
 		$(use_enable doc doxygen) \
 		$(use_enable internal-download)
 }
+
+src_install() {
+	emake DESTDIR="${D}" install || die
+}
