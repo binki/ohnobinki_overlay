@@ -13,32 +13,31 @@ SRC_URI="ftp://ftp.archlinux.org/other/${PN}/${P}.tar.gz"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="debug doc +internal-download test"
+IUSE="debug doc test"
 
 RDEPEND="app-arch/libarchive
 	virtual/libiconv
 	virtual/libintl
-	internal-download? ( dev-libs/http-fetcher )
 	sys-devel/gettext"
 DEPEND="${RDEPEND}
 	doc? ( app-doc/doxygen )
 	test? ( dev-lang/python )"
 
 src_prepare() {
-	sed -i -e 's/-Werror//g' configure.ac || die "-Werror"
+	sed -i -e '/-Werror/d' configure.ac || die "-Werror"
 	# acinclude.m4 overrides libtool macros from /usr/share/aclocal, causing
 	# elibtoolize's ltmain.sh to incompatible with ./configure after
 	# eautoreconf is run.
-	sed -i -e 4,4873d acinclude.m4 || die "libtool fix"
+	sed -i -e '4,/dnl Add some custom macros for pacman and libalpm/d' acinclude.m4 || die "libtool fix"
 	eautoreconf
 }
 
 src_configure() {
 	econf --disable-git-version \
+		--disable-internal-download \
 		$(use_enable debug) \
 		$(use_enable doc) \
-		$(use_enable doc doxygen) \
-		$(use_enable internal-download)
+		$(use_enable doc doxygen)
 }
 
 src_install() {
