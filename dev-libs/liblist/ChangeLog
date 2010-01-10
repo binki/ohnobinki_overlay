@@ -1,6 +1,10 @@
 # ChangeLog for dev-libs/liblist
-# Copyright 1999-2009 Gentoo Foundation; Distributed under the GPL v2
+# Copyright 1999-2010 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/dev-libs/liblist/ChangeLog,v 1.2 2009/12/05 22:32:30 nerdboy Exp $
+
+  09 Jan 2010; Nathan Phillip Brink (ohnobinki)
+  <ohnobinki@ohnopublishing.net> liblist-2.2.1.ebuild:
+  Add ~ppc
 
 *liblist-2.2.1 (29 Dec 2009)
 
