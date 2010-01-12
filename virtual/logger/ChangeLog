@@ -1,0 +1,7 @@
+# ChangeLog for virtual/logger
+# Copyright 1999-2010 Gentoo Foundation; Distributed under the GPL v2
+# $Header: $
+
+  12 Jan 2010; Nathan Phillip Brink (ohnobinki)
+  <ohnobinki@ohnopublishing.net> +logger-0.ebuild:
+  Ebuild for bug 300477
