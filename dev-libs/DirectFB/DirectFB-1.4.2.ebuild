@@ -90,6 +90,7 @@ src_compile() {
 			|| ewarn "Disabling SDL since libSDL.so is broken"
 	fi
 
+	tc-export LD
 	econf \
 		--enable-static \
 		$(use_enable X x11) \

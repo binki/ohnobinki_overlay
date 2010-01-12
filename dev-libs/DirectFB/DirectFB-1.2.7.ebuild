@@ -1,4 +1,4 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/dev-libs/DirectFB/DirectFB-1.2.7.ebuild,v 1.7 2009/04/30 12:28:31 jer Exp $
 
@@ -101,6 +101,7 @@ src_compile() {
 			|| ewarn "Disabling SDL since libSDL.so is broken"
 	fi
 
+	tc-export LD
 	econf \
 		--enable-static \
 		$(use_enable X x11) \
