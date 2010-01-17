@@ -1,0 +1,8 @@
+# ChangeLog for dev-util/build
+# Copyright 1999-2010 Gentoo Foundation; Distributed under the GPL v2
+# $Header: $
+
+  17 Jan 2010; Nathan Phillip Brink (ohnobinki)
+  <ohnobinki@ohnopublishing.net> +build-0.3.5.ebuild, +metadata.xml:
+  New ebuild for bug 301247, seed stolen from funtoo
+
