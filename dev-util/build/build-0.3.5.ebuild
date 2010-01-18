@@ -20,11 +20,6 @@ src_prepare() {
 			examples/*/*/{*/,}build/bootstrap.make || die "patching examples failed"
 		rm examples/cxx/hello/hello/build/import/libhello || die "preparing examples for installation failed"
 	fi
-	if use doc; then
-		# separate HTML and text docs
-		mkdir html || die "preparing docs failed"
-		mv documentation/*.{css,xhtml} html/ || die "preparing docs failed"
-	fi
 }
 
 src_install() {
@@ -33,8 +28,8 @@ src_install() {
 	dodoc NEWS README || die "dodoc failed"
 
 	if use doc; then
-		dohtml -A xhtml html/* || die "installing HTML docs failed"
-		dodoc documentation/* || die "installing plaintext docs failed"
+		dohtml -A xhtml documentation/*.{css,xhtml} || die "installing HTML docs failed"
+		dodoc $(find documentation -type f -regex '[^.]*') || die "installing plaintext docs failed"
 	fi
 
 	if use examples; then
