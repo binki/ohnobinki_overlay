@@ -4,6 +4,11 @@
 
   19 Jan 2010; Nathan Phillip Brink (ohnobinki)
   <ohnobinki@ohnopublishing.net> build-0.3.5.ebuild:
+  SLOT build because packages which use it have /usr/include/build-
+  hard-coded into them.
+
+  19 Jan 2010; Nathan Phillip Brink (ohnobinki)
+  <ohnobinki@ohnopublishing.net> build-0.3.5.ebuild:
   As committed for sunrise r9900. Cleaned up docs installation and SRC_URI
   generation.
 
