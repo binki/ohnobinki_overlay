@@ -4,9 +4,12 @@
 
 EAPI=2
 
+inherit versionator
+
+MY_PV=$(get_version_component_range 1-2)
 DESCRIPTION="A massively-parallel software build system implemented on top of GNU make"
 HOMEPAGE="http://kolpackov.net/projects/build/"
-SRC_URI="ftp://kolpackov.net/pub/projects/${PN}/${PV%.?}/${P}.tar.bz2"
+SRC_URI="ftp://kolpackov.net/pub/projects/${PN}/${MY_PV}/${P}.tar.bz2"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -16,9 +19,12 @@ IUSE="doc examples"
 src_prepare() {
 	if use examples; then
 		# fix examples to use installed build
-		sed -i -e "s;^include.\*bootstrap.make\$;include build-${PV%.?}/bootstrap.make;" \
-			examples/*/*/{*/,}build/bootstrap.make || die "patching examples failed"
+		sed -i -e "s;^include.\*bootstrap.make\$;include build-${MY_PV}/bootstrap.make;" \
+			$(find examples -name bootstrap.make) || die "patching examples failed"
 		rm examples/cxx/hello/hello/build/import/libhello || die "preparing examples for installation failed"
+	fi
+	if use doc; then
+		mv documentation/index.{x,}html || die
 	fi
 }
 
@@ -28,7 +34,7 @@ src_install() {
 	dodoc NEWS README || die "dodoc failed"
 
 	if use doc; then
-		dohtml -A xhtml documentation/*.{css,xhtml} || die "installing HTML docs failed"
+		dohtml documentation/{default.css,index.html} || die "installing HTML docs failed"
 		dodoc $(find documentation -type f -regex '[^.]*') || die "installing plaintext docs failed"
 	fi
 
