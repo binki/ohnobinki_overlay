@@ -5,6 +5,7 @@ app-dicts
 app-emacs
 app-pda
 app-text
+dev-cpp
 dev-db
 dev-embedded
 dev-java
