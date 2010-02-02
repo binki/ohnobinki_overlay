@@ -19,6 +19,7 @@ KEYWORDS=""
 IUSE="opengl curl debug"
 
 RDEPEND="dev-games/physfs
+	dev-libs/tinygettext
 	media-libs/libsdl[joystick]
 	media-libs/libvorbis
 	media-libs/openal
@@ -31,8 +32,12 @@ RDEPEND="dev-games/physfs
 # boost templates are used
 DEPEND="${RDEPEND}
 	dev-libs/boost
-	dev-util/cmake
-	dev-util/subversion"
+	dev-util/cmake"
+
+src_prepare() {
+	epatch "${FILESDIR}/supertux-9999-tinygettext-external.patch"
+	rm -rf externals/tinygettext || die
+}
 
 src_configure() {
 	local mycmakeargs="-DWERROR=OFF

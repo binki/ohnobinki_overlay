@@ -1,0 +1,51 @@
+Index: CMakeLists.txt
+===================================================================
+--- CMakeLists.txt	(revision 6304)
++++ CMakeLists.txt	(working copy)
+@@ -102,6 +102,17 @@
+   SET(HAVE_LIBCURL TRUE)
+ ENDIF(CURL_FOUND)
+ 
++INCLUDE(FindPkgConfig)
++pkg_check_modules(TINYGETTEXT tinygettext>=0.1)
++IF(TINYGETTEXT_FOUND)
++	SET(TINYGETTEXT_SOURCES_CXX "")
++	ADD_DEFINITIONS(${TINYGETTEXT_CFLAGS})
++ELSE(TINYGETTEXT_FOUND)
++	include_directories (${CMAKE_CURRENT_SOURCE_DIR}/external/tinygettext/)
++	FILE(GLOB TINYGETTEXT_SOURCES_CXX RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} external/tinygettext/tinygettext/*.cpp)
++	SET_SOURCE_FILES_PROPERTIES(${TINYGETTEXT_SOURCES_CXX} PROPERTIES COMPILE_DEFINITIONS HAVE_SDL)
++ENDIF(TINYGETTEXT_FOUND)
++
+ #FIND_PACKAGE(ICONV REQUIRED)
+ #INCLUDE_DIRECTORIES(${ICONV_INCLUDE_DIR})
+ #LINK_LIBRARIES(${ICONV_LIBRARY})
+@@ -160,7 +171,6 @@
+ include_directories (${CMAKE_BINARY_DIR}/)
+ include_directories (${CMAKE_CURRENT_SOURCE_DIR}/src/)
+ include_directories (${CMAKE_CURRENT_SOURCE_DIR}/external/squirrel/include/)
+-include_directories (${CMAKE_CURRENT_SOURCE_DIR}/external/tinygettext/)
+ include_directories (${CMAKE_CURRENT_SOURCE_DIR}/external/findlocale/)
+ include_directories (${CMAKE_CURRENT_SOURCE_DIR}/external/obstack/)
+ include_directories (${CMAKE_CURRENT_SOURCE_DIR}/external/binreloc/)
+@@ -171,9 +181,6 @@
+ 
+ FILE(GLOB SUPERTUX_SOURCES_CXX RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} src/main.cpp src/*/*.cpp src/supertux/menu/*.cpp src/video/sdl/*.cpp)
+ 
+-FILE(GLOB TINYGETTEXT_SOURCES_CXX RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} external/tinygettext/tinygettext/*.cpp)
+-SET_SOURCE_FILES_PROPERTIES(${TINYGETTEXT_SOURCES_CXX} PROPERTIES COMPILE_DEFINITIONS HAVE_SDL)
+-
+ IF(HAVE_OPENGL)
+   FILE(GLOB SUPERTUX_OPENGL_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} src/video/gl/*.cpp)
+   SET(SUPERTUX_SOURCES_CXX ${SUPERTUX_SOURCES_CXX} ${SUPERTUX_OPENGL_SOURCES})
+@@ -346,6 +353,10 @@
+ IF(HAVE_LIBCURL)
+   TARGET_LINK_LIBRARIES(supertux2 ${CURL_LIBRARY})
+ ENDIF(HAVE_LIBCURL)
++IF(TINYGETTEXT_FOUND)
++	#then use the external tinygettext
++	TARGET_LINK_LIBRARIES(supertux2 ${TINYGETTEXT_LDFLAGS})
++ENDIF(TINYGETTEXT_FOUND)
+ 
+ ## Install stuff
+ 
