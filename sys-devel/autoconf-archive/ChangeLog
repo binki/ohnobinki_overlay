@@ -1,6 +1,13 @@
 # ChangeLog for sys-devel/autoconf-archive
-# Copyright 1999-2009 Gentoo Foundation; Distributed under the GPL v2
+# Copyright 1999-2010 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/sys-devel/autoconf-archive/ChangeLog,v 1.24 2009/04/27 03:40:52 vapier Exp $
+
+  09 Feb 2010; Nathan Phillip Brink (ohnobinki)
+  <ohnobinki@ohnopublishing.net> -autoconf-archive-2008.08.25.ebuild,
+  -autoconf-archive-2008.11.07.ebuild, -autoconf-archive-2009.04.26.ebuild,
+  +autoconf-archive-2009.12.16.ebuild:
+  Bump to 2009.12.16 which has some buildsystem fixes. Remove in-portage
+  copies of autoconf-archive.
 
 *autoconf-archive-2009.04.26 (27 Apr 2009)
 
