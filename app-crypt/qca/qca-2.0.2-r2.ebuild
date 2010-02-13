@@ -21,12 +21,6 @@ RDEPEND="${DEPEND}
 	!<app-crypt/qca-1.0-r3:0
 "
 
-#workaround inheriting qt4-build.eclass
-S=${WORKDIR}/${P}
-src_unpack() {
-	unpack ${A}
-}
-
 src_prepare() {
 	epatch "${FILESDIR}"/${P}-pcfilespath.patch
 
@@ -44,7 +38,7 @@ qca_do_pri() {
 		-e "s:@PREFIX@:${EPREFIX}:" \
 		-e "s:@BINDIR@:${EPREFIX}/bin:" \
 		-e "s:@INCDIR@:${EPREFIX}/include:" \
-		-e "s:@LIBDIR@:${EPREFIX}/$(get_libdir):" \
+		-e "s:@LIBDIR@:${EPREFIX}/${_libdir}:" \
 		-e "s:@DATADIR@:${EPREFIX}/share:" \
 		-e "s:@BUILDTYPE@:${buildtype}:" \
 		-e "s:@QTDATADIR@:${EPREFIX}/usr/share/qt4:" \
@@ -66,8 +60,8 @@ src_configure() {
 	echo "QCA_LIBDIR = /usr/${_libdir}/${PN}${PV:0:1}" >> crypto.prf || die
 	echo "QCA_INCDIR = /usr/include/${PN}${PV:0:1}" >> crypto.prf || die
 	cat crypto.prf.in >> crypto.prf || die
-	# Ensure proper rpath
 
+	# Ensure proper rpath
 	export EXTRA_QMAKE_RPATH="${EPREFIX}/usr/${_libdir}/qca2"
 
 	eqmake4

@@ -2,6 +2,11 @@
 # Copyright 1999-2010 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/app-crypt/qca/ChangeLog,v 1.81 2010/01/13 18:44:41 abcd Exp $
 
+  13 Feb 2010; Nathan Phillip Brink (ohnobinki)
+  <ohnobinki@ohnopublishing.net> qca-2.0.2-r2.ebuild, -files/app.pri.in~,
+  -files/conf.pri.in~, -files/confapp.pri.in~:
+  Fixed up junky qca that I accidentally imported in a messed up state.
+
   13 Jan 2010; Jonathan Callen <abcd@gentoo.org> qca-2.0.2-r2.ebuild:
   Add initial USE=aqua support, fix rpaths for prefix
 
