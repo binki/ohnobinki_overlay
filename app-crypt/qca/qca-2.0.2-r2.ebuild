@@ -35,11 +35,11 @@ qca_do_pri() {
 
 	sed "${FILESDIR}"/$1.in \
 		-e "s:@PN@:${PN}${PV:0:1}:" \
-		-e "s:@PREFIX@:${EPREFIX}:" \
-		-e "s:@BINDIR@:${EPREFIX}/bin:" \
-		-e "s:@INCDIR@:${EPREFIX}/include:" \
-		-e "s:@LIBDIR@:${EPREFIX}/${_libdir}:" \
-		-e "s:@DATADIR@:${EPREFIX}/share:" \
+		-e "s:@PREFIX@:${EPREFIX}/usr:" \
+		-e "s:@BINDIR@:${EPREFIX}/usr/bin:" \
+		-e "s:@INCDIR@:${EPREFIX}/usr/include:" \
+		-e "s:@LIBDIR@:${EPREFIX}/usr/${_libdir}:" \
+		-e "s:@DATADIR@:${EPREFIX}/usr/share:" \
 		-e "s:@BUILDTYPE@:${buildtype}:" \
 		-e "s:@QTDATADIR@:${EPREFIX}/usr/share/qt4:" \
 		> "${S}"/$1 \
@@ -64,7 +64,7 @@ src_configure() {
 	# Ensure proper rpath
 	export EXTRA_QMAKE_RPATH="${EPREFIX}/usr/${_libdir}/qca2"
 
-	eqmake4
+	eqmake4 QMAKE_LIBDIR_QT="/usr/$(get_libdir)/qt4"
 }
 
 src_install() {

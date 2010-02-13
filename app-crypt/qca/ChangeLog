@@ -3,6 +3,11 @@
 # $Header: /var/cvsroot/gentoo-x86/app-crypt/qca/ChangeLog,v 1.81 2010/01/13 18:44:41 abcd Exp $
 
   13 Feb 2010; Nathan Phillip Brink (ohnobinki)
+  <ohnobinki@ohnopublishing.net> qca-2.0.2-r2.ebuild:
+  Fix directories in sed expressions. Add QMAKE_LIBDR_QT variable to eqmake4
+  call until bug 304975 is resolved.
+
+  13 Feb 2010; Nathan Phillip Brink (ohnobinki)
   <ohnobinki@ohnopublishing.net> qca-2.0.2-r2.ebuild, -files/app.pri.in~,
   -files/conf.pri.in~, -files/confapp.pri.in~:
   Fixed up junky qca that I accidentally imported in a messed up state.
