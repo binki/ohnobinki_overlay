@@ -22,6 +22,8 @@ DEPEND="${RDEPEND}
 
 src_prepare() {
 	epatch "${FILESDIR}"/${P}-alsa09-buffertime-milliseconds.patch
+	epatch "${FILESDIR}"/${P}-bigendianfix-fedora.patch
+
 	elibtoolize
 }
 
