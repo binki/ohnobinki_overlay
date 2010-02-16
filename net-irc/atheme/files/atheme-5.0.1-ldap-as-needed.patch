@@ -1,0 +1,11 @@
+diff -r 9c03559fc03c -r c3d4cd2b81d3 modules/auth/Makefile.in
+--- a/modules/auth/Makefile.in	Sun Feb 14 00:24:45 2010 +0100
++++ b/modules/auth/Makefile.in	Sat Feb 13 21:30:00 2010 -0500
+@@ -22,5 +22,5 @@
+ 
+ include ../Makefile.common
+ 
+-ldap.so: ldap.c
+-	${CC} ${PICFLAGS} ${CPPFLAGS} ${CFLAGS} ${LDFLAGS} ${LDAP_CFLAGS} ${LDAP_LIBS} ${SRCDIR}/ldap.c -o ldap.so
++ldap.so: $(SRCDIR)/ldap.c
++	${CC} ${PICFLAGS} ${CPPFLAGS} ${CFLAGS} ${LDFLAGS} -o $@ ${SRCDIR}/ldap.c ${LDAP_CFLAGS} ${LDAP_LIBS}

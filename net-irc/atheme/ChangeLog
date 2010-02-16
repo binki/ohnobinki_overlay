@@ -1,0 +1,12 @@
+# ChangeLog for net-irc/atheme
+# Copyright 1999-2010 Gentoo Foundation; Distributed under the GPL v2
+# $Header: $
+
+  16 Feb 2010; Nathan Phillip Brink (ohnobinki)
+  <ohnobinki@ohnopublishing.net> +atheme-5.0.1.ebuild,
+  +files/atheme-5.0.1-depend-parallel.patch,
+  +files/atheme-5.0.1-ldap-as-needed.patch,
+  +files/atheme-5.0.1-with-ldap.patch, +metadata.xml:
+  Add atheme stable release 5.0.1 with various build-time patches (which are
+  already upstreamed).
+
