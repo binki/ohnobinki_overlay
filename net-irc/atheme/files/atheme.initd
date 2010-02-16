@@ -1,0 +1,20 @@
+#!/sbin/runscript
+# Copyright 1999-2010 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: $
+
+depend() {
+	need net
+}
+
+start() {
+	ebegin "Starting ${SVSNAME}"
+	start-stop-daemon --start --quiet --chuid atheme --exec /usr/bin/atheme-services
+	eend $? "Failed to start ${SVSNAME}"
+}
+
+stop() {
+	ebegin "Stopping ${SVSNAME}"
+	start-stop-daemon --stop --quiet --pidfile /var/run/atheme/atheme.pid
+	eend $? "Failed to stop ${SVSNAME}"
+}

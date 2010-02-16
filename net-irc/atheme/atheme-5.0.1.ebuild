@@ -4,7 +4,7 @@
 
 EAPI="3"
 
-inherit autotools base eutils flag-o-matic
+inherit autotools eutils flag-o-matic perl-module
 
 MY_P=${PN}-services-${PV}
 DESCRIPTION="A portable and secure set of open-source and modular IRC services"
@@ -14,7 +14,7 @@ SRC_URI="http://atheme.net/downloads/${MY_P}.tar.bz2"
 LICENSE="BSD"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="debug largenet ldap pcre profile ssl"
+IUSE="debug largenet ldap pcre perl profile ssl"
 
 RDEPEND="dev-libs/libmowgli
 	ldap? ( net-nds/openldap )
@@ -39,18 +39,27 @@ src_prepare() {
 	epatch "${FILESDIR}"/${P}-ldap-as-needed.patch
 	epatch "${FILESDIR}"/${P}-depend-parallel.patch
 
-	# fix atheme's sorry attempt at ``FHS paths'':
-	sed -i -e 's;\(DATADIR=.*\)lib/;\1;' configure.ac || die
+	# fix docdir
+	find -regex '.*/Makefile\..*in' \
+		| xargs sed -i -e 's/\(^DOCDIR.*=.\)@DOCDIR@/\1@docdir@/' \
+		|| die
+
+	# basic logging config directive fix
+	sed -i -e 's;var/\(.*\.log\);\1;g' dist/* || die
 
 	eaclocal -I m4
 	eautoheader
 	eautoconf
+
+	# QA against bundled libs
+	rm -rf libmowgli || die
 }
 
 src_configure() {
 	econf --enable-fhs-paths \
 		--sysconfdir="${EPREFIX}"/etc/${PN} \
 		--docdir="${EPREFIX}"/usr/share/doc/${PF} \
+		--localstatedir="${EPREFIX}"/var \
 		$(use debug || echo --enable-propolice) \
 		$(use_enable largenet large-net) \
 		$(use_with ldap) \
@@ -59,14 +68,36 @@ src_configure() {
 		$(use_enable ssl)
 }
 
+src_compile() {
+	emake || die
+	emake -C contrib || die
+}
+
 src_install() {
 	emake DESTDIR="${D}" install || die
+	emake DESTDIR="${D}" -C contrib install || die
 
 	insinto /etc/${PN}
 	for conf in dist/*.example; do
 		newins ${conf} $(basename ${conf} .example)  || die "installing ${conf/.example//}"
 	done
 
-	fowners -R root:atheme /etc/atheme/ \
-		/var/lib/{run/,log/,}${PN} || die
+	fowners -R root:atheme /etc/atheme || die
+	fowners atheme:atheme /var/{lib,run,log}/${PN} || die
+	fperms -R 640 /etc/atheme || die
+	fperms 750 /etc/atheme /var/{lib,run,log}/${PN} || die
+
+	newinitd "${FILESDIR}"/${PN}.initd atheme || die
+
+	# contributed scripts and such:
+	insinto /usr/share/doc/${PF}/contrib
+	doins contrib/*.{pl,php,py,rb} || die
+	# various conversion programs
+	doins contrib/{anope_convert.c,ircs_crypto_trans.c} || die
+
+	if use perl; then
+		perlinfo
+		insinto "${VENDOR_LIB}"
+		doins -r contrib/Atheme{,.pm} || die
+	fi
 }

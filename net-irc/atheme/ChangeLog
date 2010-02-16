@@ -3,6 +3,12 @@
 # $Header: $
 
   16 Feb 2010; Nathan Phillip Brink (ohnobinki)
+  <ohnobinki@ohnopublishing.net> atheme-5.0.1.ebuild, +files/atheme.initd:
+  Support installing some stuff form contrib, such as a perl module and a
+  few database conversion C programs/modules. Added initscript. QA against
+  bundled libmowgli. Fixed /var paths.
+
+  16 Feb 2010; Nathan Phillip Brink (ohnobinki)
   <ohnobinki@ohnopublishing.net> +atheme-5.0.1.ebuild,
   +files/atheme-5.0.1-depend-parallel.patch,
   +files/atheme-5.0.1-ldap-as-needed.patch,
