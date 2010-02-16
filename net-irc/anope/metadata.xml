@@ -7,4 +7,7 @@
 		<name>Bjarke Istrup Pedersen</name>
 	</maintainer>
 	<longdescription>Anope IRC Services</longdescription>
+	<use>
+	  <flag name='atheme'>Builds module to convert <pkg>net-irc/anope</pkg> database to an <pkg>net-irc/atheme</pkg> database</flag>
+	</use>
 </pkgmetadata>

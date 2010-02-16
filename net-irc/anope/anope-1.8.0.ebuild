@@ -1,6 +1,8 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/net-irc/anope/anope-1.8.0.ebuild,v 1.1 2009/06/27 11:04:34 patrick Exp $
+
+EAPI="2"
 
 inherit eutils versionator
 
@@ -14,9 +16,10 @@ SRC_URI="mirror://sourceforge/${PN}/${PN}-${MY_PV}.tar.gz"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="mysql"
+IUSE="mysql atheme"
 
-DEPEND="mysql? ( virtual/mysql )"
+DEPEND="atheme? ( >=net-irc/atheme-5.0.1 )
+	mysql? ( virtual/mysql )"
 
 INSTALL_DIR="/opt/anope"
 
@@ -31,14 +34,15 @@ pkg_setup() {
 	fi
 }
 
-src_unpack() {
-	unpack ${A}
-	cd "${S}"
-
+src_prepare() {
 	epatch "${FILESDIR}"/pid-patch.diff
+
+	if use atheme; then
+		cp /usr/share/doc/atheme*/contrib/anope_convert.c src/modules/ || die
+	fi
 }
 
-src_compile() {
+src_configure() {
 	local myconf
 	if ! use mysql; then
 		myconf="${myconf} --without-mysql"
@@ -56,8 +60,6 @@ src_compile() {
 	|| die "Configuration failed."
 
 	sed -i -e "/^build:/s:$: language:g" "${S}"/Makefile || die "sed failed"
-
-	emake || die "Make failed."
 }
 
 src_install() {
