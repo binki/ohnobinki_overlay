@@ -31,6 +31,8 @@ src_prepare() {
 
 qca_do_pri() {
 	local buildtype=release
+	einfo "Manually generating $1 to avoid calling qconf-generated ./configure, bug 305905"
+
 	use debug && buildtype=debug
 
 	sed "${FILESDIR}"/$1.in \
@@ -52,7 +54,7 @@ src_configure() {
 	_libdir=$(get_libdir)
 
 	# fix multilib/ABI issues by avoiding nasty black magic of sys-devel/qconf ;-)
-	for pri in app confapp conf; do
+	for pri in app conf; do
 		qca_do_pri ${pri}.pri
 	done
 

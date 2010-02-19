@@ -1,5 +1,5 @@
 ### eqmake4 was here ###
-include(confapp.pri)
+include(conf.pri)
 
 mac:QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.3
 
