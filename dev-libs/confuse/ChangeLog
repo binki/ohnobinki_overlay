@@ -1,6 +1,15 @@
 # ChangeLog for dev-libs/confuse
-# Copyright 1999-2009 Gentoo Foundation; Distributed under the GPL v2
+# Copyright 1999-2010 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/dev-libs/confuse/ChangeLog,v 1.39 2008/12/17 22:09:10 maekke Exp $
+
+  22 Feb 2010; Nathan Phillip Brink (ohnobinki)
+  <ohnobinki@ohnopublishing.net> -confuse-2.6-r3.ebuild,
+  -confuse-2.6-r4.ebuild, -files/confuse-2.6-O0.patch,
+  -files/confuse-2.6-noexamples.patch,
+  -files/confuse-2.6-relativeincludes.patch,
+  -files/confuse-2.6-solaris.patch, +confuse-2.7.ebuild:
+  Bump to confuse-2.7 which doesn't need any patches so far, thanks to
+  flameeyes. Remove my pointless relativeincludes patch.
 
   03 Aug 2009; Nathan Brink <ohnobinki@gentoo.org> confuse-2.6-r4.ebuild:
   Force regeneration of flex.c.
