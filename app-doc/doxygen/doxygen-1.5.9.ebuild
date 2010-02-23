@@ -99,6 +99,14 @@ src_configure() {
 	else
 		./configure ${my_conf} || die 'configure failed'
 	fi
+
+	if use qt4; then
+		# prevent generated Makefiles from trying to run qmake themselves
+		# by running it ourselves. This feels slightly hacky ;-) --ohnobinki
+		pushd addon/doxywizard || die
+		eqmake4 doxywizard.pro -o Makefile.doxywizard
+		popd
+	fi
 }
 
 src_compile() {

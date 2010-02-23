@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/app-doc/doxygen/doxygen-1.5.8-r1.ebuild,v 1.6 2009/12/26 17:24:39 pva Exp $
 
-EAPI=1
+EAPI=2
 
 inherit eutils flag-o-matic toolchain-funcs qt4 fdo-mime
 
@@ -34,10 +34,7 @@ DEPEND=">=sys-apps/sed-4
 
 EPATCH_SUFFIX="patch"
 
-src_unpack() {
-	unpack ${A}
-	cd "${S}"
-
+src_prepare() {
 	# use CFLAGS, CXXFLAGS, LDFLAGS
 	sed -i.orig -e 's:^\(TMAKE_CFLAGS_RELEASE\t*\)= .*$:\1= $(ECFLAGS):' \
 		-e 's:^\(TMAKE_CXXFLAGS_RELEASE\t*\)= .*$:\1= $(ECXXFLAGS):' \
@@ -77,7 +74,7 @@ src_unpack() {
 	fi
 }
 
-src_compile() {
+src_configure() {
 	export ECFLAGS="${CFLAGS}" ECXXFLAGS="${CXXFLAGS}" ELDFLAGS="${LDFLAGS}"
 	# set ./configure options (prefix, Qt based wizard, docdir)
 
@@ -106,7 +103,16 @@ src_compile() {
 		./configure ${my_conf} || die 'configure failed'
 	fi
 
-	# and compile
+	if use qt4; then
+		# prevent generated Makefiles from trying to run qmake themselves
+		# by running it ourselves. This feels slightly hacky ;-) --ohnobinki
+		pushd addon/doxywizard || die
+		eqmake4 doxywizard.pro -o Makefile.doxywizard
+		popd
+	fi
+}
+
+src_compile() {
 	emake all || die 'emake failed'
 
 	# generate html and pdf (if tetex in use) documents.
