@@ -84,22 +84,22 @@ gst-plugins-base_src_unpack() {
 
 	# Link with the syswide installed gst-libs if needed
 	gst-plugins10_find_plugin_dir
-	sed -e "s:\$(top_builddir)/gst-libs/gst/interfaces/libgstinterfaces.*\.la:$(pkg-config --libs gstreamer-interfaces-${MY_PV}):" \
-		-e "s:\${top_builddir}/gst-libs/gst/interfaces/libgstinterfaces.*\.la:$(pkg-config --libs gstreamer-interfaces-${MY_PV}):" \
-		-e "s:\$(top_builddir)/gst-libs/gst/audio/libgstaudio.*\.la:$(pkg-config --libs gstreamer-audio-${MY_PV}):" \
-		-e "s:\${top_builddir}/gst-libs/gst/audio/libgstaudio.*\.la:$(pkg-config --libs gstreamer-audio-${MY_PV}):" \
-		-e "s:\$(top_builddir)/gst-libs/gst/cdda/libgstcdda\.la.*\.la:$(pkg-config --libs gstreamer-cdda-${MY_PV}):" \
-		-e "s:\${top_builddir}/gst-libs/gst/cdda/libgstcdda\.la.*\.la:$(pkg-config --libs gstreamer-cdda-${MY_PV}):" \
-		-e "s:\$(top_builddir)/gst-libs/gst/riff/libgstriff.*\.la:$(pkg-config --libs gstreamer-riff-${MY_PV}):" \
-		-e "s:\${top_builddir}/gst-libs/gst/riff/libgstriff.*\.la:$(pkg-config --libs gstreamer-riff-${MY_PV}):" \
-		-e "s:\$(top_builddir)/gst-libs/gst/tag/libgsttag.*\.la:$(pkg-config --libs gstreamer-tag-${MY_PV}):" \
-		-e "s:\${top_builddir}/gst-libs/gst/tag/libgsttag.*\.la:$(pkg-config --libs gstreamer-tag-${MY_PV}):" \
-		-e "s:\$(top_builddir)/gst-libs/gst/video/libgstvideo.*\.la:$(pkg-config --libs gstreamer-video-${MY_PV}):" \
-		-e "s:\${top_builddir}/gst-libs/gst/video/libgstvideo.*\.la:$(pkg-config --libs gstreamer-video-${MY_PV}):" \
-		-e "s:\$(top_builddir)/gst-libs/gst/netbuffer/libgstnetbuffer.*\.la:$(pkg-config --libs gstreamer-netbuffer-${MY_PV}):" \
-		-e "s:\${top_builddir}/gst-libs/gst/netbuffer/libgstnetbuffer.*\.la:$(pkg-config --libs gstreamer-netbuffer-${MY_PV}):" \
-		-e "s:\$(top_builddir)/gst-libs/gst/rtp/libgstrtp.*\.la:$(pkg-config --libs gstreamer-rtp-${MY_PV}):" \
-		-e "s:\${top_builddir}/gst-libs/gst/rtp/libgstrtp.*\.la:$(pkg-config --libs gstreamer-rtp-${MY_PV}):" \
+	sed -e "s:\$(top_builddir)/gst-libs/gst/interfaces/libgstinterfaces.*\.la:$(pkg-config --libs-only-L --libs-only-l gstreamer-interfaces-${MY_PV}):" \
+		-e "s:\${top_builddir}/gst-libs/gst/interfaces/libgstinterfaces.*\.la:$(pkg-config --libs-only-L --libs-only-l gstreamer-interfaces-${MY_PV}):" \
+		-e "s:\$(top_builddir)/gst-libs/gst/audio/libgstaudio.*\.la:$(pkg-config --libs-only-L --libs-only-l gstreamer-audio-${MY_PV}):" \
+		-e "s:\${top_builddir}/gst-libs/gst/audio/libgstaudio.*\.la:$(pkg-config --libs-only-L --libs-only-l gstreamer-audio-${MY_PV}):" \
+		-e "s:\$(top_builddir)/gst-libs/gst/cdda/libgstcdda\.la.*\.la:$(pkg-config --libs-only-L --libs-only-l gstreamer-cdda-${MY_PV}):" \
+		-e "s:\${top_builddir}/gst-libs/gst/cdda/libgstcdda\.la.*\.la:$(pkg-config --libs-only-L --libs-only-l gstreamer-cdda-${MY_PV}):" \
+		-e "s:\$(top_builddir)/gst-libs/gst/riff/libgstriff.*\.la:$(pkg-config --libs-only-L --libs-only-l gstreamer-riff-${MY_PV}):" \
+		-e "s:\${top_builddir}/gst-libs/gst/riff/libgstriff.*\.la:$(pkg-config --libs-only-L --libs-only-l gstreamer-riff-${MY_PV}):" \
+		-e "s:\$(top_builddir)/gst-libs/gst/tag/libgsttag.*\.la:$(pkg-config --libs-only-L --libs-only-l gstreamer-tag-${MY_PV}):" \
+		-e "s:\${top_builddir}/gst-libs/gst/tag/libgsttag.*\.la:$(pkg-config --libs-only-L --libs-only-l gstreamer-tag-${MY_PV}):" \
+		-e "s:\$(top_builddir)/gst-libs/gst/video/libgstvideo.*\.la:$(pkg-config --libs-only-L --libs-only-l gstreamer-video-${MY_PV}):" \
+		-e "s:\${top_builddir}/gst-libs/gst/video/libgstvideo.*\.la:$(pkg-config --libs-only-L --libs-only-l gstreamer-video-${MY_PV}):" \
+		-e "s:\$(top_builddir)/gst-libs/gst/netbuffer/libgstnetbuffer.*\.la:$(pkg-config --libs-only-L --libs-only-l gstreamer-netbuffer-${MY_PV}):" \
+		-e "s:\${top_builddir}/gst-libs/gst/netbuffer/libgstnetbuffer.*\.la:$(pkg-config --libs-only-L --libs-only-l gstreamer-netbuffer-${MY_PV}):" \
+		-e "s:\$(top_builddir)/gst-libs/gst/rtp/libgstrtp.*\.la:$(pkg-config --libs-only-L --libs-only-l gstreamer-rtp-${MY_PV}):" \
+		-e "s:\${top_builddir}/gst-libs/gst/rtp/libgstrtp.*\.la:$(pkg-config --libs-only-L --libs-only-l gstreamer-rtp-${MY_PV}):" \
 		-i Makefile.in
 #	cd ${S}
 
