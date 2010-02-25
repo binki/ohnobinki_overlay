@@ -56,9 +56,12 @@ SITEFILE="20${PN}-${SLOT}-gentoo.el"
 src_prepare() {
 	EPATCH_SUFFIX=patch epatch
 
-	sed -i -e "s:/usr/lib/crtbegin.o:$(`tc-getCC` -print-file-name=crtbegin.o):g" \
-		-e "s:/usr/lib/crtend.o:$(`tc-getCC` -print-file-name=crtend.o):g" \
-		"${S}"/src/s/freebsd.h || die "unable to sed freebsd.h settings"
+	sed -i -e "s:/usr/lib/crtbegin.o:$(`tc-getCC` ${CFLAGS} -print-file-name=crtbegin.o):g" \
+		-e "s:/usr/lib/crtend.o:$(`tc-getCC` ${CFLAGS} -print-file-name=crtend.o):g" \
+		-e "s:/usr/lib/crtn.o:$(`tc-getCC` ${CFLAGS} -print-file-name=crtn.o):g" \
+		-e "s:/usr/lib/crti.o:$(`tc-getCC` ${CFLAGS} -print-file-name=crti.o):g" \
+		-e "s:/usr/lib/crt1.o:$(`tc-getCC` ${CFLAGS} -print-file-name=crt1.o):g" \
+		src/m/amdx86-64.h src/s/gnu-linux.h src/s/freebsd.h || die "unable to fix amdx86-64.h and freebsd.h settings"
 
 	if ! use alsa; then
 		# ALSA is detected even if not requested by its USE flag.
