@@ -1,4 +1,4 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/sys-devel/libtool/libtool-9999.ebuild,v 1.4 2009/09/13 14:46:53 flameeyes Exp $
 
@@ -40,6 +40,7 @@ src_unpack() {
 	use vanilla && return 0
 
 	epunt_cxx
+	epatch "${FILESDIR}"/${PV}/${P}-ltdl.m4-no-la.patch #293921
 	cd libltdl/m4
 	epatch "${FILESDIR}"/1.5.20/${PN}-1.5.20-use-linux-version-in-fbsd.patch #109105
 }

@@ -1,0 +1,24 @@
+https://bugs.gentoo.org/293921
+
+ohnobinki's attempt at convincing ltdl.m4 to permit people
+to delete that special type of libtool archive which has
+no use on a modern GNU/Linux system.
+
+diff --git a/libltdl/m4/ltdl.m4 b/libltdl/m4/ltdl.m4
+index 111fac1..4bedc34 100644
+--- a/libltdl/m4/ltdl.m4
++++ b/libltdl/m4/ltdl.m4
+@@ -282,8 +282,11 @@ AC_ARG_WITH([ltdl_lib],
+                     [use the libltdl.la installed in DIR])])
+ 
+ if test -n "$with_ltdl_lib"; then
+-  if test -f "$with_ltdl_lib/libltdl.la"; then :
+-  else
++  # check for the existence of "$with_ltdl_lib/libltdl.la" while
++  # allowing people to libtool archive file (which isn't useful
++  # in this case in many common platforms.)
++  with_ltdl_lib_libname=$(echo "$with_ltdl_lib"/libltdl.*) 2>/dev/null
++  if test "x$with_ltdl_lib_libname" = "x$with_ltdl_lib/libltdl.*"; then
+     AC_MSG_ERROR([invalid ltdl library directory: `$with_ltdl_lib'])
+   fi
+ else
