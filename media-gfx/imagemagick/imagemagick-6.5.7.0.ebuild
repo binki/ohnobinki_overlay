@@ -4,7 +4,8 @@
 
 EAPI="2"
 
-inherit eutils multilib perl-app toolchain-funcs versionator
+WANT_AUTOMAKE=1.11
+inherit autotools eutils multilib perl-app toolchain-funcs versionator
 
 MY_PN=ImageMagick
 MY_P=${MY_PN}-${PV%.*}
@@ -62,6 +63,7 @@ RDEPEND="
 
 DEPEND="${RDEPEND}
 	>=sys-apps/sed-4
+	>=sys-devel/libtool-2.2.6b-r1
 	X? ( x11-proto/xextproto )"
 
 S="${WORKDIR}/${MY_P2}"
@@ -81,6 +83,9 @@ pkg_setup() {
 }
 
 src_prepare() {
+	# get shiney new ltdl.m4 from =sys-devel/libtool-2.2.6b-r1
+	eautoreconf
+
 	# fix doc dir, bug #91911
 	sed -i -e \
 		's:DOCUMENTATION_PATH="${DATA_DIR}/doc/${DOCUMENTATION_RELATIVE_PATH}":DOCUMENTATION_PATH="/usr/share/doc/${PF}":g' \
