@@ -1,0 +1,87 @@
+Patch by Nathan Phillip Brink <ohnobinki@ohnopublishing.net> against ~mjpegtools-1.9.0
+* Fix mjpegtool's #include <SDL/SDL.h>
+  http://www.libsdl.org/faq.php?action=listentries&category=2#19
+* Insert SDL_CFLAGS into Makefile.am
+
+fixes compile errors for portage-multilib reported on 2010/03/03 by xming
+
+Index: lavtools/Makefile.am
+===================================================================
+RCS file: /cvsroot/mjpeg/mjpeg_play/lavtools/Makefile.am,v
+retrieving revision 1.121
+diff -u -b -B -r1.121 Makefile.am
+--- lavtools/Makefile.am	9 Apr 2008 04:36:00 -0000	1.121
++++ lavtools/Makefile.am	3 Mar 2010 23:19:18 -0000
+@@ -55,7 +55,7 @@
+ liblavrec_la_DEPENDENCIES = liblavfile.la liblavjpeg.la
+ 
+ liblavplay_la_SOURCES = liblavplay.c audiolib.c
+-liblavplay_la_CPPFLAGS = $(AM_CPPFLAGS) $(LIBDV_CFLAGS) $(X_CFLAGS)
++liblavplay_la_CPPFLAGS = $(AM_CPPFLAGS) $(LIBDV_CFLAGS) $(X_CFLAGS) $(SDL_CFLAGS)
+ liblavplay_la_LDFLAGS = $(LAV_ALL_LIB_OPTS)
+ liblavplay_la_LIBADD = liblavfile.la $(SDL_LIBS) liblavjpeg.la $(LIBDV_LIBS) $(LIBMJPEGUTILS)
+ if HAVE_V4L
+@@ -131,6 +131,7 @@
+ multiblend_flt_LDADD = $(LIBMJPEGUTILS)
+ 
+ lavplay_SOURCES = lavplay.c
++lavplay_CPPFLAGS = $(AM_CPPFLAGS) $(SDL_CFLAGS)
+ lavplay_LDADD = $(LIBMJPEGUTILS) \
+ 	liblavplay.la liblavjpeg.la liblavfile.la \
+ 	@LIBGETOPT_LIB@ @PTHREAD_LIBS@ $(SDL_LIBS)
+@@ -175,6 +176,7 @@
+ lavvideo_SOURCES = lavvideo.c frequencies.c
+ 
+ yuvplay_SOURCES = yuvplay.c
++yuvplay_CPPFLAGS = $(AM_CPPFLAGS) $(SDL_CFLAGS)
+ yuvplay_LDADD = $(SDL_LIBS) $(LIBMJPEGUTILS)
+ 
+ ppmtoy4m_SOURCES = ppmtoy4m.c colorspace.c subsample.c
+Index: lavtools/lavplay.c
+===================================================================
+RCS file: /cvsroot/mjpeg/mjpeg_play/lavtools/lavplay.c,v
+retrieving revision 1.65
+diff -u -b -B -r1.65 lavplay.c
+--- lavtools/lavplay.c	25 Aug 2006 04:01:47 -0000	1.65
++++ lavtools/lavplay.c	3 Mar 2010 23:19:19 -0000
+@@ -148,7 +148,7 @@
+ #include <sys/stat.h>
+ #endif
+ #ifdef HAVE_SDL      /* Seems that this is needed so MAC OS X is also happy */
+-#include <SDL/SDL.h>
++#include <SDL.h>
+ #endif
+ 
+ #define LAVPLAY_VSTR "lavplay" VERSION  /* Expected version info */
+Index: lavtools/liblavplay.c
+===================================================================
+RCS file: /cvsroot/mjpeg/mjpeg_play/lavtools/liblavplay.c,v
+retrieving revision 1.42
+diff -u -b -B -r1.42 liblavplay.c
+--- lavtools/liblavplay.c	25 Aug 2006 04:01:47 -0000	1.42
++++ lavtools/liblavplay.c	3 Mar 2010 23:19:19 -0000
+@@ -80,7 +80,7 @@
+ #include <pthread.h>
+ 
+ #ifdef HAVE_SDL
+-#include <SDL/SDL.h>
++#include <SDL.h>
+ #endif
+ 
+ #include "mjpeg_logging.h"
+Index: lavtools/yuvplay.c
+===================================================================
+RCS file: /cvsroot/mjpeg/mjpeg_play/lavtools/yuvplay.c,v
+retrieving revision 1.25
+diff -u -b -B -r1.25 yuvplay.c
+--- lavtools/yuvplay.c	15 Nov 2005 04:31:37 -0000	1.25
++++ lavtools/yuvplay.c	3 Mar 2010 23:19:19 -0000
+@@ -31,7 +31,7 @@
+ #include "mjpeg_logging.h"
+ #include <mpegconsts.h>
+ #include <mpegtimecode.h>
+-#include <SDL/SDL.h>
++#include <SDL.h>
+ #include <sys/time.h>
+ 
+ 

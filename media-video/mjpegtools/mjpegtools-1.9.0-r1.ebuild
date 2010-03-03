@@ -2,9 +2,9 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/media-video/mjpegtools/mjpegtools-1.9.0-r1.ebuild,v 1.6 2010/02/20 14:46:51 armin76 Exp $
 
-EAPI="1"
+EAPI="2"
 
-inherit flag-o-matic toolchain-funcs eutils libtool
+inherit autotools flag-o-matic toolchain-funcs eutils libtool
 
 MY_P=${P/_/}
 
@@ -33,15 +33,16 @@ DEPEND="${RDEPEND}
 
 S="${WORKDIR}/${MY_P}"
 
-src_unpack() {
-	unpack ${A}
-	cd "${S}"
+src_prepare() {
 	sed -i -e '/ARCHFLAGS=/s:=.*:=:' configure
 	epatch "${FILESDIR}"/${P}-glibc-2.10.patch \
 		"${FILESDIR}"/${P}-jpeg-7.patch
+
+	epatch "${FILESDIR}"/${P}-include-SDL.patch
+	eautomake
 }
 
-src_compile() {
+src_configure() {
 	local myconf
 
 	if use yv12 && use dv; then
@@ -68,20 +69,20 @@ src_compile() {
 		--without-jpeg-mmx \
 		${myconf} || die "configure failed"
 
-	emake || die "emake failed"
-
 	cd docs
 	local infofile
 	for infofile in mjpeg*info*; do
-		echo "INFO-DIR-SECTION Miscellaneous" >> ${infofile}
-		echo "START-INFO-DIR-ENTRY" >> ${infofile}
-		echo "* mjpeg-howto: (mjpeg-howto).					 How to use the mjpeg-tools" >> ${infofile}
-		echo "END-INFO-DIR-ENTRY" >> ${infofile}
+		cat <<EOF >> ${infofile}
+INFO-DIR-SECTION Miscellaneous
+START-INFO-DIR-ENTRY
+* mjpeg-howto: (mjpeg-howto).					 How to use the mjpeg-tools
+END-INFO-DIR-ENTRY
+EOF
 	done
 }
 
 src_install() {
 	einstall || die "install failed"
 	dodoc mjpeg_howto.txt README* PLANS NEWS TODO HINTS BUGS ChangeLog \
-		AUTHORS CHANGES
+		AUTHORS CHANGES || die
 }
