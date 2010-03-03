@@ -14,7 +14,7 @@ SRC_URI="mirror://sourceforge/mjpeg/${MY_P}.tar.gz"
 
 LICENSE="as-is"
 SLOT="1"
-KEYWORDS="alpha amd64 ppc ppc64 sparc x86"
+KEYWORDS="~alpha ~amd64 ~ppc ~ppc64 ~sparc ~x86"
 IUSE="gtk dv quicktime sdl X yv12 v4l dga png mmx"
 
 RDEPEND="media-libs/jpeg:0
