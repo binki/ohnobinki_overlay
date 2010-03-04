@@ -1,4 +1,4 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/dev-util/boost-build/boost-build-1.41.0.ebuild,v 1.1 2009/12/02 15:25:01 djc Exp $
 
@@ -35,7 +35,7 @@ src_unpack() {
 
 src_prepare() {
 	# bug 293652
-	epatch "${FILESDIR}"/boost-build-flags-unescape.patch || die
+	epatch "${FILESDIR}"/boost-build-flags-unescape.patch
 
 	epatch "${FILESDIR}/boost-1.41-fix-mpich2-detection.patch"
 

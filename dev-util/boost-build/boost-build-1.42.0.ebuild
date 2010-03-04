@@ -1,34 +1,51 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-util/boost-build/boost-build-1.34.1.ebuild,v 1.16 2009/03/24 04:34:42 dirtyepic Exp $
+# $Header: /var/cvsroot/gentoo-x86/dev-util/boost-build/boost-build-1.42.0.ebuild,v 1.1 2010/03/03 12:32:08 djc Exp $
 
-inherit flag-o-matic toolchain-funcs versionator
+EAPI="2"
+
+inherit eutils flag-o-matic toolchain-funcs versionator
 
 MY_PV=$(replace_all_version_separators _)
+MAJOR_PV="$(replace_all_version_separators _ $(get_version_component_range 1-2))"
 
 DESCRIPTION="A system for large project software construction, which is simple to use and powerful."
 HOMEPAGE="http://www.boost.org/doc/tools/build/index.html"
 SRC_URI="mirror://sourceforge/boost/boost_${MY_PV}.tar.bz2"
-
 LICENSE="Boost-1.0"
-SLOT="0"
-KEYWORDS="alpha amd64 arm hppa ia64 ~mips ppc ppc64 s390 sh sparc x86"
-IUSE="python"
+SLOT="$(get_version_component_range 1-2)"
+KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86"
+IUSE="examples python"
 
 DEPEND="!<dev-libs/boost-1.34.0
+	!<=dev-util/boost-build-1.35.0-r1
 	python? ( dev-lang/python )"
-RDEPEND=""
+RDEPEND="${DEPEND}"
 
-S=${WORKDIR}/boost_${MY_PV}/tools
+S="${WORKDIR}/boost_${MY_PV}/tools"
+
+pkg_setup() {
+	ewarn "Compilation of boost-build is known to break if {C,LD}FLAGS contain"
+	ewarn "extra white space (bug 293652)"
+}
 
 src_unpack() {
-	unpack ${A}
+	tar xjpf "${DISTDIR}/${A}" boost_${MY_PV}/tools/{jam,build/v2} || die
+}
+
+src_prepare() {
+	# bug 293652
+	epatch "${FILESDIR}"/boost-build-flags-unescape.patch
+
+	epatch "${FILESDIR}/boost-1.42-fix-mpich2-detection.patch"
 
 	# Remove stripping option
 	cd "${S}/jam/src"
-	sed -i \
-		-e 's/-s\b//' \
+	sed -i -e 's|-s\b||' \
 		build.jam || die "sed failed"
+
+	# Force regeneration
+	rm jambase.c
 
 	# This patch allows us to fully control optimization
 	# and stripping flags when bjam is used as build-system
@@ -36,8 +53,8 @@ src_unpack() {
 	# with empty dummies called 'none'
 	cd "${S}/build/v2"
 	sed -i \
-		-e 's/\(feature optimization : off speed space\)/\1 none/' \
-		-e 's/\(feature debug-symbols : on off\)/\1 none/' \
+		-e 's/\(off speed space\)/\1 none/' \
+		-e 's/\(debug-symbols      : on off\)/\1 none/' \
 		tools/builtin.jam || die "sed failed"
 }
 
@@ -53,6 +70,11 @@ src_compile() {
 	fi
 
 	append-flags -fno-strict-aliasing
+
+	# For slotting
+	sed -i \
+		-e "s|/usr/share/boost-build|/usr/share/boost-build-${MAJOR_PV}|" \
+		Jambase || die "sed failed"
 
 	# The build.jam file for building bjam using a bootstrapped jam0 ignores
 	# the LDFLAGS env var (bug #209794). We have now two options:
@@ -70,10 +92,23 @@ src_compile() {
 }
 
 src_install() {
-	dobin jam/src/bin.*/bjam || die
+	newbin jam/src/bin.*/bjam bjam-${MAJOR_PV}
 
 	cd "${S}/build/v2"
-	insinto /usr/share/boost-build
+	insinto /usr/share/boost-build-${MAJOR_PV}
 	doins -r boost-build.jam bootstrap.jam build-system.jam site-config.jam user-config.jam \
 		build kernel options tools util || die
+
+	dodoc changes.txt hacking.txt release_procedure.txt \
+		notes/build_dir_option.txt notes/relative_source_paths.txt
+
+	if use examples ; then
+		insinto /usr/share/doc/${PF}
+		doins -r example
+	fi
+}
+
+src_test() {
+	cd jam/test
+	./test.sh || die "tests failed"
 }

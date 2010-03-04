@@ -1,6 +1,14 @@
 # ChangeLog for dev-util/boost-build
-# Copyright 1999-2009 Gentoo Foundation; Distributed under the GPL v2
+# Copyright 1999-2010 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/dev-util/boost-build/ChangeLog,v 1.45 2009/12/02 15:26:48 djc Exp $
+
+  04 Mar 2010; Nathan Phillip Brink (ohnobinki)
+  <ohnobinki@ohnopublishing.net> -boost-build-1.34.1.ebuild,
+  -boost-build-1.35.0-r1.ebuild, boost-build-1.39.0.ebuild,
+  boost-build-1.40.0.ebuild, boost-build-1.41.0.ebuild,
+  +files/boost-1.42-fix-mpich2-detection.patch, +boost-build-1.42.0.ebuild:
+  Sync up with portage. Remove pointless old ebuilds. Remove extraneous die
+  after epatch invocations.
 
   06 Dec 2009; Nathan Phillip Brink (ohnobinki)
   <ohnobinki@ohnopublishing.net> boost-build-1.39.0.ebuild,
