@@ -2,6 +2,14 @@
 # Copyright 1999-2010 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/media-video/vlc/ChangeLog,v 1.558 2010/02/24 13:13:36 aballier Exp $
 
+  07 Mar 2010; Nathan Phillip Brink (ohnobinki)
+  <ohnobinki@ohnopublishing.net> vlc-1.0.4.ebuild,
+  +files/vlc-1.0.4-sdl-portage-multilib.patch, vlc-1.0.5.ebuild,
+  vlc-1.0.9999.ebuild:
+  Add patch that replaces references to SDL/SDL.h with SDL.h for
+  portage-multilib support:
+  http://www.libsdl.org/faq.php?action=listentries&category=2#19
+
   24 Feb 2010; Alexis Ballier <aballier@gentoo.org> vlc-1.0.5.ebuild,
   vlc-1.0.9999.ebuild:
   Add a conditional patch for 1.0.x series to build against xulrunner 1.9.2,

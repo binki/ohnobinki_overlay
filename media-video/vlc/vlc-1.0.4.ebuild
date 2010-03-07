@@ -230,6 +230,9 @@ src_prepare() {
 	rm -f m4/lt* m4/libtool.m4
 
 	EPATCH_SUFFIX="patch" epatch "${WORKDIR}/patches"
+	# portage-multilib SDL.h fix
+	epatch "${FILESDIR}"/${P}-sdl-portage-multilib.patch
+
 	AT_M4DIR="m4 ${WORKDIR}/${PN}-m4" eautoreconf
 }
 
