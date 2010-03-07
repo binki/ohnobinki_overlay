@@ -29,14 +29,20 @@ src_prepare() {
 		src/src.pro
 }
 
+# $1 - basename of file
+# $2 - subdirectory of "${S}" to output the file to, includes only trailing slash
 qca_do_pri() {
 	local buildtype=release
 	einfo "Manually generating $1 to avoid calling qconf-generated ./configure, bug 305905"
 
 	use debug && buildtype=debug
+	if [[ -n "$2" ]]; then
+		mkdir -p $2 || die
+	fi
 
 	sed "${FILESDIR}"/$1.in \
 		-e "s:@PN@:${PN}${PV:0:1}:" \
+		-e "s:@PV@:${PV}:" \
 		-e "s:@PREFIX@:${EPREFIX}/usr:" \
 		-e "s:@BINDIR@:${EPREFIX}/usr/bin:" \
 		-e "s:@INCDIR@:${EPREFIX}/usr/include:" \
@@ -44,7 +50,7 @@ qca_do_pri() {
 		-e "s:@DATADIR@:${EPREFIX}/usr/share:" \
 		-e "s:@BUILDTYPE@:${buildtype}:" \
 		-e "s:@QTDATADIR@:${EPREFIX}/usr/share/qt4:" \
-		> "${S}"/$1 \
+		> "${S}"/$2$1 \
 		|| die "Failed to install and preprocess $1"
 }
 
@@ -57,6 +63,7 @@ src_configure() {
 	for pri in app conf; do
 		qca_do_pri ${pri}.pri
 	done
+	qca_do_pri qca2.pc lib/pkgconfig/
 
 	# prepare crypto.prf:
 	echo "QCA_LIBDIR = /usr/${_libdir}/${PN}${PV:0:1}" >> crypto.prf || die
