@@ -1,0 +1,319 @@
+Patch against https://supertuxkart.svn.sourceforge.net/svnroot/supertuxkart/main/branches/0.6.2a
+Author: Nathan Phillip Brink <ohnobinki@ohnopublishing.net>
+Purpose: Replaces #include <SDL/SDL.h> with #include <SDL.h>. Also uses AM_PATH_SDL instead of cusom autoconf stuff. Mostly hacky as this isn't the trunk of supertuxkart's repository. Fixes a compilation on portage-multilib because of how 32-bit vs. 64-bit headers are handled.
+
+Index: src/audio/sfx_openal.cpp
+===================================================================
+--- src/audio/sfx_openal.cpp	(revision 4954)
++++ src/audio/sfx_openal.cpp	(working copy)
+@@ -31,8 +31,8 @@
+ #  include <AL/al.h>
+ #endif
+ 
+-#include <SDL/SDL.h>
+-#include <SDL/SDL_endian.h>
++#include <SDL.h>
++#include <SDL_endian.h>
+ 
+ #include "file_manager.hpp"
+ #include "user_config.hpp"
+Index: src/audio/sfx_manager.hpp
+===================================================================
+--- src/audio/sfx_manager.hpp	(revision 4954)
++++ src/audio/sfx_manager.hpp	(working copy)
+@@ -26,8 +26,8 @@
+ #else
+ #  include <AL/al.h>
+ #endif
+-#include <SDL/SDL.h>
+-#include <SDL/SDL_endian.h>
++#include <SDL.h>
++#include <SDL_endian.h>
+ 
+ #include "lisp/lisp.hpp"
+ #include "utils/vec3.hpp"
+Index: src/audio/music_ogg.cpp
+===================================================================
+--- src/audio/music_ogg.cpp	(revision 4954)
++++ src/audio/music_ogg.cpp	(working copy)
+@@ -29,7 +29,7 @@
+ #endif
+ // This include is important, otherwise SDL_BYTEORDER is undefined, and as a
+ // result big endian will be used!
+-#include <SDL/SDL_endian.h>
++#include <SDL_endian.h>
+ 
+ #include "user_config.hpp"
+ 
+Index: src/sdldrv.cpp
+===================================================================
+--- src/sdldrv.cpp	(revision 4954)
++++ src/sdldrv.cpp	(working copy)
+@@ -26,7 +26,7 @@
+ #include <sstream>
+ #include <algorithm>
+ 
+-#include <SDL/SDL.h>
++#include <SDL.h>
+ 
+ #include "input.hpp"
+ #include "actionmap.hpp"
+Index: src/gui/race_menu.cpp
+===================================================================
+--- src/gui/race_menu.cpp	(revision 4954)
++++ src/gui/race_menu.cpp	(working copy)
+@@ -19,7 +19,7 @@
+ 
+ #include "gui/race_menu.hpp"
+ 
+-#include <SDL/SDL.h>
++#include <SDL.h>
+ 
+ #include "user_config.hpp"
+ 
+Index: src/gui/base_gui.cpp
+===================================================================
+--- src/gui/base_gui.cpp	(revision 4954)
++++ src/gui/base_gui.cpp	(working copy)
+@@ -17,7 +17,7 @@
+ //  along with this program; if not, write to the Free Software
+ //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ 
+-#include <SDL/SDL.h>
++#include <SDL.h>
+ 
+ #include "base_gui.hpp"
+ #include "widget_manager.hpp"
+Index: src/gui/player_controls.cpp
+===================================================================
+--- src/gui/player_controls.cpp	(revision 4954)
++++ src/gui/player_controls.cpp	(working copy)
+@@ -19,7 +19,7 @@
+ 
+ #include "gui/player_controls.hpp"
+ 
+-#include <SDL/SDL.h>
++#include <SDL.h>
+ #if defined(WIN32) && !defined(__CYGWIN__)
+ #  define snprintf _snprintf
+ #endif
+Index: src/gui/base_gui.hpp
+===================================================================
+--- src/gui/base_gui.hpp	(revision 4954)
++++ src/gui/base_gui.hpp	(working copy)
+@@ -20,7 +20,7 @@
+ #ifndef HEADER_BASE_GUI_HPP
+ #define HEADER_BASE_GUI_HPP
+ 
+-#include <SDL/SDL.h>
++#include <SDL.h>
+ #include "input.hpp"
+ 
+ class BaseGUI
+Index: src/gui/player_controls.hpp
+===================================================================
+--- src/gui/player_controls.hpp	(revision 4954)
++++ src/gui/player_controls.hpp	(working copy)
+@@ -21,7 +21,7 @@
+ #define HEADER_PLAYER_CONTROLS_HPP
+ 
+ #include <string>
+-#include <SDL/SDL.h>
++#include <SDL.h>
+ #include "base_gui.hpp"
+ #include "player.hpp"
+ 
+Index: src/gui/network_gui.cpp
+===================================================================
+--- src/gui/network_gui.cpp	(revision 4954)
++++ src/gui/network_gui.cpp	(working copy)
+@@ -21,7 +21,7 @@
+ #include "gui/network_gui.hpp"
+ 
+ #include <sstream>
+-#include <SDL/SDL.h>
++#include <SDL.h>
+ 
+ #include "sdldrv.hpp"
+ #include "user_config.hpp"
+Index: src/gui/race_results_gui.cpp
+===================================================================
+--- src/gui/race_results_gui.cpp	(revision 4954)
++++ src/gui/race_results_gui.cpp	(working copy)
+@@ -19,7 +19,7 @@
+ 
+ #include "gui/race_results_gui.hpp"
+ 
+-#include <SDL/SDL.h>
++#include <SDL.h>
+ 
+ #include "race_manager.hpp"
+ #include "highscore_manager.hpp"
+Index: src/gui/display_res_confirm.hpp
+===================================================================
+--- src/gui/display_res_confirm.hpp	(revision 4954)
++++ src/gui/display_res_confirm.hpp	(working copy)
+@@ -22,7 +22,7 @@
+ 
+ #include "base_gui.hpp"
+ 
+-#include <SDL/SDL.h>
++#include <SDL.h>
+ 
+ class DisplayResConfirm: public BaseGUI
+ {
+Index: src/gui/network_gui.hpp
+===================================================================
+--- src/gui/network_gui.hpp	(revision 4954)
++++ src/gui/network_gui.hpp	(working copy)
+@@ -21,7 +21,7 @@
+ #define HEADER_NETWORK_GUI_H
+ 
+ #include <string>
+-#include <SDL/SDL.h>
++#include <SDL.h>
+ #include "base_gui.hpp"
+ #include "player.hpp"
+ 
+Index: src/gui/main_menu.cpp
+===================================================================
+--- src/gui/main_menu.cpp	(revision 4954)
++++ src/gui/main_menu.cpp	(working copy)
+@@ -19,7 +19,7 @@
+ 
+ #include "gui/main_menu.hpp"
+ 
+-#include <SDL/SDL.h>
++#include <SDL.h>
+ 
+ #include "race_manager.hpp"
+ #include "user_config.hpp"
+Index: src/gui/grand_prix_ending.cpp
+===================================================================
+--- src/gui/grand_prix_ending.cpp	(revision 4954)
++++ src/gui/grand_prix_ending.cpp	(working copy)
+@@ -25,7 +25,7 @@
+ #  define snprintf _snprintf
+ #endif
+ 
+-#include <SDL/SDL.h>
++#include <SDL.h>
+ 
+ #include "loader.hpp"
+ #include "race_manager.hpp"
+Index: src/main_loop.cpp
+===================================================================
+--- src/main_loop.cpp	(revision 4954)
++++ src/main_loop.cpp	(working copy)
+@@ -19,7 +19,7 @@
+ 
+ #include "main_loop.hpp"
+ 
+-#include <SDL/SDL.h>
++#include <SDL.h>
+ #include <assert.h>
+ #include "sdldrv.hpp"
+ #include "material_manager.hpp"
+Index: src/main.cpp
+===================================================================
+--- src/main.cpp	(revision 4954)
++++ src/main.cpp	(working copy)
+@@ -22,7 +22,7 @@
+ // Necessary for Macs when using SDL without Xwindows: this include
+ // will rename main to SDLmain, and a new main program will be linked
+ // in from the library, causing a correct framework to be set up
+-#  include "SDL/SDL.h"
++#  include "SDL.h"
+ #endif
+ 
+ #ifdef WIN32
+Index: src/sdldrv.hpp
+===================================================================
+--- src/sdldrv.hpp	(revision 4954)
++++ src/sdldrv.hpp	(working copy)
+@@ -23,7 +23,7 @@
+ #include <string>
+ #include <vector>
+ 
+-#include <SDL/SDL.h>
++#include <SDL.h>
+ 
+ #include "input.hpp"
+ 
+Index: src/user_config.cpp
+===================================================================
+--- src/user_config.cpp	(revision 4954)
++++ src/user_config.cpp	(working copy)
+@@ -36,7 +36,7 @@
+ #  define snprintf _snprintf
+ #endif
+ 
+-#include <SDL/SDL.h>
++#include <SDL.h>
+ #define _WINSOCKAPI_
+ #include <plib/ul.h>
+ 
+Index: src/main_loop.hpp
+===================================================================
+--- src/main_loop.hpp	(revision 4954)
++++ src/main_loop.hpp	(working copy)
+@@ -29,7 +29,7 @@
+ #  include <GL/gl.h>
+ #endif
+ 
+-#include <SDL/SDL_types.h>
++#include <SDL_types.h>
+ 
+ /** Management class for the whole gameflow, this is where the
+     main-loop is */
+Index: configure.ac
+===================================================================
+--- configure.ac	(revision 4954)
++++ configure.ac	(working copy)
+@@ -223,43 +223,11 @@
+ dnl =======================
+ dnl check for SDL libraries
+ dnl =======================
+-dnl Potentially sdl-config could be used, but apparently that might not
+-dnl exist on all platforms, so doing the 'classical' test is safer :(
+-case "${host}" in
+-*)
+-   dnl default unix style machines
++AM_PATH_SDL([], [:], [ AC_MSG_ERROR([I need SDL]) ])
++CXXFLAGS="$CXXFLAGS $SDL_CFLAGS"
++sdl_LIBS="$SDL_LIBS"
+ 
+-   dnl check for libraries
+-   save_LIBS=$LIBS 
+-   AC_SEARCH_LIBS(SDL_Init, SDL, have_SDL_lib=yes)
+-   sdl_LIBS="$LIBS"
+-   LIBS=$save_LIBS
+ 
+-   dnl check for header files
+-   AC_CHECK_HEADER(SDL/SDL.h, have_SDL_hdr=yes)
+-   
+-   if test x$have_SDL_hdr != xyes -o x$have_SDL_lib != xyes; then
+-      AC_MSG_ERROR([Install SDL first...])
+-   fi
+-
+-    AC_TRY_RUN([
+-    #  include <SDL/SDL.h>
+-       int main() {
+-       if ( SDL_VERSION_ATLEAST(1,2,10)) {
+-          return 0;
+-        }
+-       return -1;
+-       }
+-     ],
+-      :,
+-        AC_MSG_WARN([Your SDL version uses deprecated
+-    headers. Please update to version 1.2.10 or higher if possible.
+-    Currently this doesn't affects the game at all.])
+-    )
+-
+-esac
+-
+-
+ dnl ======================================================
+ dnl Try to supply the SVN revision number for the compiler
+ dnl ======================================================

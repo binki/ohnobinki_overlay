@@ -2,6 +2,12 @@
 # Copyright 1999-2010 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/games-action/supertuxkart/ChangeLog,v 1.17 2010/01/03 21:57:03 mr_bones_ Exp $
 
+  08 Mar 2010; Nathan Phillip Brink (ohnobinki)
+  <ohnobinki@ohnopublishing.net> supertuxkart-0.6.2.ebuild,
+  +files/supertuxkart-0.6.2-SDL.h-portage-multilib.patch:
+  Patch to use SDL.h instead of SDL/SDL.h by using AM_PATH_SDL from libsdl.
+  Now should work with multilib-portage.
+
   03 Jan 2010; Michael Sterrett <mr_bones_@gentoo.org>
   supertuxkart-0.6.2.ebuild:
   add USE=nls support (bug #299446)

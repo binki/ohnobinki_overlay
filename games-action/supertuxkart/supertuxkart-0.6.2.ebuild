@@ -12,7 +12,7 @@ SRC_URI="mirror://sourceforge/supertuxkart/files/SuperTuxKart/${PV}/${P}-src.tar
 
 LICENSE="GPL-3 CCPL-Attribution-ShareAlike-3.0 CCPL-Attribution-2.0 CCPL-Sampling-Plus-1.0 public-domain as-is"
 SLOT="0"
-KEYWORDS="amd64 ~ppc x86"
+KEYWORDS="~amd64 ~ppc ~x86"
 IUSE="nls"
 
 RDEPEND=">=media-libs/plib-1.8.4
@@ -52,6 +52,9 @@ src_prepare() {
 		-e '/AM_CPPFLAGS/s:/games::' \
 		src/Makefile.am \
 		|| die "sed failed"
+
+	epatch "${FILESDIR}"/${P}-SDL.h-portage-multilib.patch
+
 	rm -rf src/enet
 	eautoreconf
 }
