@@ -2,6 +2,10 @@
 # Copyright 1999-2010 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/media-video/vlc/ChangeLog,v 1.558 2010/02/24 13:13:36 aballier Exp $
 
+  08 Mar 2010; Nathan Phillip Brink (ohnobinki)
+  <ohnobinki@ohnopublishing.net> vlc-1.0.5.ebuild:
+  Fixed epatch line, reported by edt.
+
   07 Mar 2010; Nathan Phillip Brink (ohnobinki)
   <ohnobinki@ohnopublishing.net> vlc-1.0.4.ebuild,
   +files/vlc-1.0.4-sdl-portage-multilib.patch, vlc-1.0.5.ebuild,
