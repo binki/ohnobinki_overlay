@@ -8,7 +8,7 @@ inherit cmake-utils eutils games subversion
 
 DESCRIPTION="A game similar to Super Mario Bros."
 HOMEPAGE="http://super-tux.sourceforge.net"
-SRC_URI=""
+SRC_URI="ftp://ohnopub.net/mirror/supertux-r6591-crazy-system-findlocale-notinygettext.patch"
 
 ESVN_REPO_URI="http://supertux.lethargik.org/svn/supertux/trunk/supertux"
 ESVN_PROJECT="${PN}"
@@ -19,6 +19,7 @@ KEYWORDS=""
 IUSE="opengl curl debug"
 
 RDEPEND="dev-games/physfs
+	dev-libs/findlocale
 	dev-libs/tinygettext
 	media-libs/libsdl[joystick]
 	media-libs/libvorbis
@@ -36,7 +37,9 @@ DEPEND="${RDEPEND}
 
 src_prepare() {
 	epatch "${FILESDIR}/supertux-9999-tinygettext-external.patch"
-	rm -rf externals/tinygettext || die
+	epatch "${DISTDIR}/supertux-r6591-crazy-system-findlocale-notinygettext.patch"
+
+	rm -rf externals/{findlocale,tinygettext} || die
 }
 
 src_configure() {
