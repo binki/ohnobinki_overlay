@@ -43,13 +43,13 @@ src_prepare() {
 }
 
 src_configure() {
-	local mycmakeargs="-DWERROR=OFF
+	local mycmakeargs=( -DWERROR=OFF
 			 -DINSTALL_SUBDIR_SHARE=share/games/supertux2
 			 -DINSTALL_SUBDIR_BIN=games/bin
 			 -DINSTALL_SUBDIR_DOC=share/doc/${P}
 			 $(cmake-utils_use_enable opengl OPENGL)
 			 $(cmake-utils_use_enable debug SQDBG)
-			 $(cmake-utils_use debug DEBUG)"
+			 $(cmake-utils_use debug DEBUG) )
 
 	cmake-utils_src_configure
 }
