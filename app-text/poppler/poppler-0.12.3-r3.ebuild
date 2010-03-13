@@ -46,6 +46,7 @@ src_prepare() {
 	epatch "${FILESDIR}"/${P}-gdk.patch
 	epatch "${FILESDIR}"/${P}-darwin-gtk-link.patch
 	epatch "${FILESDIR}"/${P}-config.patch  #304407
+	epatch "${FILESDIR}"/${P}-cxxflags.patch #309297
 }
 
 src_configure() {

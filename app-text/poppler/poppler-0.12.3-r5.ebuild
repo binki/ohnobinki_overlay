@@ -47,6 +47,7 @@ src_prepare() {
 	epatch "${FILESDIR}"/${P}-darwin-gtk-link.patch
 	epatch "${FILESDIR}"/${P}-config.patch  #304407
 	epatch "${FILESDIR}"/${P}-cairo-downscale.patch  #303817
+	epatch "${FILESDIR}"/${P}-cxxflags.patch #309297
 }
 
 src_configure() {

@@ -48,6 +48,7 @@ src_prepare() {
 	epatch "${FILESDIR}"/${P}-config.patch  #304407
 	epatch "${FILESDIR}"/${PN}-0.12.3-cairo-downscale.patch  #303817
 	epatch "${FILESDIR}"/${PN}-0.12.4-nanosleep-rt.patch
+	epatch "${FILESDIR}"/${PN}-0.12.3-cxxflags.patch #309297
 }
 
 src_configure() {
