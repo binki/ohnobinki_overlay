@@ -1,6 +1,10 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/sys-libs/libixp/libixp-0.5.ebuild,v 1.1 2009/07/11 11:12:37 omp Exp $
+
+EAPI="2"
+
+inherit base multilib
 
 DESCRIPTION="Standalone client/server 9P library"
 HOMEPAGE="http://libs.suckless.org/libixp"
@@ -14,15 +18,13 @@ IUSE=""
 DEPEND=""
 RDEPEND=""
 
-src_unpack() {
-	unpack ${A}
-	cd "${S}"
-
+src_prepare() {
 	sed -i \
 		-e "/^PREFIX/s|=.*|= ${D}/usr|" \
 		-e "/^  ETC/s|=.*|= ${D}/etc|" \
 		-e "/^CFLAGS/s|=|+=|" \
 		-e "/^LDFLAGS/s|=|+=|" \
+		-e "/LIBDIR =/s|/lib|/$(get_libdir)|" \
 		config.mk || die "sed failed"
 }
 
