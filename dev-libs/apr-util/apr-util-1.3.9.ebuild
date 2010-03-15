@@ -1,4 +1,4 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/dev-libs/apr-util/apr-util-1.3.9.ebuild,v 1.12 2009/11/04 12:12:05 arfrever Exp $
 
@@ -70,7 +70,8 @@ src_configure() {
 }
 
 src_compile() {
-	emake || die "emake failed"
+	emake CFLAGS="${CFLAGS}" LDFLAGS="${LDFLAGS}" CPPFLAGS="${CPPFLAGS}" \
+		|| die "emake failed"
 
 	if use doc; then
 		emake dox || die "emake dox failed"

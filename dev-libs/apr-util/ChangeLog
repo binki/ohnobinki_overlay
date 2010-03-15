@@ -1,6 +1,10 @@
 # ChangeLog for dev-libs/apr-util
-# Copyright 1999-2009 Gentoo Foundation; Distributed under the GPL v2
+# Copyright 1999-2010 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/dev-libs/apr-util/ChangeLog,v 1.145 2009/11/04 12:12:05 arfrever Exp $
+
+  14 Mar 2010; Nathan Phillip Brink (ohnobinki)
+  <ohnobinki@ohnopublishing.net> apr-util-1.3.9.ebuild:
+  Override Makefile's CFLAGS, LDFLAGS, and CPPFLAGS. bug 309335
 
   04 Nov 2009; Arfrever Frehtes Taifersar Arahesis <arfrever@gentoo.org>
   apr-util-1.3.9.ebuild:
