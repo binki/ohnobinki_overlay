@@ -1,77 +1,78 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/media-plugins/live/live-2009.11.12.ebuild,v 1.1 2009/11/21 12:23:51 aballier Exp $
 
-inherit flag-o-matic eutils toolchain-funcs multilib
+EAPI="2"
 
-DESCRIPTION="Source-code libraries for standards-based RTP/RTCP/RTSP multimedia streaming, suitable for embedded and/or low-cost streaming applications"
+inherit eutils flag-o-matic eutils toolchain-funcs multilib
+
+DESCRIPTION="Standards-based RTP/RTCP/RTSP multimedia streaming for embedded streaming applications"
 HOMEPAGE="http://www.live555.com/"
 SRC_URI="http://www.live555.com/liveMedia/public/${P/-/.}.tar.gz"
 
 LICENSE="LGPL-2.1"
 SLOT="0"
 KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~sparc ~x86 ~x86-fbsd"
-IUSE=""
+IUSE="static-libs"
 
-S="${WORKDIR}"
+S=${WORKDIR}/${PN}
 
 # Alexis Ballier <aballier@gentoo.org>
 # Be careful, bump this everytime you bump the package and the ABI has changed.
 # If you don't know, ask someone.
 LIVE_ABI_VERSION=3
 
-src_unpack() {
-	unpack ${A}
-	cd "${WORKDIR}"
-	epatch "${FILESDIR}/${PN}-recursive.patch"
+src_prepare() {
+	cp "${FILESDIR}"/config.gentoo ./ || die
+	epatch "${FILESDIR}"/${PN}-2009.09.28-buildorder.patch
+	epatch "${FILESDIR}"/${PN}-2009.06.02-libdeps.patch
+	epatch "${FILESDIR}"/${PN}-recursive.patch
+}
 
-	cp -pPR live live-shared
-	mv live live-static
+src_configure() {
+	tc-export CC CXX
+	export LIVE_ABI_VERSION LIBDIR=/usr/$(get_libdir)
 
-	cp "${FILESDIR}/config.gentoo" live-static
-	cp "${FILESDIR}/config.gentoo-so-r1" live-shared
+	if ! use static-libs; then
+		append-flags -shared
+		append-ldflags -shared
+	fi
+
+	./genMakefiles gentoo
 }
 
 src_compile() {
-	tc-export CC CXX LD
-
-	cd "${WORKDIR}/live-static"
-
-	einfo "Beginning static library build"
-	./genMakefiles gentoo
-	emake -j1 LINK_OPTS="-L. $(raw-ldflags)" || die "failed to build static libraries"
+	einfo "Beginning library build"
+	emake -j1 || die "failed to build libraries"
 
 	einfo "Beginning programs build"
-	cd "${WORKDIR}/live-static/testProgs"
-	emake LINK_OPTS="-L. ${LDFLAGS}" || die "failed to build test programs"
-	cd "${WORKDIR}/live-static/mediaServer"
-	emake LINK_OPTS="-L. ${LDFLAGS}" || die "failed to build the mediaserver"
-
-	cd "${WORKDIR}/live-shared"
-	einfo "Beginning shared library build"
-	./genMakefiles gentoo-so-r1
-	emake -j1 LINK_OPTS="-L. ${LDFLAGS}" LIB_SUFFIX="so.${LIVE_ABI_VERSION}" || die "failed to build shared libraries"
+	emake -C testProgs || die "failed to build test programs"
+	emake -C mediaServer || die "failed to build the mediaserver"
 }
 
 src_install() {
+	dodir /usr/{$(get_libdir),bin} || die
 	for library in UsageEnvironment liveMedia BasicUsageEnvironment groupsock; do
-		dolib.a live-static/${library}/lib${library}.a
-		dolib.so live-shared/${library}/lib${library}.so.${LIVE_ABI_VERSION}
-		dosym lib${library}.so.${LIVE_ABI_VERSION} /usr/$(get_libdir)/lib${library}.so
+		libtool --mode=install install -c ${library}/lib${library}.la "${D}"/usr/$(get_libdir)/ || die
+
+		if ! use static-libs; then
+			# make tommy happy --ohnobinki
+			rm -v "${D}"/usr/$(get_libdir)/lib${library}.la || die
+		fi
 
 		insinto /usr/include/${library}
-		doins live-shared/${library}/include/*h
+		doins ${library}/include/*h || die
 	done
 
 	# Should we really install these?
-	find live-static/testProgs -type f -perm +111 -print0 | \
-		xargs -0 dobin
+	find testProgs -type f -perm +111 \
+		-exec libtool --mode=install install -c '{}' "${D}"/usr/bin/ \; || die
 
 	#install included live555MediaServer aplication
-	dobin live-static/mediaServer/live555MediaServer
+	libtool --mode=install install -c mediaServer/live555MediaServer "${D}"/usr/bin/ || die
 
 	# install docs
-	dodoc live-static/README
+	dodoc README || die
 }
 
 pkg_postinst() {

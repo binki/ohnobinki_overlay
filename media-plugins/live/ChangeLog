@@ -2,6 +2,19 @@
 # Copyright 1999-2010 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/media-plugins/live/ChangeLog,v 1.126 2010/01/06 16:55:17 ranger Exp $
 
+  16 Mar 2010; Nathan Phillip Brink (ohnobinki)
+  <ohnobinki@ohnopublishing.net> -live-2008.09.02.ebuild,
+  live-2009.06.02.ebuild, +files/live-2009.06.02-as-needed.patch,
+  +files/live-2009.06.02-buildorder.patch,
+  +files/live-2009.06.02-libdeps.patch, live-2009.09.28.ebuild,
+  +files/live-2009.09.28-buildorder.patch, live-2009.11.12.ebuild,
+  files/config.gentoo, -files/config.gentoo-so, -files/config.gentoo-so-r1,
+  files/live-recursive.patch:
+  Fix up ebuilds to build libraries using libtool instead of by calling ld
+  directly. Also upgraded to EAPI="2", shorten DESCRIPTION, and added some
+  missing die''s. All for bug 309681, bug 308373, and to properly support
+  portage-multilib.
+
   06 Jan 2010; Brent Baude <ranger@gentoo.org> live-2009.06.02.ebuild:
   Marking live-2009.06.02 ppc64 for bug 277009
 

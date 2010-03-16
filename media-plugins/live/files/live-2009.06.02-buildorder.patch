@@ -1,0 +1,24 @@
+Author: Nathan Phillip Brink <ohnobinki@ohnopublishing.net>
+Purpose: To help get libtool working with live.
+
+diff -r a467df21e246 -r d1fda89b91cd Makefile.tail
+--- a/Makefile.tail	Fri Mar 12 11:30:13 2010 -0500
++++ b/Makefile.tail	Fri Mar 12 12:19:11 2010 -0500
+@@ -24,13 +24,13 @@
+ all:	$(ALL)
+ 
+ 
+-$(LIVEMEDIA_LIB):
++$(LIVEMEDIA_LIB): $(GROUPSOCK_LIB) $(BASIC_USAGE_ENVIRONMENT_LIB)
+ 	cd $(LIVEMEDIA_DIR) ; $(MAKE)
+-$(GROUPSOCK_LIB):
++$(GROUPSOCK_LIB): $(BASIC_USAGE_ENVIRONMENT_LIB)
+ 	cd $(GROUPSOCK_DIR) ; $(MAKE)
+ $(USAGE_ENVIRONMENT_LIB):
+ 	cd $(USAGE_ENVIRONMENT_DIR) ; $(MAKE)
+-$(BASIC_USAGE_ENVIRONMENT_LIB):
++$(BASIC_USAGE_ENVIRONMENT_LIB): $(USAGE_ENVIRONMENT_LIB)
+ 	cd $(BASIC_USAGE_ENVIRONMENT_DIR) ; $(MAKE)
+ $(TESTPROGS_APP): $(LIVEMEDIA_LIB) $(GROUPSOCK_LIB) $(BASIC_USAGE_ENVIRONMENT_LIB) $(USAGE_ENVIRONMENT_LIB)
+ 	cd $(TESTPROGS_DIR) ; $(MAKE)
+diff -r a467df21e246 -r d1fda89b91cd groupsock/Makefile.tail
