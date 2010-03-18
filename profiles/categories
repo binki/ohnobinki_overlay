@@ -9,13 +9,10 @@ dev-db
 dev-embedded
 dev-libs
 dev-php
-dev-python
 dev-tcltk
 dev-util
 games-action
 games-arcade
-kde-misc
-kde-test
 mail-client
 mail-filter
 media-gfx
@@ -26,13 +23,10 @@ net-fs
 net-ftp
 net-irc
 net-nds
-pkg-editors
 sci-calculators
 sys-devel
 sys-fs
 sys-libs
 www-apache
 www-apps
-www-client
 x11-drivers
-x11-misc
