@@ -1,6 +1,14 @@
 # ChangeLog for dev-embedded/phidget
-# Copyright 1999-2009 Nathan Brink; Distributed under the GPL v2
+# Copyright 1999-2010 Nathan Brink; Distributed under the GPL v2
 # $Header: $
+
+  30 Mar 2010; Nathan Phillip Brink (ohnobinki)
+  <ohnobinki@ohnopublishing.net> -files/phidget21-crosscompile.patch,
+  -phidget-2.1.5.20090105.ebuild, +files/phidget21-gentoo.patch,
+  phidget-2.1.6.20090430.ebuild, -files/phidget21-java.patch,
+  -files/phidget21-libdir.patch:
+  Remove old version and fix compilation with portage-multilib using
+  toolchain-funcs.eclass.
 
   11 May 2009; Nathan Phillip Brink <ohnobinki@ohnopublishing.net>
   phidget-2.1.5.20090105.ebuild, phidget-2.1.6.20090430.ebuild:

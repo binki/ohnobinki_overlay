@@ -1,0 +1,51 @@
+--- a/Makefile	2008-12-22 19:05:10.000000000 -0500
++++ b/Makefile	2010-03-30 19:33:08.000000000 -0400
+@@ -1,26 +1,22 @@
+ PREFIX=/usr
+ DEBUG?=n
+ DMALLOC?=n
+-JAVA?=y
+-CROSSCOMPILE?=n
++#JAVA?=y
++CROSS_COMPILE?=
++JAVAFLAGS?=
+ ZEROCONF?=avahi
+ ZEROCONF_LOOKUP?=n
+ 
+-ifeq ($(CROSSCOMPILE),y)
+-CC=arm-linux-gcc
+-NM=arm-linux-nm
+-AR=arm-linux-ar
+-CXX=arm-linux-g++
+-CPP=arm-linux-cpp
+-LD=arm-linux-ld
+-endif
+-
+-ifeq ($(JAVA),y)
+-JAVAHOME := /usr/java/j2sdk1.4.2_18
+-JAVAFLAGS=-I$(JAVAHOME)/include -I$(JAVAHOME)/include/linux
+-else
+-JAVAFLAGS=
+-endif
++CC=$(CROSS_COMPILE)gcc
++AR=$(CROSS_COMPILE)ar
++CXX=$(CROSS_COMPILE)g++
++
++#ifeq ($(JAVA),y)
++#JAVAHOME := /usr/java/j2sdk1.4.2_18
++#JAVAFLAGS=-I$(JAVAHOME)/include -I$(JAVAHOME)/include/linux
++#else
++#JAVAFLAGS=
++#endif
+ 
+ ifeq ($(DMALLOC),y)
+ DEBUGFLAGS=-DDMALLOC -DDMALLOC_FUNC_CHECK
+@@ -157,7 +153,7 @@
+ 	cd Java ; jar cf ../$@ com/phidgets/event/*.class com/phidgets/*.class
+ 
+ install: all
+-	$(INSTALL_LIB) libphidget21.so $(INSTALLPREFIX)/$(PREFIX)/lib
++	$(INSTALL_LIB) libphidget21.so $(INSTALLPREFIX)/$(PREFIX)/$(LIBDIR)
+ 	$(INSTALL_FILE) phidget21.h $(INSTALLPREFIX)/$(PREFIX)/include
+ 
+ uninstall:
