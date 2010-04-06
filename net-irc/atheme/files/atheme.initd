@@ -8,13 +8,13 @@ depend() {
 }
 
 start() {
-	ebegin "Starting ${SVSNAME}"
+	ebegin "Starting ${SVCNAME}"
 	start-stop-daemon --start --quiet --chuid atheme --exec /usr/bin/atheme-services
-	eend $? "Failed to start ${SVSNAME}"
+	eend $? "Failed to start ${SVCNAME}"
 }
 
 stop() {
-	ebegin "Stopping ${SVSNAME}"
+	ebegin "Stopping ${SVCNAME}"
 	start-stop-daemon --stop --quiet --pidfile /var/run/atheme/atheme.pid
-	eend $? "Failed to stop ${SVSNAME}"
+	eend $? "Failed to stop ${SVCNAME}"
 }
