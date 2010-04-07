@@ -25,6 +25,9 @@ src_prepare() {
 }
 
 src_configure() {
+	# GNU Make's $(COMPILE.S) passes ASFLAGS to $(CCAS), CCAS=$(CC)
+	export ASFLAGS="${CCASFLAGS}"
+
 	econf $(use_with zlib) $(use_with xen)
 }
 

@@ -1,4 +1,4 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/sys-apps/kexec-tools/kexec-tools-9999.ebuild,v 1.4 2009/01/23 04:43:47 darkside Exp $
 
@@ -25,6 +25,9 @@ src_unpack() {
 }
 
 src_configure() {
+	# GNU Make's $(COMPILE.S) passes ASFLAGS to $(CCAS), CCAS=$(CC)
+	export ASFLAGS="${CCASFLAGS}"
+
 	econf $(use_with zlib) $(use_with xen)
 }
 
