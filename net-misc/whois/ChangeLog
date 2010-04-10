@@ -1,6 +1,12 @@
 # ChangeLog for net-misc/whois
-# Copyright 1999-2009 Gentoo Foundation; Distributed under the GPL v2
+# Copyright 1999-2010 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/net-misc/whois/ChangeLog,v 1.134 2009/11/17 19:49:49 ranger Exp $
+
+  10 Apr 2010; Nathan Phillip Brink (ohnobinki)
+  <ohnobinki@ohnopublishing.net> -whois-4.7.30.ebuild, -whois-4.7.33.ebuild,
+  -whois-4.7.34.ebuild, whois-4.7.36.ebuild,
+  +files/whois-5.0.1-cflags-combine.patch:
+  Drop old versions. Add patch to fix compilation with CFLAGS=-combine.
 
   17 Nov 2009; Brent Baude <ranger@gentoo.org> whois-4.7.36.ebuild:
   Marking whois-4.7.36 ppc64 for bug 291095

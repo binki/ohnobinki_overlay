@@ -1,4 +1,4 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/net-misc/whois/whois-4.7.36.ebuild,v 1.6 2009/11/17 19:49:49 ranger Exp $
 
@@ -24,6 +24,7 @@ src_unpack() {
 	cd "${S}"
 	epatch "${FILESDIR}"/${PN}-4.7.26-gentoo-security.patch
 	epatch "${FILESDIR}"/${PN}-4.7.2-config-file.patch
+	epatch "${FILESDIR}"/${PN}-5.0.1-cflags-combine.patch
 
 	if use nls ; then
 		sed -i -e 's:#\(.*pos\):\1:' Makefile

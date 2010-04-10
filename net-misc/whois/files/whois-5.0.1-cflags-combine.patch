@@ -1,0 +1,35 @@
+diff -U 1 -r whois-5.0.1/Makefile whois-5.0.1.bac/Makefile
+--- whois-5.0.1/Makefile	2009-12-16 17:40:11.000000000 -0500
++++ whois-5.0.1.bac/Makefile	2010-04-08 21:39:02.000000000 -0400
+@@ -4,2 +4,3 @@
+ 
++CAT = cat
+ PERL = perl
+@@ -7,4 +8,8 @@
+ 
++.PHONY: all install install-whois install-mkpasswd install-pos distclean clean pos depend
++
++
+ whois_OBJECTS := whois.o utils.o
+ mkpasswd_OBJECTS := mkpasswd.o utils.o
++DEPINFOS := mkpasswd.depinfo utils.depinfo whois.depinfo
+ 
+@@ -58,2 +63,5 @@
+ 
++%.depinfo: %.c
++	$(CC) $(DEFS) $(INCLUDES) $(CFLAGS) -MM -MG $< > $@
++
+ whois: $(whois_OBJECTS)
+@@ -108,2 +116,3 @@
+ 	rm -f po/*.mo
++	rm -f $(DEPINFOS)
+ 
+@@ -113,4 +122,4 @@
+ depend: Makefile.depend
+-Makefile.depend:
+-	$(CC) $(DEFS) $(INCLUDES) $(CFLAGS) -MM -MG *.c > $@
++Makefile.depend: $(DEPINFOS)
++	$(CAT) $(DEPINFOS) > $@
+ 
+Only in whois-5.0.1.bac: Makefile.orig
+Only in whois-5.0.1.bac: Makefile.rej
