@@ -1,7 +1,7 @@
 diff -r db4e8d7f66bd -r b739da53e7bd src/makefile
 --- a/src/makefile	Mon Apr 12 21:21:32 2010 -0400
 +++ b/src/makefile	Mon Apr 12 21:26:25 2010 -0400
-@@ -38,15 +38,15 @@
+@@ -38,11 +38,11 @@
  
  ../plugins/filter.so:	plugins/filter.c ladspa.h
  	$(CC) $(CFLAGS) $(INCLUDES) -fPIC -o plugins/filter.o -c plugins/filter.c
@@ -15,8 +15,3 @@ diff -r db4e8d7f66bd -r b739da53e7bd src/makefile
  
  ../plugins/%.so:	plugins/%.cpp ladspa.h
  	$(CXX) $(CXXFLAGS) $(INCLUDES) -fPIC -o plugins/$*.o -c plugins/$*.cpp
--	$(CXX) $(LDFLAGS) -o ../plugins/$*.so plugins/$*.o -shared
-+	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o ../plugins/$*.so plugins/$*.o -nostartfiles -shared
- 
- ###############################################################################
- #

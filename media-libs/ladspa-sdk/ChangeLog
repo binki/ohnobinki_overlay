@@ -3,6 +3,11 @@
 # $Header: /var/cvsroot/gentoo-x86/media-libs/ladspa-sdk/ChangeLog,v 1.50 2010/04/02 15:42:46 jer Exp $
 
   13 Apr 2010; Nathan Phillip Brink (ohnobinki)
+  <ohnobinki@ohnopublishing.net> files/ladspa-sdk-1.13-no-LD.patch:
+  Fix compilation of C++ object which my earlier no-LD patch strangled
+  earlier.
+
+  13 Apr 2010; Nathan Phillip Brink (ohnobinki)
   <ohnobinki@ohnopublishing.net> -ladspa-sdk-1.12-r2.ebuild,
   -files/ladspa-sdk-1.12-fbsd.patch, -files/ladspa-sdk-1.12-gcc4.patch,
   -files/ladspa-sdk-1.12-test.patch, -ladspa-sdk-1.13.ebuild,
