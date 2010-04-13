@@ -2,6 +2,8 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/media-libs/ladspa-sdk/ladspa-sdk-1.13-r1.ebuild,v 1.7 2010/04/02 15:42:46 jer Exp $
 
+EAPI=2
+
 inherit eutils toolchain-funcs portability flag-o-matic
 
 MY_PN=${PN/-/_}
@@ -19,22 +21,22 @@ IUSE=""
 RDEPEND=""
 DEPEND=">=sys-apps/sed-4"
 
-S="${WORKDIR}/${MY_PN}/src"
+S=${WORKDIR}/${MY_PN}/src
 
-src_unpack() {
-	unpack ${A}
+src_prepare() {
 	epatch "${FILESDIR}/${P}-properbuild.patch"
 	epatch "${FILESDIR}/${P}-asneeded.patch"
 	epatch "${FILESDIR}/${P}-fbsd.patch"
+	epatch "${FILESDIR}/${P}-no-LD.patch"
+
 	sed -i -e 's:-sndfile-play*:@echo Disabled \0:' \
-		"${S}/makefile" || die "sed makefile failed (sound playing tests)"
+		makefile || die "sed makefile failed (sound playing tests)"
 }
 
 src_compile() {
 	emake CFLAGS="${CFLAGS}" CXXFLAGS="${CXXFLAGS}" \
-		RAW_LDFLAGS="$(raw-ldflags)" \
 		DYNAMIC_LD_LIBS="$(dlopen_lib)" \
-		CC="$(tc-getCC)" CXX="$(tc-getCXX)" LD="$(tc-getLD)" \
+		CC="$(tc-getCC)" CXX="$(tc-getCXX)" \
 		targets || die
 }
 
