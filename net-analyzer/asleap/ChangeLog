@@ -1,0 +1,9 @@
+# ChangeLog for net-analyzer/asleap
+# Copyright 1999-2010 Gentoo Foundation; Distributed under the GPL v2
+# $Header: $
+
+  18 Apr 2010; Nathan Phillip Brink (ohnobinki)
+  <ohnobinki@ohnopublishing.net> +asleap-2.2.ebuild,
+  +files/asleap-2.2-Makefile.patch, +metadata.xml:
+  New ebuild net-analyzer/asleap.
+
