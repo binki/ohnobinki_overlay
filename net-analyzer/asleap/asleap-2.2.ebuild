@@ -26,7 +26,7 @@ src_compile() {
 	emake LDFLAGS="${LDFLAGS}" CFLAGS="${CFLAGS}" || die
 }
 
-src_instal() {
+src_install() {
 	dobin ${PN} genkeys || die
 	dodoc THANKS README || die
 }
