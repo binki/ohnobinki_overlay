@@ -12,7 +12,7 @@ SRC_URI="http://www.willhackforsushi.com/code/${PN}/${PV}/${P}.tgz"
 LICENSE=GPL-2
 
 SLOT=0
-KEYWORDS="~amd64"
+KEYWORDS="~amd64 ~x86"
 IUSE=
 
 RDEPEND="net-libs/libpcap"
