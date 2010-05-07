@@ -11,17 +11,19 @@ SRC_URI="mirror://nongnu/confuse/${P}.tar.gz"
 LICENSE="LGPL-2"
 SLOT="0"
 KEYWORDS="~alpha ~amd64 ~hppa ~ia64 ~ppc ~ppc64 ~sparc ~x86 ~sparc-fbsd ~x86-fbsd"
-IUSE=""
+IUSE="nls"
 
 DEPEND="sys-devel/flex
 	dev-util/pkgconfig
-	sys-devel/gettext"
-RDEPEND="virtual/libintl"
+	sys-devel/gettext
+	nls? ( sys-devel/gettext )"
+RDEPEND="nls? ( virtual/libintl )"
 
 src_configure() {
-	# examples are compiled but not installed. They
+	# examples are normally compiled but not installed. They
 	# fail during a mingw crosscompile.
-	econf --enable-shared \
+	econf $(use_enable nls) \
+		--enable-shared \
 		--disable-examples
 }
 
