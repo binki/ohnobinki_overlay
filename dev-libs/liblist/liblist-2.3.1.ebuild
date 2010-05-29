@@ -2,20 +2,23 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/dev-libs/liblist/liblist-2.1-r1.ebuild,v 1.1 2009/12/05 22:32:30 nerdboy Exp $
 
-EAPI="2"
+EAPI=2
 
-DESCRIPTION="This package provides generic linked-list manipulation routines, plus queues and stacks."
+inherit multilib
+
+DESCRIPTION="This package provides generic linked-list manipulation routines, plus queues and stacks"
 HOMEPAGE="http://ohnopub.net/liblist"
 SRC_URI="ftp://ohnopublishing.net/mirror/${P}.tar.bz2"
 
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~ppc ~x86"
-IUSE="doc examples"
+IUSE="doc examples static-libs"
 
 src_configure() {
 	econf $(use_enable doc docs) \
-		$(use_enable examples)
+		$(use_enable examples) \
+		$(use_enable static-libs static)
 }
 
 src_install() {
@@ -27,7 +30,14 @@ src_install() {
 		insinto /usr/share/doc/${P}/examples
 		doins examples/{*.c,Makefile,README} || die
 		insinto /usr/share/doc/${P}/examples/cache
-		doins examples/cache/{*.c,Makefile,README} || die
+		doins examples/cache/{*.c,README} || die
+	fi
+
+	if ! use static-libs; then
+		rm -v "${D}"/usr/$(get_libdir)/liblist.la || die
+		if use examples; then
+			rm -v "${D}"/usr/$(get_libdir)/libcache.la || die
+		fi
 	fi
 }
 
