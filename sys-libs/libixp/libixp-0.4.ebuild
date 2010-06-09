@@ -2,9 +2,9 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/sys-libs/libixp/libixp-0.4.ebuild,v 1.1 2007/11/18 05:44:12 omp Exp $
 
-EAPI="2"
+EAPI=2
 
-inherit base multilib toolchain-funcs
+inherit multilib
 
 DESCRIPTION="Standalone client/server 9P library"
 HOMEPAGE="http://libs.suckless.org/"
