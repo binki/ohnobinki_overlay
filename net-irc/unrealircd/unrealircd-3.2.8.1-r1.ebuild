@@ -1,8 +1,8 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: net-irc/unrealircd/unrealircd-3.2.8.1.ebuild,v 1.5 2009/04/15 08:57:36 j0inty Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-irc/unrealircd/unrealircd-3.2.8.1.ebuild,v 1.5 2009/12/22 01:01:06 vostorga Exp $
 
-EAPI="2"
+EAPI=2
 
 inherit eutils autotools ssl-cert versionator multilib
 
@@ -16,8 +16,9 @@ SRC_URI="http://unrealircd.icedslash.com/${MY_P}.tar.gz
 
 SLOT="0"
 LICENSE="GPL-2"
-KEYWORDS="~amd64 ~x86"
-IUSE="-curl disableusermod +hub -ipv6 no-operoverride -nospoof operoverride-verify +prefixaq showlistmodes shunnotices -ssl topicisnuhost -zlib"
+KEYWORDS="~amd64 ~ppc ~sparc ~x86 ~x86-fbsd"
+IUSE="curl +hub ipv6 +operoverride +nospoof operoverride-verify +prefixaq
+	showlistmodes shunnotices ssl topicisnuhost +usermod zlib"
 
 RDEPEND="ssl? ( dev-libs/openssl )
 	zlib? ( sys-libs/zlib )
@@ -25,16 +26,17 @@ RDEPEND="ssl? ( dev-libs/openssl )
 	dev-libs/tre
 	>=net-dns/c-ares-1.5.3"
 DEPEND="${RDEPEND}
-	>=sys-apps/sed-4"
+	>=sys-apps/sed-4
+	dev-util/pkgconfig"
 
-S="${WORKDIR}/Unreal$(get_version_component_range 1-2)"
+S=${WORKDIR}/Unreal$(get_version_component_range 1-2)
 
 pkg_setup() {
 	enewuser unrealircd
 }
 
 src_prepare() {
-#QA check against bundled pkgs:
+	#QA check against bundled pkgs
 	rm extras/*.gz
 
 	sed -i \
@@ -42,18 +44,19 @@ src_prepare() {
 		-e "s:ircd\.log:/var/log/unrealircd/ircd.log:" \
 		-e "s:debug\.log:/var/log/unrealircd/debug.log:" \
 		-e "s:ircd\.tune:/var/lib/unrealircd/ircd.tune:" \
-		include/config.h
+		include/config.h \
+		|| die "sed failed"
 
 	# http://bugs.unrealircd.org/view.php?id=3842
 	epatch "${FILESDIR}"/unrealircd-system-tre.patch || die "epatch failed"
 
 	epatch "${FILESDIR}"/unrealircd-system-cares.patch || die "epatch failed"
 
-	mv autoconf/configure.in ./
-	mv autoconf/aclocal.m4 ./acinclude.m4
+	mv autoconf/configure.in ./ || die
+	mv autoconf/aclocal.m4 ./acinclude.m4 || die
 	#can't call eautoreconf because aclocal's source files aren't even in unearlircd's svn!
-	eaclocal || die "eaclocal failed"
-	eautoconf || die "eautoconf failed"
+	eaclocal
+	eautoconf
 }
 
 src_configure() {
@@ -68,9 +71,9 @@ src_configure() {
 	use showlistmodes && myconf="${myconf} --with-showlistmodes"
 	use topicisnuhost && myconf="${myconf} --with-topicisnuhost"
 	use shunnotices && myconf="${myconf} --with-shunnotices"
-	use no-operoverride && myconf="${myconf} --with-no-operoverride"
+	use operoverride || myconf="${myconf} --with-no-operoverride"
 	use operoverride-verify && myconf="${myconf} --with-operoverride-verify"
-	use disableusermod && myconf="${myconf} --with-disableusermod"
+	use usermod || myconf="${myconf} --with-disableusermod"
 
 	econf \
 		--with-listen=5 \
@@ -85,13 +88,14 @@ src_configure() {
 		--with-system-cares \
 		--with-system-tre \
 		--enable-dynamic-linking \
-		${myconf} \
-		|| die "econf failed"
+		${myconf}
 
+	# Fix upstream poor autofoo
 	sed -i \
-		-e "s:${D}::" \
+		-e "s:${D}::g" \
 		include/setup.h \
-		ircdcron/ircdchk
+		ircdcron/ircdchk \
+		|| die
 }
 
 src_compile() {
@@ -101,50 +105,52 @@ src_compile() {
 src_install() {
 	keepdir /var/{lib,log,run}/unrealircd
 
-	newbin src/ircd unrealircd
+	newbin src/ircd unrealircd || die
 
 	exeinto /usr/$(get_libdir)/unrealircd/modules
-	doexe src/modules/*.so
+	doexe src/modules/*.so || die
 
 	dodir /etc/unrealircd
-	dosym /var/lib/unrealircd /etc/unrealircd/tmp
+	dosym /var/lib/unrealircd /etc/unrealircd/tmp || die
 
 	insinto /etc/unrealircd
-	doins {badwords.*,help,spamfilter,dccallow}.conf
-	newins doc/example.conf unrealircd.conf
+	doins {badwords.*,help,spamfilter,dccallow}.conf || die
+	newins doc/example.conf unrealircd.conf || die
 
 	insinto /etc/unrealircd/aliases
-	doins aliases/*.conf
+	doins aliases/*.conf || die
 	insinto /etc/unrealircd/networks
-	doins networks/*.network
+	doins networks/*.network || die
 
 	sed -i \
 		-e s:src/modules:/usr/$(get_libdir)/unrealircd/modules: \
 		-e s:ircd\\.log:/var/log/unrealircd/ircd.log: \
-		"${D}"/etc/unrealircd/unrealircd.conf
+		"${D}"/etc/unrealircd/unrealircd.conf \
+		|| die
 
 	dodoc \
 		Changes Donation Unreal.nfo networks/makenet \
 		ircdcron/{ircd.cron,ircdchk} \
 		|| die "dodoc failed"
-	dohtml doc/*.html
+	dohtml doc/*.html || die
 
-	newinitd "${FILESDIR}"/unrealircd.rc unrealircd
+	newinitd "${FILESDIR}"/unrealircd.rc unrealircd || die
 	newconfd "${FILESDIR}"/unrealircd.confd unrealircd
 
-	fperms 700 /etc/unrealircd
-	chown -R unrealircd "${D}"/{etc,var/{lib,log,run}}/unrealircd
+	fperms 700 /etc/unrealircd || die
+	chown -R unrealircd "${D}"/{etc,var/{lib,log,run}}/unrealircd ||die
 }
 
 pkg_postinst() {
 	# Move docert call from scr_install() to install_cert in pkg_postinst for
 	# bug #201682
-	use ssl && \
+	if use ssl ; then
 		if [[ ! -f "${ROOT}"/etc/unrealircd/server.cert.key ]]; then
-			install_cert /etc/unrealircd/server.cert
-			chown unrealircd "${ROOT}"/etc/unrealircd/server.cert.*
-			ln -snf server.cert.key "${ROOT}"/etc/unrealircd/server.key.pem
+			install_cert /etc/unrealircd/server.cert || die
+			chown unrealircd "${ROOT}"/etc/unrealircd/server.cert.* || die
+			ln -snf server.cert.key "${ROOT}"/etc/unrealircd/server.key.pem || die
 		fi
+	fi
 
 	elog
 	elog "UnrealIRCd will not run until you've set up /etc/unrealircd/unrealircd.conf"

@@ -3,10 +3,10 @@
 <pkgmetadata>
   <herd>net-irc</herd>
   <use>
-    <flag name='disableusermod'>Disable /set* and /chg*</flag>
+    <flag name='usermod'>Enable /set* and /chg*</flag>
     <flag name='hub'>Enable hub support</flag>
     <flag name='nospoof'>Enable spoofing protection</flag>
-    <flag name='no-operoverride'>Disable OperOverride</flag>
+    <flag name='operoverride'>Enable OperOverride</flag>
     <flag name='operoverride-verify'>Enable requiring opers to invite themselves to +s/+p channels</flag>
     <flag name='prefixaq'>Enable chanadmin and chanowner prefixes</flag>
     <flag name='showlistmodes'>Support displaying channel modes in /list</flag>
