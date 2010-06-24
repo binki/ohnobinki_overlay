@@ -3,7 +3,7 @@
 # $Header: /var/cvsroot/gentoo-x86/games-strategy/warzone2100/warzone2100-2.3.0.ebuild,v 1.3 2010/06/21 20:11:51 maekke Exp $
 
 EAPI=2
-inherit versionator games
+inherit autotools eutils versionator games
 
 MY_PV=$(get_version_component_range -2)
 VIDEOS_P=${P}-videos.wz
@@ -38,6 +38,12 @@ DEPEND="${RDEPEND}
 	nls? ( sys-devel/gettext )"
 RDEPEND="${RDEPEND}
 	media-fonts/dejavu"
+
+src_prepare() {
+	epatch "${FILESDIR}"/${PN}-2.3.1-include-SDL.patch
+
+	eautoreconf
+}
 
 src_configure() {
 	egamesconf \

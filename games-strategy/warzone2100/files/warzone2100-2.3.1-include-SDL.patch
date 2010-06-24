@@ -1,0 +1,75 @@
+Author: Nathan Phillip Brink <ohnobinki@ohnopublishing.net>
+Project: Warzone r11026
+Purpose: Use #include <SDL.h> instead of #include <SDL/SDL.h>. See upstream SDL FAQ ( http://www.libsdl.org/faq.php?action=listentries&category=2#19 ). Fixes compilation on Gentoo portage-multilib systems (reported by xming on freenode).
+
+Index: configure.ac
+===================================================================
+--- configure.ac	(revision 11026)
++++ configure.ac	(working copy)
+@@ -367,8 +367,12 @@
+ AC_CHECK_LIB(physfs, PHYSFS_init, AC_SUBST([PHYSFS_LIBS], [-lphysfs]), AC_MSG_ERROR([PhysicsFS not found.]), [${WIN32_LIBS}])
+ 
+ # Look for OpenGL
+-AC_CHECK_HEADER(SDL/SDL_opengl.h, ,
++CPPFLAGS_SAVE="$CPPFLAGS"
++CPPFLAGS="$CPPFLAGS $SDL_CFLAGS"
++AC_CHECK_HEADER([SDL_opengl.h], [],
+ 	AC_MSG_ERROR([SDL OpenGL header not found. Please install SDL with OpenGL support.]))
++CPPFLAGS="$CPPFLAGS_SAVE"
++
+ AC_CHECK_LIB(GL, main,
+ 	OPENGL_LIBS="-lGL",
+ 	AC_CHECK_LIB(opengl32, main,
+Index: lib/iniparser/Makefile.am
+===================================================================
+--- lib/iniparser/Makefile.am	(revision 11026)
++++ lib/iniparser/Makefile.am	(working copy)
+@@ -1,5 +1,5 @@
++AM_CPPFLAGS = $(SDL_CFLAGS) $(WZ_CPPFLAGS)
+ AM_CFLAGS = $(WZ_CFLAGS)
+-AM_CPPFLAGS = $(WZ_CPPFLAGS)
+ noinst_LIBRARIES = libiniparser.a
+ noinst_HEADERS = dictionary.h iniparser.h
+ libiniparser_a_SOURCES = dictionary.c iniparser.c
+Index: lib/netplay/netsocket.cpp
+===================================================================
+===================================================================
+--- lib/framework/SDL_framerate.h	(revision 11026)
++++ lib/framework/SDL_framerate.h	(working copy)
+@@ -17,7 +17,7 @@
+ 
+ /* --- */
+ 
+-#include <SDL/SDL.h>
++#include <SDL.h>
+ 
+ /* --------- Definitions */
+ 
+Index: lib/framework/input.h
+===================================================================
+--- lib/framework/input.h	(revision 11026)
++++ lib/framework/input.h	(working copy)
+@@ -30,7 +30,7 @@
+ #error Framework header files MUST be included from Frame.h ONLY.
+ #endif
+ 
+-#include <SDL/SDL.h>
++#include <SDL.h>
+ #include "types.h"
+ #include "lib/framework/utf.h"
+ 
+Index: lib/framework/cursors.h
+===================================================================
+--- lib/framework/cursors.h	(revision 11026)
++++ lib/framework/cursors.h	(working copy)
+@@ -24,1 +24,1 @@
+-#include <SDL/SDL_mouse.h>
++#include <SDL_mouse.h>
+Index: lib/ivis_opengl/piestate.c
+===================================================================
+--- lib/ivis_opengl/piestate.c	(revision 11026)
++++ lib/ivis_opengl/piestate.c	(working copy)
+@@ -27,1 +27,1 @@
+-#include <SDL/SDL_opengl.h>
++#include <SDL_opengl.h>
+Index: po/uk_UA.po

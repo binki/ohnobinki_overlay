@@ -2,6 +2,14 @@
 # Copyright 1999-2010 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/games-strategy/warzone2100/ChangeLog,v 1.43 2010/06/21 20:11:51 maekke Exp $
 
+  24 Jun 2010; Nathan Phillip Brink (ohnobinki)
+  <ohnobinki@ohnopublishing.net> -warzone2100-2.2.4.ebuild,
+  warzone2100-2.3.0.ebuild, warzone2100-2.3.1.ebuild,
+  +files/warzone2100-2.3.1-include-SDL.patch:
+  Added patch so that #include <SDL.h> is used instead of #include
+  <SDL/SDL_*.h>, fixing compilation under portage-multilib. Dropped old
+  warzone2100.2.2.4.ebuild.
+
   21 Jun 2010; Markus Meier <maekke@gentoo.org> warzone2100-2.3.0.ebuild:
   amd64/x86 stable, bug #322435
 
