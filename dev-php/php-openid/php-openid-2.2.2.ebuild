@@ -8,7 +8,7 @@ inherit php-lib-r1
 PHP_LIB_NAME="Auth"
 DESCRIPTION="PHP OpenID implementation"
 HOMEPAGE="http://openidenabled.com/php-openid/"
-SRC_URI="http://openidenabled.com/files/php-openid/packages/${P}.tar.bz2"
+SRC_URI="ftp://ohnopub.net/mirror/${P}.tar.bz2"
 
 LICENSE="Apache-2.0"
 SLOT="0"
@@ -20,11 +20,11 @@ RDEPEND="|| ( dev-lang/php[bcmath] dev-lang/php[gmp] )
 	dev-lang/php[curl]"
 
 src_install() {
-	cd "${S}"/Auth
+	cd "${S}"/Auth || die
 	php-lib-r1_src_install . * */*
 
 	if use examples; then
-		cd "${S}"
+		cd "${S}" || die
 		insinto /usr/share/doc/${PF}/examples
 		doins -r examples/*
 	fi

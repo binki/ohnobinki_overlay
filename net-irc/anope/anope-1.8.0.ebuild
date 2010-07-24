@@ -2,7 +2,11 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/net-irc/anope/anope-1.8.0.ebuild,v 1.1 2009/06/27 11:04:34 patrick Exp $
 
+<<<<<<< local
+EAPI="3"
+=======
 EAPI="2"
+>>>>>>> other
 
 inherit eutils versionator
 
@@ -38,7 +42,11 @@ src_prepare() {
 	epatch "${FILESDIR}"/pid-patch.diff
 
 	if use atheme; then
+<<<<<<< local
+		cp ${EROOT}usr/share/doc/atheme*/contrib/anope_convert.c src/modules/ || die
+=======
 		cp /usr/share/doc/atheme*/contrib/anope_convert.c src/modules/ || die
+>>>>>>> other
 	fi
 }
 
