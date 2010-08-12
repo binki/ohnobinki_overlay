@@ -2,6 +2,10 @@
 # Copyright 1999-2010 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/dev-libs/liblist/ChangeLog,v 1.4 2010/06/19 16:37:01 nerdboy Exp $
 
+  12 Aug 2010; <binki@gentoo.org> -liblist-2.1.ebuild,
+  -liblist-2.1-r1.ebuild, liblist-2.3.1.ebuild:
+  Drop old liblist ebuilds. Support Gentoo Prefix (tested on amd64-linux).
+
 *liblist-2.3.1 (19 Jun 2010)
 
   19 Jun 2010; Steve Arnold <nerdboy@gentoo.org> +liblist-2.3.1.ebuild:

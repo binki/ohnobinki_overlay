@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/dev-libs/liblist/liblist-2.3.1.ebuild,v 1.1 2010/06/19 16:37:01 nerdboy Exp $
 
-EAPI=2
+EAPI=3
 
 inherit multilib
 
@@ -12,7 +12,7 @@ SRC_URI="ftp://ohnopublishing.net/mirror/${P}.tar.bz2"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 ~ppc ~ppc64 ~x86"
+KEYWORDS="~amd64 ~amd64-linux ~ppc ~ppc64 ~x86"
 IUSE="doc examples static-libs"
 
 src_configure() {
@@ -34,9 +34,9 @@ src_install() {
 	fi
 
 	if ! use static-libs; then
-		rm -v "${D}"/usr/$(get_libdir)/liblist.la || die
+		rm -v "${ED}"/usr/$(get_libdir)/liblist.la || die
 		if use examples; then
-			rm -v "${D}"/usr/$(get_libdir)/libcache.la || die
+			rm -v "${ED}"/usr/$(get_libdir)/libcache.la || die
 		fi
 	fi
 }
