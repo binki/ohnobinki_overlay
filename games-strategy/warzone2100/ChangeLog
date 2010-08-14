@@ -2,6 +2,10 @@
 # Copyright 1999-2010 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/games-strategy/warzone2100/ChangeLog,v 1.43 2010/06/21 20:11:51 maekke Exp $
 
+  14 Aug 2010; Nathan Phillip Brink (ohnobinki)
+  <ohnobinki@ohnopublishing.net> +warzone2100-2.3.3.ebuild:
+  Bump to warzone2100-2.3.3.
+
   24 Jun 2010; Nathan Phillip Brink (ohnobinki)
   <ohnobinki@ohnopublishing.net> -warzone2100-2.2.4.ebuild,
   warzone2100-2.3.0.ebuild, warzone2100-2.3.1.ebuild,
