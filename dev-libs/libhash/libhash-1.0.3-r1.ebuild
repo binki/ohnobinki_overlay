@@ -10,7 +10,7 @@ SRC_URI="ftp://ftp.ugh.net.au/pub/unix/libhash/${P}.tar.gz"
 
 LICENSE="BSD"
 SLOT="0"
-KEYWORDS="amd64 arm hppa ia64 ppc x86"
+KEYWORDS="~amd64 ~arm ~hppa ~ia64 ~ppc ~x86"
 IUSE="doc"
 
 DEPEND=""
@@ -19,7 +19,7 @@ S=${WORKDIR}/${PN}
 
 src_compile() {
 	rm -f Makefile
-	$(tc-getCC) ${CPPFLAGS} ${CFLAGS} ${LDFLAGS} -fPIC -shared -o libhash.so hash.c || die ".so failed"
+	$(tc-getCC) ${CPPFLAGS} ${CFLAGS} ${LDFLAGS} -Wl,-soname,libhash.so -fPIC -shared -o libhash.so hash.c || die ".so failed"
 	$(tc-getCC) ${CPPFLAGS} ${CFLAGS} -c -o libhash.a hash.c || die ".a failed"
 }
 
