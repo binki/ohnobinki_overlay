@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/media-sound/shell-fm/shell-fm-0.7.ebuild,v 1.3 2010/04/18 00:23:14 josejx Exp $
 
-EAPI=2
+EAPI=3
 inherit flag-o-matic toolchain-funcs eutils
 
 DESCRIPTION="A lightweight console based player for Last.FM radio streams"
