@@ -1,8 +1,0 @@
-Title: overlay test news item
-Author: Nathan Phillip Brink <binki@ohnopub.net>
-Content-Type: text/plain
-Posted: 2010-08-18
-Revision: 1
-News-Item-Format: 1.0
-
-This is a sample news item :-p.
