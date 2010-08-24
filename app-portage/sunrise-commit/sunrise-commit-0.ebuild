@@ -5,7 +5,7 @@
 EAPI=2
 
 DESCRIPTION="Script for committing to the sunrise overlay"
-HOMEPAGE="http://git.qwpx.net/~mgorny/sunrise-commit/"
+HOMEPAGE="http://github.com/mgorny/sunrise-commit/"
 SRC_URI="ftp://ohnopub.net/mirror/${P}.tar.bz2"
 LICENSE="BSD"
 
