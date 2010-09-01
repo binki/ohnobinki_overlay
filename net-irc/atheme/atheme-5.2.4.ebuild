@@ -4,7 +4,7 @@
 
 EAPI="3"
 
-inherit autotools eutils flag-o-matic perl-module
+inherit eutils flag-o-matic perl-module
 
 MY_P=${PN}-services-${PV}
 DESCRIPTION="A portable and secure set of open-source and modular IRC services"
@@ -35,21 +35,13 @@ pkg_setup() {
 }
 
 src_prepare() {
-	epatch "${FILESDIR}"/${P}-with-ldap.patch
-	epatch "${FILESDIR}"/${P}-ldap-as-needed.patch
-	epatch "${FILESDIR}"/${P}-depend-parallel.patch
+	epatch "${FILESDIR}"/${P}-LDFLAGS.patch
 
 	# fix docdir
-	find -regex '.*/Makefile\..*in' \
-		| xargs sed -i -e 's/\(^DOCDIR.*=.\)@DOCDIR@/\1@docdir@/' \
-		|| die
+	sed -i -e 's/\(^DOCDIR.*=.\)@DOCDIR@/\1@docdir@/' extra.mk.in || die
 
 	# basic logging config directive fix
 	sed -i -e 's;var/\(.*\.log\);\1;g' dist/* || die
-
-	eaclocal -I m4
-	eautoheader
-	eautoconf
 
 	# QA against bundled libs
 	rm -rf libmowgli || die

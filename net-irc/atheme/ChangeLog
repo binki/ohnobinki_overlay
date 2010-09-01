@@ -2,6 +2,14 @@
 # Copyright 1999-2010 Gentoo Foundation; Distributed under the GPL v2
 # $Header: $
 
+  01 Sep 2010; Nathan Phillip Brink (ohnobinki)
+  <ohnobinki@ohnopublishing.net> -atheme-5.0.1.ebuild,
+  -files/atheme-5.0.1-depend-parallel.patch,
+  -files/atheme-5.0.1-ldap-as-needed.patch,
+  -files/atheme-5.0.1-with-ldap.patch, +atheme-5.2.4.ebuild,
+  +files/atheme-5.2.4-LDFLAGS.patch:
+  Bump to atheme-5.0.1 with new LDFLAGS patch and removing old patches.
+
   06 Apr 2010; Nathan Phillip Brink (ohnobinki)
   <ohnobinki@ohnopublishing.net> files/atheme.initd:
   Replace SVSNAME with SVCNAME, thanks Leho Kraav <leho@kraav.com>.
