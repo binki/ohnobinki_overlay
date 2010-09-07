@@ -2,6 +2,8 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/app-text/docbook2X/docbook2X-0.8.8-r2.ebuild,v 1.15 2010/07/18 16:46:46 armin76 Exp $
 
+EAPI=2
+
 # bug 318297
 WANT_AUTOMAKE="1.10"
 
@@ -18,20 +20,16 @@ LICENSE="MIT"
 
 # dev-perl/XML-LibXML - although not mentioned upstream is required
 # for make check to complete.
-DEPEND="dev-lang/perl
+RDEPEND="dev-lang/perl
 	dev-libs/libxslt
 	dev-perl/XML-NamespaceSupport
 	dev-perl/XML-SAX
 	dev-perl/XML-LibXML
 	app-text/docbook-xsl-stylesheets
 	=app-text/docbook-xml-dtd-4.2*"
+DEPEND="test? ( ${RDEPEND} )"
 
-RDEPEND="${DEPEND}"
-
-src_unpack() {
-	unpack ${A}
-	cd "${S}"
-
+src_prepare() {
 	# Patches from debian, for description see patches itself.
 	epatch "${FILESDIR}"/${P}-filename_whitespace_handling.patch
 	epatch "${FILESDIR}"/${P}-preprocessor_declaration_syntax.patch
@@ -40,18 +38,15 @@ src_unpack() {
 	eautoreconf #290284
 }
 
-src_compile() {
+src_configure() {
 	econf \
 		--with-xslt-processor=libxslt \
-		--program-transform-name='s,\(docbook2.*\),\1.pl,' \
-		|| die "econf failed"
-
-	emake || die "emake failed"
+		--program-transform-name='s,\(docbook2.*\),\1.pl,'
 }
 
 src_install() {
-	make DESTDIR="${D}" install || die "install failed"
-	dodoc AUTHORS ChangeLog NEWS README THANKS TODO
+	make DESTDIR="${D}" install || die
+	dodoc AUTHORS ChangeLog NEWS README THANKS TODO || die
 }
 
 pkg_postinst() {

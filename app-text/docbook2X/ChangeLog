@@ -2,6 +2,12 @@
 # Copyright 1999-2010 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/app-text/docbook2X/ChangeLog,v 1.38 2010/07/18 16:46:46 armin76 Exp $
 
+  07 Sep 2010; Nathan Phillip Brink (ohnobinki)
+  <ohnobinki@ohnopublishing.net> -docbook2X-0.6.1-r2.ebuild,
+  -docbook2X-0.8.7-r1.ebuild, -docbook2X-0.8.8.ebuild,
+  -docbook2X-0.8.8-r1.ebuild, docbook2X-0.8.8-r2.ebuild:
+  Drop old versions and upgrade docbook2X-0.8.8-r2 to EAPI=2.
+
   18 Jul 2010; Raúl Porcel <armin76@gentoo.org> docbook2X-0.8.8-r2.ebuild:
   alpha/arm/ia64/s390/sh/sparc stable wrt #321899
 
