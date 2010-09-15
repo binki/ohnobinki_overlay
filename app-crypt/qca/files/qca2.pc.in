@@ -1,10 +1,11 @@
 prefix=@PREFIX@
 exec_prefix=${prefix}
 libdir=@LIBDIR@
-includedir=@INCDIR@/QtCrypto
+includedir=@INCDIR@
+pkgincludedir=${includedir}/qca2/QtCrypto
 Name: QCA
 Description: Qt Cryptographic Architecture library
 Version: @PV@
 Requires: QtCore
 Libs: -L${libdir} -lqca
-Cflags: -I${includedir}
+Cflags: -I${pkgincludedir}
