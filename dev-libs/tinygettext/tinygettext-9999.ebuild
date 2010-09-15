@@ -22,7 +22,7 @@ RDEPEND="${DEPEND}"
 S="${WORKDIR}/trunk"
 
 src_configure() {
-	mycmakeargs="-DWERROR=OFF"
+	local mycmakeargs=( -DWERROR=OFF )
 
 	cmake-utils_src_configure
 }
