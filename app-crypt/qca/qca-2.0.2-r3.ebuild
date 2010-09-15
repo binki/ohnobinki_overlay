@@ -12,7 +12,7 @@ SRC_URI="http://delta.affinix.com/download/${PN}/${PV%.*}/${P}.tar.bz2"
 
 LICENSE="LGPL-2"
 SLOT="2"
-KEYWORDS="alpha amd64 ~arm hppa ia64 ppc ppc64 sparc x86 ~x86-fbsd ~amd64-linux ~x86-linux"
+KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~ppc ~ppc64 ~sparc ~x86 ~x86-fbsd ~amd64-linux ~x86-linux"
 IUSE="aqua debug doc examples"
 RESTRICT="test"
 
