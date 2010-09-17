@@ -54,6 +54,7 @@ PATCHES=(
 	"${FILESDIR}"/${PN}-2.8.1-FindBoost.patch
 	"${FILESDIR}"/${PN}-2.8.1-libform.patch
 	"${FILESDIR}"/${PN}-2.8.1-mpi.patch
+	"${FILESDIR}"/${PN}-2.8.1-portage-multilib-lib32.patch
 )
 
 src_prepare() {

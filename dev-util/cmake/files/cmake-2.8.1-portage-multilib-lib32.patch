@@ -1,0 +1,210 @@
+Author: Nathan Phillip Brink <ohnobinki@ohnopublishing.net>
+Date: 2010/09/17
+Purpose: Add a global FIND_LIBRARY_USE_LIB32_PATHS property which is
+        an analog to the existing FIND_LIBRARY_USE_LIB64_PATHS
+        property. This fixes kde-base/kdelib's ability to find
+        automoc4 using FIND_PACKAGE's NO_MODULE mode on systems where
+        /usr/lib is neither a symlink to /usr/lib64 or /usr/lib32.
+
+--- a/Modules/Platform/Linux.cmake	Thu Sep 16 23:47:47 2010 -0400
++++ b/Modules/Platform/Linux.cmake	Fri Sep 17 00:02:46 2010 -0400
+@@ -52,3 +52,9 @@
+ IF(EXISTS "/etc/debian_version")
+   SET_PROPERTY(GLOBAL PROPERTY FIND_LIBRARY_USE_LIB64_PATHS FALSE)
+ ENDIF(EXISTS "/etc/debian_version")
++
++# Gentoo's multilib project uses lib32 paths for 32-bit stuff.
++# Some crazy users don't even have /usr/lib as a symlink to /usr/lib32.
++IF(EXISTS "/etc/gentoo-release")
++  SET_PROPERTY(GLOBAL PROPERTY FIND_LIBRARY_USE_LIB32_PATHS TRUE)
++ENDIF(EXISTS "/etc/gentoo-release")
+
+--- a/Modules/Platform/UnixPaths.cmake	Thu Sep 16 23:47:47 2010 -0400
++++ b/Modules/Platform/UnixPaths.cmake	Fri Sep 17 00:02:46 2010 -0400
+@@ -83,3 +83,5 @@
+ 
+ # Enable use of lib64 search path variants by default.
+ SET_PROPERTY(GLOBAL PROPERTY FIND_LIBRARY_USE_LIB64_PATHS TRUE)
++# Disable use of lib32 search path variants by default.
++SET_PROPERTY(GLOBAL PROPERTY FIND_LIBRARY_USE_LIB32_PATHS FALSE)
+
+--- a/Source/cmFindLibraryCommand.cxx	Thu Sep 16 23:47:47 2010 -0400
++++ b/Source/cmFindLibraryCommand.cxx	Fri Sep 17 00:02:46 2010 -0400
+@@ -92,6 +92,12 @@
+     // add special 64 bit paths if this is a 64 bit compile.
+     this->AddLib64Paths();
+     }
++  if(this->Makefile->GetCMakeInstance()
++     ->GetPropertyAsBool("FIND_LIBRARY_USE_LIB32_PATHS"))
++    {
++    // add special 32 bit paths if this is a 32 bit compile.
++    this->AddLib32Paths();
++    }
+ 
+   std::string library = this->FindLibrary();
+   if(library != "")
+@@ -205,6 +211,58 @@
+     }
+ }
+ 
++void cmFindLibraryCommand::AddLib32Paths()
++{  
++  if(!this->Makefile->GetLocalGenerator()->GetGlobalGenerator()->
++     GetLanguageEnabled("C"))
++    {
++    return;
++    }
++  std::string voidsize =
++    this->Makefile->GetSafeDefinition("CMAKE_SIZEOF_VOID_P");
++  int size = atoi(voidsize.c_str());
++  if(size != 4)
++    {
++    return;
++    }
++  std::vector<std::string> path32;
++  bool found32 = false;
++  for(std::vector<std::string>::iterator i = this->SearchPaths.begin(); 
++      i != this->SearchPaths.end(); ++i)
++    {
++    std::string s = *i;
++    std::string s2 = *i;
++    cmSystemTools::ReplaceString(s, "lib/", "lib32/");
++    // try to replace lib with lib32 and see if it is there,
++    // then prepend it to the path
++    // Note that all paths have trailing slashes.
++    if((s != *i) && cmSystemTools::FileIsDirectory(s.c_str()))
++      {
++      path32.push_back(s);
++      found32 = true;
++      }  
++    // now just add a 32 to the path name and if it is there,
++    // add it to the path
++    s2 += "32/";
++    if(cmSystemTools::FileIsDirectory(s2.c_str()))
++      {
++      found32 = true;
++      path32.push_back(s2);
++      } 
++    // now add the original unchanged path
++    if(cmSystemTools::FileIsDirectory(i->c_str()))
++      {
++      path32.push_back(*i);
++      }
++    }
++  // now replace the SearchPaths with the 32 bit converted path
++  // if any 32 bit paths were discovered
++  if(found32)
++    {
++    this->SearchPaths = path32;
++    }
++}
++
+ //----------------------------------------------------------------------------
+ std::string cmFindLibraryCommand::FindLibrary()
+ {
+diff -r e70d3882a969 -r aefd3ae00585 Source/cmFindLibraryCommand.h
+--- a/Source/cmFindLibraryCommand.h	Thu Sep 16 23:47:47 2010 -0400
++++ b/Source/cmFindLibraryCommand.h	Fri Sep 17 00:02:46 2010 -0400
+@@ -63,6 +63,7 @@
+ protected:
+   void AddArchitecturePaths(const char* suffix);
+   void AddLib64Paths();
++  void AddLib32Paths();
+   std::string FindLibrary();
+ private:
+   std::string FindNormalLibrary();
+diff -r e70d3882a969 -r aefd3ae00585 Source/cmFindPackageCommand.cxx
+--- a/Source/cmFindPackageCommand.cxx	Thu Sep 16 23:47:47 2010 -0400
++++ b/Source/cmFindPackageCommand.cxx	Fri Sep 17 00:02:46 2010 -0400
+@@ -66,6 +66,7 @@
+   this->NoModule = false;
+   this->DebugMode = false;
+   this->UseLib64Paths = false;
++  this->UseLib32Paths = false;
+   this->PolicyScope = true;
+   this->VersionMajor = 0;
+   this->VersionMinor = 0;
+@@ -336,6 +337,13 @@
+     {
+     this->UseLib64Paths = true;
+     }
++  // Lookup whether lib32 paths should beu sed.
++  if(this->Makefile->PlatformIs32Bit() &&
++     this->Makefile->GetCMakeInstance()
++     ->GetPropertyAsBool("FIND_LIBRARY_USE_LIB32_PATHS"))
++    {
++    this->UseLib32Paths = true;
++    }
+ 
+   // Find the current root path mode.
+   this->SelectDefaultRootPathMode();
+@@ -2002,6 +2010,10 @@
+     {
+     common.push_back("lib64");
+     }
++  if(this->UseLib32Paths)
++    {
++    common.push_back("lib32");
++    }
+   common.push_back("lib");
+   common.push_back("share");
+ 
+diff -r e70d3882a969 -r aefd3ae00585 Source/cmFindPackageCommand.h
+--- a/Source/cmFindPackageCommand.h	Thu Sep 16 23:47:47 2010 -0400
++++ b/Source/cmFindPackageCommand.h	Fri Sep 17 00:02:46 2010 -0400
+@@ -133,6 +133,7 @@
+   bool NoBuilds;
+   bool DebugMode;
+   bool UseLib64Paths;
++  bool UseLib32Paths;
+   bool PolicyScope;
+   std::vector<std::string> Names;
+   std::vector<std::string> Configs;
+diff -r e70d3882a969 -r aefd3ae00585 Source/cmake.cxx
+--- a/Source/cmake.cxx	Thu Sep 16 23:47:47 2010 -0400
++++ b/Source/cmake.cxx	Fri Sep 17 00:02:46 2010 -0400
+@@ -3341,6 +3341,13 @@
+      "directories called lib in the search path when building 64-bit "
+      "binaries.");
+   cm->DefineProperty
++    ("FIND_LIBRARY_USE_LIB32_PATHS", cmProperty::GLOBAL,
++     "Whether FIND_LIBRARY should automatically search lib32 directories.",
++     "FIND_LIBRARY_USE_LIB32_PATHS is a boolean specifying whether the"
++     " FIND_LIBRARY command should automatically search the lib32 variant of"
++     " directories called lib in the search path when building 32-bit"
++     " binaries.");
++  cm->DefineProperty
+     ("FIND_LIBRARY_USE_OPENBSD_VERSIONING", cmProperty::GLOBAL,
+      "Whether FIND_LIBRARY should find OpenBSD-style shared libraries.",
+      "This property is a boolean specifying whether the FIND_LIBRARY "
+
+--- a/Source/cmMakefile.cxx	Fri Sep 17 00:02:46 2010 -0400
++++ b/Source/cmMakefile.cxx	Fri Sep 17 00:18:21 2010 -0400
+@@ -2011,6 +2011,15 @@
+   return false;
+ }
+ 
++bool cmMakefile::PlatformIs32Bit() const
++{
++  if(const char* sizeof_dptr = this->GetDefinition("CMAKE_SIZEOF_VOID_P"))
++    {
++    return atoi(sizeof_dptr) == 4;
++    }
++  return false;
++}
++
+ bool cmMakefile::CanIWriteThisFile(const char* fileName)
+ {
+   if ( !this->IsOn("CMAKE_DISABLE_SOURCE_CHANGES") )
+diff -r aefd3ae00585 -r ce173f631972 Source/cmMakefile.h
+--- a/Source/cmMakefile.h	Fri Sep 17 00:02:46 2010 -0400
++++ b/Source/cmMakefile.h	Fri Sep 17 00:18:21 2010 -0400
+@@ -585,6 +585,8 @@
+ 
+   /** Return whether the target platform is 64-bit.  */
+   bool PlatformIs64Bit() const;
++  /** Return whether the target platform is 32-bit. */
++  bool PlatformIs32Bit() const;
+ 
+   /**
+    * Get a list of preprocessor define flags.

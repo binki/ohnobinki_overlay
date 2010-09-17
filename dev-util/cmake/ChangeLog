@@ -2,6 +2,14 @@
 # Copyright 1999-2010 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/dev-util/cmake/ChangeLog,v 1.144 2010/09/11 15:13:49 armin76 Exp $
 
+  17 Sep 2010; Nathan Phillip Brink (ohnobinki)
+  <ohnobinki@ohnopublishing.net> cmake-2.8.1-r2.ebuild,
+  +files/cmake-2.8.1-portage-multilib-lib32.patch:
+  Add a patch to cmake which enables kde-base/kdelibs to compile on systems
+  where /usr/lib is neither a symlink to /usr/lib64 or /usr/lib32. This adds
+  a FIND_LIBRARY_USE_LIB32_PATHS global property which is an analog to the
+  FIND_LIBRARY_USE_LIB64_PATHS property.
+
   11 Sep 2010; Raúl Porcel <armin76@gentoo.org> cmake-2.8.1-r2.ebuild:
   ia64/s390/sh/sparc stable wrt #325845
 
