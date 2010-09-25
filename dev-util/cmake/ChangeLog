@@ -2,6 +2,12 @@
 # Copyright 1999-2010 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/dev-util/cmake/ChangeLog,v 1.144 2010/09/11 15:13:49 armin76 Exp $
 
+  25 Sep 2010; Nathan Phillip Brink (ohnobinki)
+  <ohnobinki@ohnopublishing.net> cmake-2.8.1-r2.ebuild,
+  files/cmake-2.8.1-portage-multilib-lib32.patch:
+  Update the FIND_LIBRARY_USE_LIB32_PATHS patch to mostly match the version
+  I pushed upstream. Also fix CVS header for cmake-2.8.1-r2.
+
   17 Sep 2010; Nathan Phillip Brink (ohnobinki)
   <ohnobinki@ohnopublishing.net> cmake-2.8.1-r2.ebuild,
   +files/cmake-2.8.1-portage-multilib-lib32.patch:
