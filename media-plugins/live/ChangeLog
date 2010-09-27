@@ -2,6 +2,10 @@
 # Copyright 1999-2010 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/media-plugins/live/ChangeLog,v 1.126 2010/01/06 16:55:17 ranger Exp $
 
+  27 Sep 2010; <binki@gentoo.org> live-2010.04.09.ebuild:
+  Add support for gentoo-prefix to my portage-mutilib hack to
+  live-2010.04.09.
+
   20 Aug 2010; Nathan Phillip Brink (ohnobinki)
   <ohnobinki@ohnopublishing.net> +live-2010.04.09.ebuild:
   Bumped to live-2010.04.09, attempting to follow changes for the

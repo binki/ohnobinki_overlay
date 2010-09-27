@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/media-plugins/live/live-2009.11.12.ebuild,v 1.1 2009/11/21 12:23:51 aballier Exp $
 
-EAPI="2"
+EAPI="3"
 
 inherit eutils flag-o-matic eutils toolchain-funcs multilib
 
@@ -84,11 +84,11 @@ src_compile() {
 src_install() {
 	dodir /usr/{$(get_libdir),bin} || die
 	for library in UsageEnvironment liveMedia BasicUsageEnvironment groupsock; do
-		libtool --mode=install install -c ${library}/lib${library}.la "${D}"/usr/$(get_libdir)/ || die
+		libtool --mode=install install -c ${library}/lib${library}.la "${ED}"/usr/$(get_libdir)/ || die
 
 		if ! use static-libs; then
 			# make tommy happy --ohnobinki
-			rm -v "${D}"/usr/$(get_libdir)/lib${library}.la || die
+			rm -v "${ED}"/usr/$(get_libdir)/lib${library}.la || die
 		fi
 
 		insinto /usr/include/${library}
@@ -97,10 +97,10 @@ src_install() {
 
 	# Should we really install these?
 	find testProgs -type f -perm +111 \
-		-exec libtool --mode=install install -c '{}' "${D}"/usr/bin/ \; || die
+		-exec libtool --mode=install install -c '{}' "${ED}"/usr/bin/ \; || die
 
 	#install included live555MediaServer aplication
-	libtool --mode=install install -c mediaServer/live555MediaServer "${D}"/usr/bin/ || die
+	libtool --mode=install install -c mediaServer/live555MediaServer "${ED}"/usr/bin/ || die
 
 	# install docs
 	dodoc README || die
