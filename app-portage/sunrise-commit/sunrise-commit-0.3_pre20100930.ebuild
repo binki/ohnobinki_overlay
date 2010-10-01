@@ -4,6 +4,8 @@
 
 EAPI=2
 
+inherit base
+
 DESCRIPTION="Script for committing to the sunrise overlay"
 HOMEPAGE="http://github.com/mgorny/sunrise-commit/"
 SRC_URI="ftp://ohnopub.net/mirror/${P}.tar.bz2"
@@ -13,13 +15,8 @@ SLOT="0"
 KEYWORDS="~amd64 ~amd64-linux"
 IUSE=""
 
+DEPEND="dev-util/fastconf"
 RDEPEND="!!app-portage/overlay-utils
 	sys-apps/portage"
 
 S=${WORKDIR}/${PN}
-
-src_install() {
-	dobin ${PN} || die
-
-	doman ${PN}.1 || die
-}
