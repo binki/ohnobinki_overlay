@@ -12,7 +12,7 @@ SRC_URI="mirror://ohnoproto/${P}.c"
 LICENSE="as-is"
 
 SLOT="0"
-KEYWORDS="~amd64"
+KEYWORDS="~amd64 ~amd64-linux"
 IUSE=""
 
 S=${WORKDIR}
@@ -22,5 +22,5 @@ src_compile() {
 }
 
 src_install() {
-		doexe ${PN} || die
+		dobin ${PN} || die
 }
