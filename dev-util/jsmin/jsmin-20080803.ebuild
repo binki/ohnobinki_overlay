@@ -17,6 +17,8 @@ IUSE=""
 
 S=${WORKDIR}
 
+src_unpack() { :; }
+
 src_compile() {
 		$(tc-getCC) ${CFLAGS} ${CPPFLAGS} ${LDFLAGS} -o ${PN} "${DISTDIR}"/${P}.c || die
 }
