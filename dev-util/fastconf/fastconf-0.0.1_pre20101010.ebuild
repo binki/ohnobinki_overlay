@@ -12,7 +12,7 @@ SRC_URI="ftp://ohnopub.net/mirror/${P}.tar.bz2"
 LICENSE="BSD"
 
 SLOT="0"
-KEYWORDS="~amd64"
+KEYWORDS="~amd64 ~amd64-linux"
 IUSE=""
 
 S=${WORKDIR}/${PN}
