@@ -17,7 +17,7 @@ index 5ee7ddb..afcde6f 100644
  SET_PROPERTY(GLOBAL PROPERTY FIND_LIBRARY_USE_LIB64_PATHS TRUE)
 +# Enable use of lib32 search path variants by default. Useful on
 +# multilib systems. Not harmful for normal systems.
-+SET_PROPERTY(GLOBAL PROPERTY FIND_LIBRARY_USE_LIB32_PATHS FALSE)
++SET_PROPERTY(GLOBAL PROPERTY FIND_LIBRARY_USE_LIB32_PATHS TRUE)
 diff --git a/Source/cmFindLibraryCommand.cxx b/Source/cmFindLibraryCommand.cxx
 index 9077c8e..e09967d 100644
 --- a/Source/cmFindLibraryCommand.cxx
