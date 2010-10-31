@@ -4,9 +4,9 @@
 
 EAPI=2
 
-inherit base
+inherit base versionator
 
-DESCRIPTION="Script for committing to the sunrise overlay"
+DESCRIPTION="Script for committing to the sunrise overlay and other Gentoo repositories"
 HOMEPAGE="http://github.com/mgorny/sunrise-commit/"
 SRC_URI="ftp://ohnopub.net/mirror/${P}.tar.bz2"
 LICENSE="BSD"
@@ -15,8 +15,7 @@ SLOT="0"
 KEYWORDS="~amd64 ~amd64-linux"
 IUSE=""
 
-DEPEND="dev-util/fastconf"
 RDEPEND="!!app-portage/overlay-utils
 	sys-apps/portage"
 
-S=${WORKDIR}/${PN}
+S=${WORKDIR}/${PN}-$(get_version_component_range 1-2)
