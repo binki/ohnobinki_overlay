@@ -1,0 +1,17 @@
+diff -c /var/tmp/portage/x11-misc/xorg-cf-files-1.0.3/work.amd64/xorg-cf-files-1.0.3/X11.tmpl /tmp/buffer-content-4693tir
+--- a/X11.tmpl	Wed Oct 14 11:29:25 2009
++++ b/X11.tmpl	Sat Oct 30 22:34:49 2010
+@@ -1461,9 +1461,9 @@
+ #endif
+ #ifndef LibDir
+ # ifdef ProjectRoot
+-#  define LibDir Concat(ProjectRoot,/lib/X11)
++#  define LibDir Concat(Concat(Concat(ProjectRoot,/),LibDirName),/X11)
+ # else
+-#  define LibDir /usr/lib/X11
++#  define LibDir Concat(Concat(/usr/,LibDirName),/X11)
+ # endif
+ #endif
+ #ifndef ModuleDir
+
+Diff finished.  Sat Oct 30 22:34:49 2010

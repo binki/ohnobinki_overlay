@@ -2,6 +2,11 @@
 # Copyright 1999-2010 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/x11-misc/xorg-cf-files/ChangeLog,v 1.36 2010/10/17 03:36:12 leio Exp $
 
+  31 Oct 2010; Nathan Phillip Brink (binki) <ohnobinki@ohnopublishing.net>
+  xorg-cf-files-1.0.3.ebuild, +files/xorg-cf-files-1.0.3-libdir.patch:
+  Fix for bug 343461 which fixes a compile error in media-gfx/transfig.
+  Upgrade to EAPI=2 and make ebuild prettier and more fail-fast.
+
   17 Oct 2010; Mart Raudsepp <leio@gentoo.org> -xorg-cf-files-1.0.2.ebuild:
   Remove old
 
