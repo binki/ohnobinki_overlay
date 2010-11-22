@@ -12,7 +12,7 @@ SRC_URI="ftp://mirror.calvin.edu/~binki/${P}.tar.bz2"
 
 LICENSE="LGPL-3"
 SLOT="0"
-KEYWORDS="~amd64"
+KEYWORDS="~amd64 ~amd64-linux"
 IUSE="doc test"
 
 DEPEND="doc? ( app-doc/doxygen )
