@@ -4,7 +4,7 @@
 
 EAPI="2"
 
-inherit base
+inherit base multilib
 
 DESCRIPTION="Compat library for functions like strlcpy(), strlcat(), and strnlen()"
 HOMEPAGE="http://ohnopub.net/~ohnobinki/libstrl/"
@@ -23,4 +23,10 @@ src_configure() {
 	econf \
 		$(use_with doc doxygen) \
 		$(use_with test check)
+}
+
+src_install() {
+	base_src_install
+
+	rm -vf "${D}"/usr/$(get_libdir)/libstrl.la || die
 }
