@@ -80,8 +80,8 @@ src_install() {
 	insinto /usr/share/ppd
 	doins noarch/at_opt/share/ppd/*.ppd || die
 
-	# rastertosamsungsplc looks for the *.cts file here using
-	# libcupsimage(?)
+	# rastertosamsungsplc looks for the *.cts file here of its own
+	# arbitrary choosing.
 	insinto /usr/share/cups/model/samsung
 	doins -r noarch/at_opt/share/ppd/cms || die
 
