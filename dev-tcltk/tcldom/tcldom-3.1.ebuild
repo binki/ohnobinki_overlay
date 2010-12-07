@@ -1,4 +1,4 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/dev-tcltk/tcldom/tcldom-3.1.ebuild,v 1.2 2006/06/03 19:56:32 matsuu Exp $
 
@@ -22,7 +22,9 @@ DEPEND=">=dev-lang/tcl-8.3.3
 RDEPEND="${DEPEND}"
 
 src_prepare() {
-	cd library
+	epatch "${FILESDIR}"/${PV}-ldflags.patch
+
+	cd "${S}"/library || die
 	sed -e "s/@VERSION@/${PV}/" \
 		-e "s/@Tcldom_LIB_FILE@@/UNSPECIFIED/" \
 		< pkgIndex.tcl.in > pkgIndex.tcl
@@ -34,6 +36,8 @@ src_prepare() {
 src_configure() {
 	local myconf="--with-tcl=/usr/$(get_libdir)"
 
+	tc-export CC
+
 	use threads && myconf="${myconf} --enable-threads"
 
 	if use xml ; then
@@ -42,16 +46,16 @@ src_configure() {
 	fi
 	if use expat ; then
 		cd "${S}/src"
-		econf ${myconf}
+		LDFLAGS="${LDFLAGS}" econf ${myconf}
 	fi
 }
 
 src_compile() {
 	if use xml ; then
-		emake -C "${S}"/src-libxml2 || die
+		emake -C "${S}"/src-libxml2 LDFLAGS_OPTIMIZE="${LDFLAGS}" || die
 	fi
 	if use expat ; then
-		emake -C "${S}/src" || die
+		emake -C "${S}/src" LDFLAGS_OPTIMIZE="${LDFLAGS}" || die
 	fi
 }
 
@@ -69,7 +73,7 @@ src_install() {
 	fi
 
 	cd "${S}"
-	dodoc ChangeLog LICENSE README RELNOTES
-	docinto examples; dodoc examples/*
-	dohtml docs/*.html
+	dodoc ChangeLog README RELNOTES || die
+	docinto examples; dodoc examples/* || die
+	dohtml docs/*.html || die
 }
