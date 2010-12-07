@@ -19,7 +19,7 @@ IUSE="doc test"
 
 S=${WORKDIR}/cdroot/Linux
 
-DEPEND="=dev-util/bin_replace_string-0.1"
+DEPEND="dev-util/bin_replace_string"
 # We need libstdc++.so.5
 RDEPEND="net-print/cups
 	sys-libs/libstdc++-v3"
@@ -60,11 +60,7 @@ src_prepare() {
 	# printer will print two copies of each page on each page with
 	# white horizonal bands.
 	for filter in ${SABI}/at_root/usr/${SLIBDIR}/cups/filter/rasterto*; do
-		mv -v ${filter}{,.orig} || die
-		bin_replace_string /usr/lib/cups/filter/libscmssc.so libscmssc.so \
-			< ${filter}.orig \
-			> ${filter} || die
-		rm -vf ${filter}.orig || die
+		bin_replace_string /usr/lib/cups/filter/libscmssc.so libscmssc.so ${filter} || die
 	done
 }
 
