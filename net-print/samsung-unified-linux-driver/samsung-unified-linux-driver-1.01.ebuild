@@ -19,7 +19,7 @@ IUSE="doc test"
 
 S=${WORKDIR}/cdroot/Linux
 
-DEPEND="dev-util/bin_replace_string"
+DEPEND="=dev-util/bin_replace_string-0.1"
 # We need libstdc++.so.5
 RDEPEND="net-print/cups
 	sys-libs/libstdc++-v3"
