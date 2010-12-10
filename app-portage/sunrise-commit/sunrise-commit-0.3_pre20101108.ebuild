@@ -16,7 +16,7 @@ KEYWORDS="~amd64 ~amd64-linux"
 IUSE=""
 
 RDEPEND="!!app-portage/overlay-utils
-	app-portage/gentoolkit-dev
+	>=app-portage/gentoolkit-dev-0.2.7
 	sys-apps/portage"
 
 S=${WORKDIR}/${PN}-$(get_version_component_range 1-2)
