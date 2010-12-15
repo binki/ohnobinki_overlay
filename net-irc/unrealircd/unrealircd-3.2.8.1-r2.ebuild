@@ -10,9 +10,7 @@ MY_P=Unreal${PV}
 
 DESCRIPTION="aimed to be an advanced (not easy) IRCd"
 HOMEPAGE="http://www.unrealircd.com/"
-SRC_URI="http://unrealircd.icedslash.com/${MY_P}.tar.gz
-	http://unreal.brueggisite.de/${MY_P}.tar.gz
-	http://www.blurryfox.com/unreal/${MY_P}.tar.gz"
+SRC_URI="http://www.unrealircd.com/downloads/${MY_P}.tar.gz"
 
 SLOT="0"
 LICENSE="GPL-2"

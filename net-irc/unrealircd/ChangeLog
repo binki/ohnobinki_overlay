@@ -2,6 +2,10 @@
 # Copyright 1999-2010 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/net-irc/unrealircd/ChangeLog,v 1.70 2008/08/23 01:20:34 cardoe Exp $
 
+  15 Dec 2010; Nathan Phillip Brink (binki) <ohnobinki@ohnopublishing.net>
+  unrealircd-3.2.8.1-r2.ebuild:
+  Revert the download URI.
+
   27 Nov 2010; Nathan Phillip Brink (binki) <ohnobinki@ohnopublishing.net>
   +unrealircd-3.2.8.1-r2.ebuild, +files/unrealircd-3.2.8.1-libstrl.patch:
   hg Added unrealircd-3.2.8.1-r2, which causes unrealircd to be compiled
