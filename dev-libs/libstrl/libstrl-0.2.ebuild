@@ -21,6 +21,7 @@ RDEPEND=""
 
 src_configure() {
 	econf \
+		--docdir=/usr/share/doc/${PF} \
 		$(use_with doc doxygen) \
 		$(use_with test check)
 }
