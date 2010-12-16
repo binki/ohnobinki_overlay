@@ -6,9 +6,9 @@ EAPI=2
 
 inherit toolchain-funcs
 
-DESCRIPTION="A JavaScript minifier"
+DESCRIPTION="A simple and lightweight JavaScript minifier"
 HOMEPAGE="http://crockford.com/javascript/jsmin.html"
-SRC_URI="mirror://ohnoproto/${P}.c"
+SRC_URI="ftp://ohnopub.net/mirror/${P}.c"
 LICENSE="as-is"
 
 SLOT="0"
