@@ -3,6 +3,7 @@
 <pkgmetadata>
   <herd>net-irc</herd>
   <use>
+    <flag name="extban-stacking">Enable extbans (such as ~c: and ~n:) to contain other extbans instead of just hostmasks</flag>
     <flag name='usermod'>Enable /set* and /chg*</flag>
     <flag name='hub'>Enable hub support</flag>
     <flag name='nospoof'>Enable spoofing protection</flag>

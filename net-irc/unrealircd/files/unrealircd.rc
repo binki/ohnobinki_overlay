@@ -1,5 +1,5 @@
 #!/sbin/runscript
-# Copyright 1999-2004 Gentoo Foundation
+# Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/net-irc/unrealircd/files/unrealircd.rc,v 1.7 2004/10/09 20:36:31 swegener Exp $
 
@@ -13,18 +13,19 @@ depend() {
 start() {
 	ebegin "Starting unrealircd"
 	start-stop-daemon --start --quiet --exec /usr/bin/unrealircd \
-		--chuid ${UNREALIRCD_USER} -- ${UNREALIRCD_OPTS} &>/dev/null
+		--chuid ${UNREALIRCD_USER} --pidfile /var/run/unrealircd/ircd.pid \
+		-- ${UNREALIRCD_OPTS} &>/dev/null
 	eend $?
 }
 
 stop() {
 	ebegin "Shutting down unrealircd"
-	killall unrealircd
+	start-stop-daemon --stop --quiet --pidfile /var/run/unrealircd/ircd.pid
 	eend $?
 }
 
 reload() {
 	ebegin "Re-Loading unrealircd"
-	killall -1 unrealircd
+	start-stop-daemon --signal HUP --quiet --pidfile /var/run/unrealircd/ircd.pid
 	eend $?
 }
