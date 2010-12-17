@@ -13,7 +13,7 @@ SRC_URI="ftp://mirror.calvin.edu/~binki/${P}.tar.bz2"
 LICENSE="LGPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~amd64-linux ~x86"
-IUSE="doc test"
+IUSE="doc static-libs test"
 
 DEPEND="doc? ( app-doc/doxygen )
 	test? ( dev-libs/check )"
@@ -22,6 +22,7 @@ RDEPEND=""
 src_configure() {
 	econf \
 		--docdir=/usr/share/doc/${PF} \
+		$(use_enable static-libs static) \
 		$(use_with doc doxygen) \
 		$(use_with test check)
 }
@@ -29,5 +30,8 @@ src_configure() {
 src_install() {
 	base_src_install
 
+	# We remove the .la file unconditionally (even when the static-libs
+	# flags is set) because upstream (myself) only supports linking
+	# through pkg-config.
 	rm -vf "${D}"/usr/$(get_libdir)/libstrl.la || die
 }
