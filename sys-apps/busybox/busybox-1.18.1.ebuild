@@ -85,7 +85,7 @@ src_prepare() {
 
 	# patches go here!
 	epatch "${FILESDIR}"/busybox-1.18.0-bb.patch
-	#epatch "${FILESDIR}"/busybox-${PV}-*.patch
+	epatch "${FILESDIR}"/${P}-ldflags.patch
 
 	# flag cleanup
 	sed -i -r \
