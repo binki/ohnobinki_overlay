@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/sys-fs/mdadm/mdadm-3.1.4.ebuild,v 1.8 2010/11/09 19:17:44 armin76 Exp $
 
-inherit eutils flag-o-matic
+inherit eutils flag-o-matic toolchain-funcs
 
 DESCRIPTION="A useful tool for running RAID systems - it can be used as a replacement for the raidtools"
 HOMEPAGE="http://neil.brown.name/blog/mdadm"
@@ -16,24 +16,39 @@ IUSE="static"
 DEPEND=""
 RDEPEND=">=sys-apps/util-linux-2.16"
 
+RESTRICT=test
+
 src_unpack() {
 	unpack ${A}
 	cd "${S}"
 	epatch "${FILESDIR}"/${PN}-3.0-dont-make-man.patch
 	epatch "${FILESDIR}"/${PN}-2.6-syslog-updates.patch
 	epatch "${FILESDIR}"/${PN}-2.6.4-mdassemble.patch #211426
+	epatch "${FILESDIR}"/${P}-cflags.patch
 	use static && append-ldflags -static
 
 	sed -i -e 's:-z now::' Makefile || die #331653
 }
 
 src_compile() {
+	# set CC to prevent CROSS_COMPILE paradigm from being used.
 	emake \
-		CROSS_COMPILE=${CHOST}- \
+		CC="$(tc-getCC)" \
 		CWFLAGS="-Wall" \
 		CXFLAGS="${CFLAGS}" \
 		all mdassemble \
 		|| die "emake failed"
+}
+
+src_test() {
+	emake \
+		CC="$(tc-getCC)" \
+		CWFLAGS="-Wall" \
+		CXFLAGS="${CFLAGS}" \
+		test || die "emake test failed"
+
+	# are these tests dangerous? I'm not willing to try them. --binki
+	sh ./test || die
 }
 
 src_install() {
