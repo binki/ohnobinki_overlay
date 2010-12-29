@@ -4,11 +4,11 @@
 
 EAPI=2
 
-inherit base versionator
+inherit base
 
 DESCRIPTION="Script for committing to the sunrise overlay and other Gentoo repositories"
 HOMEPAGE="http://github.com/mgorny/sunrise-commit/"
-SRC_URI="ftp://ohnopub.net/mirror/${P}.tar.bz2"
+SRC_URI="http://cloud.github.com/downloads/mgorny/${PN}/${P}.tar.bz2"
 LICENSE="BSD"
 
 SLOT="0"
@@ -18,5 +18,3 @@ IUSE=""
 RDEPEND="!!app-portage/overlay-utils
 	>=app-portage/gentoolkit-dev-0.2.7
 	sys-apps/portage"
-
-S=${WORKDIR}/${PN}-$(get_version_component_range 1-2)
