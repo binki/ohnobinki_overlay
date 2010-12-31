@@ -7,10 +7,10 @@ EAPI=2
 inherit base
 
 DESCRIPTION="Script for committing to the sunrise overlay and other Gentoo repositories"
-HOMEPAGE="http://github.com/mgorny/sunrise-commit/"
+HOMEPAGE="https://github.com/mgorny/sunrise-commit/"
 SRC_URI="http://cloud.github.com/downloads/mgorny/${PN}/${P}.tar.bz2"
-LICENSE="BSD"
 
+LICENSE="BSD"
 SLOT="0"
 KEYWORDS="~amd64 ~amd64-linux"
 IUSE=""
