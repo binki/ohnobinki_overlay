@@ -13,7 +13,7 @@ IUSE=""
 
 src_unpack() {
 	local abis="${DEFAULT_ABI} ${MULTILIB_ABIS/${DEFAULT_ABI}}"
-	sed "s/PLACEHOLDER_FOR_HARDCODED_ABIS/${abis}/" "${FILESDIR}"/abi-wrapper > "${WORKDIR}"/abi-wrapper
+	sed "s/@HARDCODED_ABIS@/${abis}/" "${FILESDIR}"/abi-wrapper > "${WORKDIR}"/abi-wrapper
 }
 src_install() {
 	dobin abi-wrapper || die
