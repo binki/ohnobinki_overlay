@@ -1,4 +1,4 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -18,6 +18,7 @@ SLOT="0"
 IUSE="emacs ncurses qt4 vim-syntax"
 
 DEPEND="
+	>=app-arch/libarchive-2.8.0
 	>=net-misc/curl-7.20.0-r1[ssl]
 	>=dev-libs/expat-2.0.1
 	sys-libs/zlib
@@ -39,92 +40,77 @@ VIMFILE="${PN}.vim"
 
 S="${WORKDIR}/${MY_P}"
 
+CMAKE_BINARY="${S}/Bootstrap.cmk/cmake"
 CMAKE_IN_SOURCE_BUILD=1
 
 PATCHES=(
-	"${FILESDIR}"/${PN}-FindPythonLibs.patch
-	"${FILESDIR}"/${PN}-FindPythonInterp.patch
-	"${FILESDIR}"/${PN}-2.6.0-interix.patch
 	"${FILESDIR}"/${PN}-2.6.3-darwin-bundle.patch
 	"${FILESDIR}"/${PN}-2.6.3-no-duplicates-in-rpath.patch
 	"${FILESDIR}"/${PN}-2.6.3-fix_broken_lfs_on_aix.patch
 	"${FILESDIR}"/${PN}-2.8.0-darwin-default-install_name.patch
 	"${FILESDIR}"/${PN}-2.8.0-darwin-no-app-with-qt.patch
-	"${FILESDIR}"/${PN}-2.8.1-more-no_host_paths.patch
 	"${FILESDIR}"/${PN}-2.8.1-FindBoost.patch
 	"${FILESDIR}"/${PN}-2.8.1-libform.patch
-	"${FILESDIR}"/${PN}-2.8.1-mpi.patch
+	"${FILESDIR}"/${PN}-2.8.3-FindLibArchive.patch
+	"${FILESDIR}"/${PN}-2.8.3-FindPythonLibs.patch
+	"${FILESDIR}"/${PN}-2.8.3-FindPythonInterp.patch
+	"${FILESDIR}"/${PN}-2.8.3-more-no_host_paths.patch
+	"${FILESDIR}"/${PN}-2.8.3-ruby_libname.patch
+	"${FILESDIR}"/${PN}-2.8.3-buffer_overflow.patch
+	"${FILESDIR}"/${PN}-2.8.3-fix_assembler_test.patch
 	"${FILESDIR}"/${PN}-2.8.1-portage-multilib-lib32.patch
 )
+
+_src_bootstrap() {
+	  echo ${MAKEOPTS} | egrep -o '(\-j|\-\-jobs)(=?|[[:space:]]*)[[:digit:]]+' > /dev/null
+	  if [ $? -eq 0 ]; then
+		  par_arg=$(echo ${MAKEOPTS} | egrep -o '(\-j|\-\-jobs)(=?|[[:space:]]*)[[:digit:]]+' | egrep -o '[[:digit:]]+')
+		  par_arg="--parallel=${par_arg}"
+	  else
+		  par_arg="--parallel=1"
+	  fi
+
+	tc-export CC CXX LD
+
+	./bootstrap \
+		--prefix="${T}/cmakestrap/" \
+		${par_arg} \
+		|| die "Bootstrap failed"
+}
 
 src_prepare() {
 	base_src_prepare
 
+	# disable bootstrap cmake and make run, we use eclass for that
+	sed -i \
+		-e '/"${cmake_bootstrap_dir}\/cmake"/s/^/#DONOTRUN /' \
+		bootstrap || die "sed failed"
+
 	# Add gcc libs to the default link paths
 	sed -i \
-		-e "s|@GENTOO_PORTAGE_GCCLIBDIR@|${EPREFIX}/usr/${CHOST}/lib|g" \
+		-e "s|@GENTOO_PORTAGE_GCCLIBDIR@|${EPREFIX}/usr/${CHOST}/lib/|g" \
 		-e "s|@GENTOO_PORTAGE_EPREFIX@|${EPREFIX}/|g" \
 		Modules/Platform/{UnixPaths,Darwin}.cmake || die "sed failed"
+
+	_src_bootstrap
 }
 
 src_configure() {
-	if [[ "$(gcc-major-version)" -eq "3" ]] ; then
-		append-flags "-fno-stack-protector"
-	fi
-
 	# make things work with gentoo java setup
 	# in case java-config cannot be run, the variable just becomes unset
+	# per bug #315229
 	export JAVA_HOME=$(java-config -g JAVA_HOME 2> /dev/null)
 
-	bootstrap=0
-	has_version ">=dev-util/cmake-2.6.1" || bootstrap=1
-	if [[ ${bootstrap} = 0 ]]; then
-		# Required version of CMake found, now test if it works
-		cmake --version &> /dev/null || bootstrap=1
-	fi
-
-	use test && bootstrap=1 #315223
-
-	if [[ ${bootstrap} = 1 ]]; then
-		local qt_arg par_arg
-		tc-export CC CXX LD
-
-		if use qt4; then
-			qt_arg="--qt-gui"
-		else
-			qt_arg="--no-qt-gui"
-		fi
-
-		echo $MAKEOPTS | egrep -o '(\-j|\-\-jobs)(=?|[[:space:]]*)[[:digit:]]+' > /dev/null
-		if [ $? -eq 0 ]; then
-			par_arg=$(echo $MAKEOPTS | egrep -o '(\-j|\-\-jobs)(=?|[[:space:]]*)[[:digit:]]+' | egrep -o '[[:digit:]]+')
-			par_arg="--parallel=${par_arg}"
-		else
-			par_arg="--parallel=1"
-		fi
-
-		./bootstrap \
-			--system-libs \
-			--prefix="${EPREFIX}"/usr \
-			--docdir=/share/doc/${PF} \
-			--datadir=/share/${PN} \
-			--mandir=/share/man \
-			"$qt_arg" \
-			"$par_arg" || die "./bootstrap failed"
-	else
-		# this is way much faster so we should prefer it if some cmake is
-		# around.
-		local mycmakeargs=(
-			-DCMAKE_USE_SYSTEM_LIBRARIES=ON
-			-DCMAKE_INSTALL_PREFIX="${EPREFIX}"/usr
-			-DCMAKE_DOC_DIR=/share/doc/${PF}
-			-DCMAKE_MAN_DIR=/share/man
-			-DCMAKE_DATA_DIR=/share/${PN}
-			$(cmake-utils_use_build ncurses CursesDialog)
-			$(cmake-utils_use_build qt4 QtDialog)
-		)
-		cmake-utils_src_configure
-	fi
+	local mycmakeargs=(
+		-DCMAKE_USE_SYSTEM_LIBRARIES=ON
+		-DCMAKE_INSTALL_PREFIX="${EPREFIX}"/usr
+		-DCMAKE_DOC_DIR=/share/doc/${PF}
+		-DCMAKE_MAN_DIR=/share/man
+		-DCMAKE_DATA_DIR=/share/${PN}
+		$(cmake-utils_use_build ncurses CursesDialog)
+		$(cmake-utils_use_build qt4 QtDialog)
+	)
+	cmake-utils_src_configure
 }
 
 src_compile() {
@@ -146,13 +132,13 @@ src_install() {
 	fi
 	if use vim-syntax; then
 		insinto /usr/share/vim/vimfiles/syntax
-		doins Docs/cmake-syntax.vim
+		doins Docs/cmake-syntax.vim || die
 
 		insinto /usr/share/vim/vimfiles/indent
-		doins Docs/cmake-indent.vim
+		doins Docs/cmake-indent.vim || die
 
 		insinto /usr/share/vim/vimfiles/ftdetect
-		doins "${FILESDIR}/${VIMFILE}"
+		doins "${FILESDIR}/${VIMFILE}" || die
 	fi
 }
 

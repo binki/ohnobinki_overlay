@@ -2,6 +2,20 @@
 # Copyright 1999-2011 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/dev-util/cmake/ChangeLog,v 1.144 2010/09/11 15:13:49 armin76 Exp $
 
+  11 Jan 2011; Nathan Phillip Brink (binki) <ohnobinki@ohnopublishing.net>
+  -files/cmake-2.6.0-interix.patch, -cmake-2.8.1-r3.ebuild,
+  -files/cmake-2.8.1-more-no_host_paths.patch, -files/cmake-2.8.1-mpi.patch,
+  +cmake-2.8.3-r1.ebuild, +files/cmake-2.8.3-FindLibArchive.patch,
+  +files/cmake-2.8.3-FindPythonInterp.patch,
+  +files/cmake-2.8.3-FindPythonLibs.patch,
+  +files/cmake-2.8.3-buffer_overflow.patch,
+  +files/cmake-2.8.3-fix_assembler_test.patch,
+  +files/cmake-2.8.3-more-no_host_paths.patch,
+  +files/cmake-2.8.3-ruby_libname.patch,
+  -files/cmake-FindPythonInterp.patch, -files/cmake-FindPythonLibs.patch:
+  Bump cmake with my lib32 patch to cmake-2.8.3-r1, following gentoo-x86's
+  changes.
+
   11 Jan 2011; Nathan Brink <ohnobinki@gentoo.org> -cmake-2.6.4-r3.ebuild:
   Drop cmake-2.6.4-r3 as official portage tree dropped cmake-2.6.
 

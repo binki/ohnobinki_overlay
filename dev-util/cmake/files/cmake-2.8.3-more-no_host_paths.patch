@@ -5,9 +5,9 @@ The ebuild now adds an extra / at the end of $EPREFIX so that it is
 never the empty string (so that CMAKE_SYSTEM_PREFIX_PATH remains
 correct)
 
---- cmake-2.8.0/Modules/Platform/Darwin.cmake
-+++ cmake-2.8.0/Modules/Platform/Darwin.cmake
-@@ -213,19 +213,23 @@
+--- cmake-2.8.3/Modules/Platform/Darwin.cmake
++++ cmake-2.8.3/Modules/Platform/Darwin.cmake
+@@ -217,19 +217,23 @@
  
  
   
@@ -35,8 +35,9 @@ correct)
    ~/Applications
    /Applications
    /Developer/Applications)
---- cmake-2.8.0/Modules/Platform/UnixPaths.cmake
-+++ cmake-2.8.0/Modules/Platform/UnixPaths.cmake
+diff -ruN cmake-2.8.3.orig/Modules/Platform/UnixPaths.cmake cmake-2.8.3/Modules/Platform/UnixPaths.cmake
+--- cmake-2.8.3/Modules/Platform/UnixPaths.cmake
++++ cmake-2.8.3/Modules/Platform/UnixPaths.cmake
 @@ -33,6 +33,7 @@
  # search types.
  LIST(APPEND CMAKE_SYSTEM_PREFIX_PATH
@@ -56,7 +57,7 @@ correct)
 -  /usr/X11R6/include /usr/include/X11
 -
 -  # Other
--  /opt/local/include /usr/pkg/include
+-  /usr/pkg/include
 -  /opt/csw/include /opt/include  
 -  /usr/openwin/include
 +  @GENTOO_PORTAGE_EPREFIX@usr/include
@@ -70,7 +71,7 @@ correct)
 -  /usr/X11R6/lib /usr/lib/X11
 -
 -  # Other
--  /opt/local/lib /usr/pkg/lib
+-  /usr/pkg/lib
 -  /opt/csw/lib /opt/lib 
 -  /usr/openwin/lib
 +  @GENTOO_PORTAGE_GCCLIBDIR@/gcc
