@@ -1,8 +1,8 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sys-devel/gcc-config/gcc-config-1.4.1.ebuild,v 1.9 2009/05/20 17:43:36 armin76 Exp $
+# $Header: /var/cvsroot/gentoo-x86/sys-devel/gcc-config/gcc-config-1.5.ebuild,v 1.1 2009/12/20 19:55:21 vapier Exp $
 
-inherit flag-o-matic toolchain-funcs multilib
+inherit eutils flag-o-matic toolchain-funcs multilib
 
 # Version of .c wrapper to use
 W_VER="1.5.1"
@@ -13,7 +13,7 @@ SRC_URI=""
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="alpha amd64 arm hppa ia64 m68k ~mips ppc ppc64 s390 sh sparc ~sparc-fbsd x86 ~x86-fbsd"
+#KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~sparc-fbsd ~x86-fbsd"
 IUSE=""
 
 RDEPEND="!app-admin/eselect-compiler"
@@ -22,6 +22,8 @@ S=${WORKDIR}
 
 src_unpack() {
 	cp "${FILESDIR}"/wrapper-${W_VER}.c "${S}"/wrapper.c || die
+
+	epatch "${FILESDIR}"/wrapper-${W_VER}-no-ABI.patch
 }
 
 src_compile() {
@@ -48,12 +50,14 @@ pkg_postinst() {
 	# Make sure old versions dont exist #79062
 	rm -f "${ROOT}"/usr/sbin/gcc-config
 
+	# We not longer use the /usr/include/g++-v3 hacks, as
+	# it is not needed ...
+	[[ -L ${ROOT}/usr/include/g++ ]] && rm -f "${ROOT}"/usr/include/g++
+	[[ -L ${ROOT}/usr/include/g++-v3 ]] && rm -f "${ROOT}"/usr/include/g++-v3
+
 	# Do we have a valid multi ver setup ?
-	if gcc-config --get-current-profile &>/dev/null ; then
-		# We not longer use the /usr/include/g++-v3 hacks, as
-		# it is not needed ...
-		[[ -L ${ROOT}/usr/include/g++ ]] && rm -f "${ROOT}"/usr/include/g++
-		[[ -L ${ROOT}/usr/include/g++-v3 ]] && rm -f "${ROOT}"/usr/include/g++-v3
-		gcc-config $(/usr/bin/gcc-config --get-current-profile)
-	fi
+	local x
+	for x in $(gcc-config -C -l 2>/dev/null | awk '$NF == "*" { print $2 }') ; do
+		gcc-config ${x}
+	done
 }
