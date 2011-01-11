@@ -25,7 +25,8 @@ src_unpack() {
 	epatch "${FILESDIR}/${PN}-1.5-build.patch"
 	epatch "${FILESDIR}/${PN}-1.6-header.patch"
 	epatch "${FILESDIR}/${P}-threadsafe.diff" \
-		"${FILESDIR}"/${P}-ldflags.patch
+		"${FILESDIR}"/${P}-ldflags.patch \
+		"${FILESDIR}"/${P}-no-ld.patch
 	if [[ ${CHOST} == *-freebsd* ]]; then
 		# Don't try to be smart, this does not work in cross-compile anyway
 		ln -s "${S}/config/Linux_All.mk" "${S}/config/$(uname -s)$(uname -r).mk"
