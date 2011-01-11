@@ -1,6 +1,9 @@
 # ChangeLog for dev-util/cmake
-# Copyright 1999-2010 Gentoo Foundation; Distributed under the GPL v2
+# Copyright 1999-2011 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/dev-util/cmake/ChangeLog,v 1.144 2010/09/11 15:13:49 armin76 Exp $
+
+  11 Jan 2011; Nathan Brink <ohnobinki@gentoo.org> -cmake-2.6.4-r3.ebuild:
+  Drop cmake-2.6.4-r3 as official portage tree dropped cmake-2.6.
 
   18 Oct 2010; Nathan Phillip Brink (binki) <ohnobinki@ohnopublishing.net>
   -cmake-2.8.1-r2.ebuild, +cmake-2.8.1-r3.ebuild,
