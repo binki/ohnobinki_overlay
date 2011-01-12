@@ -1,6 +1,10 @@
 # ChangeLog for net-irc/anope
-# Copyright 1999-2010 Gentoo Foundation; Distributed under the GPL v2
+# Copyright 1999-2011 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/net-irc/anope/ChangeLog,v 1.15 2009/06/27 11:04:34 patrick Exp $
+
+  12 Jan 2011; Nathan Phillip Brink (binki) <ohnobinki@ohnopublishing.net>
+  +anope-1.8.5.ebuild, +files/ldflags-fix.patch:
+  Import anope-1.8.5 from gentoo-x86 for multilib fixing and enhancements.
 
   16 Feb 2010; Nathan Phillip Brink (ohnobinki)
   <ohnobinki@ohnopublishing.net> anope-1.8.0.ebuild:
