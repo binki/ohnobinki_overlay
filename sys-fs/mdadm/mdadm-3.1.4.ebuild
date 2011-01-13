@@ -30,22 +30,21 @@ src_unpack() {
 	sed -i -e 's:-z now::' Makefile || die #331653
 }
 
-src_compile() {
-	# set CC to prevent CROSS_COMPILE paradigm from being used.
+mdadm_emake() {
 	emake \
 		CC="$(tc-getCC)" \
 		CWFLAGS="-Wall" \
 		CXFLAGS="${CFLAGS}" \
-		all mdassemble \
-		|| die "emake failed"
+		"${@}" \
+		|| die "'emake ${@}' failed"
+}
+
+src_compile() {
+	mdadm_emake all mdassemble
 }
 
 src_test() {
-	emake \
-		CC="$(tc-getCC)" \
-		CWFLAGS="-Wall" \
-		CXFLAGS="${CFLAGS}" \
-		test || die "emake test failed"
+	mdadm_emake test
 
 	# are these tests dangerous? I'm not willing to try them. --binki
 	sh ./test || die
