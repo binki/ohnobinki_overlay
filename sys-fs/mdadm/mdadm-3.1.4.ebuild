@@ -16,7 +16,10 @@ IUSE="static"
 DEPEND=""
 RDEPEND=">=sys-apps/util-linux-2.16"
 
-RESTRICT=test
+# Tests edit values in /proc and run tests on software raid
+# devices. Thus, they shouldn't be run on systems with active software
+# RAID devices.
+RESTRICT="test"
 
 src_unpack() {
 	unpack ${A}
@@ -35,8 +38,8 @@ mdadm_emake() {
 		CC="$(tc-getCC)" \
 		CWFLAGS="-Wall" \
 		CXFLAGS="${CFLAGS}" \
-		"${@}" \
-		|| die "'emake ${@}' failed"
+		"$@" \
+		|| die "'emake $@' failed"
 }
 
 src_compile() {
@@ -46,7 +49,6 @@ src_compile() {
 src_test() {
 	mdadm_emake test
 
-	# are these tests dangerous? I'm not willing to try them. --binki
 	sh ./test || die
 }
 
