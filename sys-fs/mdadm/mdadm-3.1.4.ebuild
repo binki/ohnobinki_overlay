@@ -18,7 +18,7 @@ RDEPEND=">=sys-apps/util-linux-2.16"
 
 # Tests edit values in /proc and run tests on software raid
 # devices. Thus, they shouldn't be run on systems with active software
-# RAID devices.
+# RAID devices. See bug #336175
 RESTRICT="test"
 
 src_unpack() {
@@ -27,7 +27,7 @@ src_unpack() {
 	epatch "${FILESDIR}"/${PN}-3.0-dont-make-man.patch
 	epatch "${FILESDIR}"/${PN}-2.6-syslog-updates.patch
 	epatch "${FILESDIR}"/${PN}-2.6.4-mdassemble.patch #211426
-	epatch "${FILESDIR}"/${P}-cflags.patch
+	epatch "${FILESDIR}"/${P}-cflags.patch #336175
 	use static && append-ldflags -static
 
 	sed -i -e 's:-z now::' Makefile || die #331653
