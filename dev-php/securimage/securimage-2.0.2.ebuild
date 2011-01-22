@@ -4,11 +4,9 @@
 
 EAPI="2"
 
-inherit eutils
-
 DESCRIPTION="PHP captcha creator and validator library"
 HOMEPAGE="http://phpcaptcha.org/"
-SRC_URI="mirror://ohnoproto/phpcaptcha-${PV}.tar.gz"
+SRC_URI="mirror://ohnoproto/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -18,20 +16,15 @@ IUSE=""
 S=${WORKDIR}
 
 src_prepare() {
-	epatch "${FILESDIR}"/phpcaptcha-${PV}-pic.patch
-
-	mkdir securimage-doc || die
-	mv -v ${PN}/README* securimage-doc/ || die
-
 	# it's good that the license is distributed, we just don't want to
 	# install it below.
-	rm -v ${PN}/LICENSE.txt || die
+	rm -v LICENSE.txt || die
 }
 
 src_install()
 {
-	insinto /usr/share/php
-	doins -r ${PN} || die
+	insinto /usr/share/php/${PN}
+	doins -r *.{ttf,php,swf} audio backgrounds database gdfonts images words || die
 
-	dodoc securimage-doc/* || die
+	dodoc README* || die
 }
