@@ -4,6 +4,8 @@
 
 EAPI=2
 
+inherit eutils
+
 DESCRIPTION="Another set of autoconf macros for compiling against boost"
 HOMEPAGE="http://github.com/tsuna/boost.m4"
 SRC_URI="${HOMEPAGE}/zipball/v${PV} -> ${P}.zip"
@@ -20,6 +22,10 @@ src_unpack() {
 	default
 
 	mv * ${P} || die
+}
+
+src_prepare() {
+	epatch "${FILESDIR}"/${P}-multilib.patch
 }
 
 src_configure() { :; }
