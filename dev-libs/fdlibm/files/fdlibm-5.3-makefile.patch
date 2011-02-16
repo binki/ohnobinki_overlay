@@ -1,0 +1,131 @@
+From: Nathan Phillip Brink <ohnobinki@ohnopublishing.net>
+Subject: Fix up fdlibm's buildsystem to respect DESTDIR and libdir in
+	its install target.
+
+--- a/Makefile.in	2011-02-16 00:41:52.000000000 -0500
++++ b/Makefile.in	2011-02-16 00:41:33.000000000 -0500
+@@ -45,7 +45,22 @@
+ # is double scalb(double, double)
+ #
+ 
+-prefix	= @prefix@
++.POSIX:
++.SUFFIXES: .c .lo .la
++
++exec_prefix = @exec_prefix@
++prefix = @prefix@
++bindir = @bindir@
++sbindir = @sbindir@
++libexecdir = @libexecdir@
++datadir = @datadir@
++sysconfdir = @sysconfdir@
++sharedstatedir = @sharedstatedir@
++localstatedir = @localstatedir@
++libdir = @libdir@
++includedir = @includedir@
++infodir = @infodir@
++mandir = @mandir
+ 
+ AR	= @AR@
+ 
+@@ -64,7 +79,7 @@
+ 
+ LDFLAGS	= @LDFLAGS@
+ 
+-LIB	= libfdm.a
++LIB	= libfdm.la
+ 
+ LIBS	= @LIBS@
+ 
+@@ -72,6 +87,12 @@
+ 
+ RM	= @RM@ -f
+ 
++INSTALL = install
++
++LIBTOOL = libtool
++
++LDFLAGS_RPATH = -rpath $(libdir)
++
+ .INIT: $(INCFILES)
+ 
+ .KEEP_STATE:
+@@ -97,26 +116,26 @@
+ 	s_rint.c s_scalbn.c s_signgam.c s_significand.c s_sin.c \
+ 	s_tan.c s_tanh.c
+ 
+-obj = 	k_standard.o k_rem_pio2.o \
+-	k_cos.o k_sin.o k_tan.o \
+-	e_acos.o e_acosh.o e_asin.o e_atan2.o \
+-	e_atanh.o e_cosh.o e_exp.o e_fmod.o \
+-	e_gamma.o e_gamma_r.o e_hypot.o e_j0.o \
+-	e_j1.o e_jn.o e_lgamma.o e_lgamma_r.o \
+-	e_log.o e_log10.o e_pow.o e_rem_pio2.o e_remainder.o  \
+-	e_scalb.o e_sinh.o e_sqrt.o \
+-	w_acos.o w_acosh.o w_asin.o w_atan2.o \
+-	w_atanh.o w_cosh.o w_exp.o w_fmod.o \
+-	w_gamma.o w_gamma_r.o w_hypot.o w_j0.o \
+-	w_j1.o w_jn.o w_lgamma.o w_lgamma_r.o \
+-	w_log.o w_log10.o w_pow.o w_remainder.o \
+-	w_scalb.o w_sinh.o w_sqrt.o \
+-	s_asinh.o s_atan.o s_cbrt.o s_ceil.o s_copysign.o \
+-	s_cos.o s_erf.o s_expm1.o s_fabs.o s_finite.o s_floor.o \
+-	s_frexp.o s_ilogb.o s_isnan.o s_ldexp.o s_lib_version.o \
+-	s_log1p.o s_logb.o s_matherr.o s_modf.o s_nextafter.o \
+-	s_rint.o s_scalbn.o s_signgam.o s_significand.o s_sin.o \
+-	s_tan.o s_tanh.o
++obj = 	k_standard.lo k_rem_pio2.lo \
++	k_cos.lo k_sin.lo k_tan.lo \
++	e_acos.lo e_acosh.lo e_asin.lo e_atan2.lo \
++	e_atanh.lo e_cosh.lo e_exp.lo e_fmod.lo \
++	e_gamma.lo e_gamma_r.lo e_hypot.lo e_j0.lo \
++	e_j1.lo e_jn.lo e_lgamma.lo e_lgamma_r.lo \
++	e_log.lo e_log10.lo e_pow.lo e_rem_pio2.lo e_remainder.lo  \
++	e_scalb.lo e_sinh.lo e_sqrt.lo \
++	w_acos.lo w_acosh.lo w_asin.lo w_atan2.lo \
++	w_atanh.lo w_cosh.lo w_exp.lo w_fmod.lo \
++	w_gamma.lo w_gamma_r.lo w_hypot.lo w_j0.lo \
++	w_j1.lo w_jn.lo w_lgamma.lo w_lgamma_r.lo \
++	w_log.lo w_log10.lo w_pow.lo w_remainder.lo \
++	w_scalb.lo w_sinh.lo w_sqrt.lo \
++	s_asinh.lo s_atan.lo s_cbrt.lo s_ceil.lo s_copysign.lo \
++	s_cos.lo s_erf.lo s_expm1.lo s_fabs.lo s_finite.lo s_floor.lo \
++	s_frexp.lo s_ilogb.lo s_isnan.lo s_ldexp.lo s_lib_version.lo \
++	s_log1p.lo s_logb.lo s_matherr.lo s_modf.lo s_nextafter.lo \
++	s_rint.lo s_scalbn.lo s_signgam.lo s_significand.lo s_sin.lo \
++	s_tan.lo s_tanh.lo
+ 
+ all: $(LIB)
+ 
+@@ -131,14 +150,14 @@
+ 	-$(RM) -r autom4te.cache/
+ 	-$(RM) config.cache config.log config.status Makefile
+ 
+-install:	$(LIB) uninstall
+-	$(CP) $(LIB) $(prefix)/lib/$(LIB)
+-	$(CHMOD) 664 $(prefix)/lib/$(LIB)
+-	$(RANLIB) $(prefix)/lib/$(LIB) || true
+-
+-$(LIB) : $(obj)
+-	$(AR) cru $(LIB) $(obj)
+-	$(RANLIB) $(LIB) || true
++install:	$(LIB)
++	$(INSTALL) -d $(DESTDIR)$(libdir)
++	$(LIBTOOL) --mode=install $(INSTALL) $(LIB) $(DESTDIR)$(libdir)/
++	$(INSTALL) -d $(DESTDIR)$(includedir)
++	$(INSTALL) -m 644 $(INCFILES) $(DESTDIR)$(includedir)/
++
++$(LIB): $(obj)
++	$(LIBTOOL) --mode=link $(CC) $(CFLAGS) $(LDFLAGS) $(LDFLAGS_RPATH) -o $@ $< $(LIBS)
+ 
+ maintainer-clean:	distclean
+ 	@echo "This command is intended for maintainers to use;"
+@@ -151,4 +170,7 @@
+ source: $(src) README
+ 
+ uninstall:
+-	-$(RM) $(prefix)/lib/$(LIB)
++	-$(LIBTOOL) --mode=uninstall $(RM) $(libdir)/$(LIB)
++
++.c.lo:
++	$(LIBTOOL) --mode=compile $(CC) $(CFLAGS) $(CPPFLAGS) $(DEFS) -o $@ -c $<
