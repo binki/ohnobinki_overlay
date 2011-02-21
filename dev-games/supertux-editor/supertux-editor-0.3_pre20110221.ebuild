@@ -20,10 +20,17 @@ DEPEND="dev-lang/mono
 	dev-dotnet/glade-sharp:2
 	dev-dotnet/gtk-sharp:2"
 RDEPEND="${DEPEND}
+	games-arcade/supertux:1
 	=media-libs/libsdl-1.2*[opengl,X]
 	media-libs/sdl-image[png]
 	virtual/glu
 	virtual/opengl"
+
+src_prepare()
+{
+	# ask the Makefile to be louder
+	export VERBOSE=1
+}
 
 src_install()
 {
