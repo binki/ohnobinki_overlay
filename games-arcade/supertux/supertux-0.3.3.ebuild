@@ -1,4 +1,4 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/games-arcade/supertux/supertux-0.1.3.ebuild,v 1.14 2009/02/23 01:02:56 mr_bones_ Exp $
 
@@ -14,7 +14,7 @@ SRC_URI="mirror://berlios/${PN}/${P}.tar.bz2
 
 LICENSE="GPL-2"
 SLOT="1"
-KEYWORDS="~amd64"
+KEYWORDS="~amd64 ~x86"
 IUSE="opengl curl debug"
 
 RDEPEND="dev-games/physfs
