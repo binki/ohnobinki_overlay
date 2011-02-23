@@ -3,6 +3,11 @@
 # $Header: /var/cvsroot/gentoo-x86/media-plugins/live/ChangeLog,v 1.126 2010/01/06 16:55:17 ranger Exp $
 
   23 Feb 2011; Nathan Phillip Brink (binki) <ohnobinki@ohnopublishing.net>
+  live-2009.06.02.ebuild, live-2011.01.24.ebuild:
+  Fix missing dependencies on sys-devel/libtool which caused novae a
+  compilation error.
+
+  23 Feb 2011; Nathan Phillip Brink (binki) <ohnobinki@ohnopublishing.net>
   -live-2009.09.28.ebuild, -live-2009.11.12.ebuild, -live-2010.04.09.ebuild:
   Drop intermediate live versions (2009.09.28, 2009.11.12, 2010.04.09) for
   which tarballs are not available anymore.

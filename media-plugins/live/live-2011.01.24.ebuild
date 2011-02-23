@@ -15,6 +15,9 @@ SLOT="0"
 KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~sparc ~x86 ~x86-fbsd ~x86-freebsd ~amd64-linux ~ia64-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~sparc-solaris ~x86-solaris"
 IUSE="static-libs"
 
+DEPEND="sys-devel/libtool:2"
+RDEPEND=""
+
 S=${WORKDIR}/${PN}
 
 # Alexis Ballier <aballier@gentoo.org>
