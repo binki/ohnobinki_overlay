@@ -1,6 +1,10 @@
 # ChangeLog for app-antivirus/clamav
-# Copyright 1999-2010 Gentoo Foundation; Distributed under the GPL v2
+# Copyright 1999-2011 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/app-antivirus/clamav/ChangeLog,v 1.308 2008/09/13 22:48:04 dertobi123 Exp $
+
+  24 Mar 2011; Nathan Phillip Brink (binki) <ohnobinki@ohnopublishing.net>
+  -clamav-0.96.1.ebuild:
+  Drop old clamav-0.96.1, not in gentoo-x86 anymore.
 
   30 Dec 2010; Nathan Phillip Brink (binki) <ohnobinki@ohnopublishing.net>
   +clamav-0.96.5.ebuild:
