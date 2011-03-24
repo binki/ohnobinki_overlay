@@ -2,6 +2,13 @@
 # Copyright 1999-2011 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/media-plugins/live/ChangeLog,v 1.126 2010/01/06 16:55:17 ranger Exp $
 
+  24 Mar 2011; Nathan Phillip Brink (binki) <ohnobinki@ohnopublishing.net>
+  -live-2009.06.02.ebuild, live-2011.01.24.ebuild, files/config.gentoo,
+  +files/config.gentoo-so-r1:
+  Match live ebuild up more closely with the gentoo-x86-cvs version. Drop
+  live-2009.06.02. Fix building live without live being previously installed
+  (was trying to link against previously-installed live libraries).
+
   23 Feb 2011; Nathan Phillip Brink (binki) <ohnobinki@ohnopublishing.net>
   live-2009.06.02.ebuild, live-2011.01.24.ebuild:
   Fix missing dependencies on sys-devel/libtool which caused novae a

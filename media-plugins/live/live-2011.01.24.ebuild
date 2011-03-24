@@ -4,7 +4,7 @@
 
 EAPI="3"
 
-inherit eutils flag-o-matic eutils toolchain-funcs multilib
+inherit eutils eutils toolchain-funcs multilib
 
 DESCRIPTION="Standards-based RTP/RTCP/RTSP multimedia streaming for embedded streaming applications"
 HOMEPAGE="http://www.live555.com/"
@@ -13,12 +13,9 @@ SRC_URI="http://www.live555.com/liveMedia/public/${P/-/.}.tar.gz"
 LICENSE="LGPL-2.1"
 SLOT="0"
 KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~sparc ~x86 ~x86-fbsd ~x86-freebsd ~amd64-linux ~ia64-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~sparc-solaris ~x86-solaris"
-IUSE="static-libs"
+IUSE=""
 
-DEPEND="sys-devel/libtool:2"
-RDEPEND=""
-
-S=${WORKDIR}/${PN}
+S=${WORKDIR}
 
 # Alexis Ballier <aballier@gentoo.org>
 # Be careful, bump this everytime you bump the package and the ABI has changed.
@@ -26,14 +23,18 @@ S=${WORKDIR}/${PN}
 LIVE_ABI_VERSION=3
 
 src_prepare() {
-	cp "${FILESDIR}"/config.gentoo ./ || die
+	cp -pPR live live-shared || die
+	mv live live-static || die
+
+	cp "${FILESDIR}"/config.gentoo live-static/ || die
+	cp "${FILESDIR}"/config.gentoo-so-r1 live-shared/ || die
+
+	cd "${WORKDIR}"/${PN}-shared || die
 	epatch "${FILESDIR}"/${PN}-2009.09.28-buildorder.patch
 	epatch "${FILESDIR}"/${PN}-2009.06.02-libdeps.patch
 	epatch "${FILESDIR}"/${PN}-recursive.patch
+	cd "${WORKDIR}" || die
 
-	# copied from portage's live-2009-11.*.ebuild ->
-	# live-2010.04.09.ebuild diff, not gauranteed to work. Please file
-	# bugs at http://ohnopub.net/bugzilla against ohnobinki_overlay.
 	case ${CHOST} in
 		*-solaris*)
 			sed -i \
@@ -41,7 +42,7 @@ src_prepare() {
 				-e '/^LIBS_FOR_CONSOLE_APPLICATION /s/$/ -lsocket -lnsl/' \
 				live-static/config.gentoo \
 				live-shared/config.gentoo-so-r1 \
-				|| die "Please file bug at http://ohnopub.net/bugzilla"
+				|| die
 		;;
 		*-darwin*)
 			sed -i \
@@ -50,63 +51,62 @@ src_prepare() {
 				-e '/^LIBRARY_LINK /s/$/ /' \
 				-e '/^LIBRARY_LINK_OPTS /s/-Bstatic//' \
 				live-static/config.gentoo \
-				|| die "static Please file bug at http://ohnopub.net/bugzilla"
+				|| die static
 			sed -i \
 				-e '/^COMPILE_OPTS /s/$/ -DBSD=1 -DHAVE_SOCKADDR_LEN=1/' \
 				-e '/^LINK /s/$/ /' \
 				-e '/^LIBRARY_LINK /s/=.*$/= $(CXX) -o /' \
 				-e '/^LIBRARY_LINK_OPTS /s:-shared.*$:-undefined suppress -flat_namespace -dynamiclib -install_name '"${EPREFIX}/usr/$(get_libdir)/"'$@:' \
 				live-shared/config.gentoo-so-r1 \
-				|| die "shared Please file bug at http://ohnopub.net/bugzilla"
+				|| die shared
 		;;
 	esac
-
 }
 
 src_configure() {
 	tc-export CC CXX
-	export LIVE_ABI_VERSION LIBDIR=/usr/$(get_libdir)
+	export LIVE_ABI_VERSION LIBDIR=/usr/"$(get_libdir)"
 
-	if ! use static-libs; then
-		append-flags -shared
-		append-ldflags -shared
-	fi
-
+	cd "${WORKDIR}"/${PN}-static || die
 	./genMakefiles gentoo
+
+	cd "${WORKDIR}"/${PN}-shared || die
+	./genMakefiles gentoo-so-r1
 }
 
 src_compile() {
-	einfo "Beginning library build"
-	emake -j1 || die "failed to build libraries"
+	einfo "Beginning static library build"
+	emake -C ${PN}-static -j1 || die "failed to build static libraries"
+
+	einfo "Beginning shared library build"
+	emake -C ${PN}-shared -j1 || die "failed to build shared libraries"
 
 	einfo "Beginning programs build"
-	emake -C testProgs || die "failed to build test programs"
-	emake -C mediaServer || die "failed to build the mediaserver"
+	emake -C ${PN}-shared/testProgs || die "failed to build test programs"
+	emake -C ${PN}-shared/mediaServer || die "failed to build the mediaserver"
 }
 
 src_install() {
 	dodir /usr/{$(get_libdir),bin} || die
 	for library in UsageEnvironment liveMedia BasicUsageEnvironment groupsock; do
-		libtool --mode=install install -c ${library}/lib${library}.la "${ED}"/usr/$(get_libdir)/ || die
+		dolib.a ${PN}-static/${library}/lib${library}.a || die
 
-		if ! use static-libs; then
-			# make tommy happy --ohnobinki
-			rm -v "${ED}"/usr/$(get_libdir)/lib${library}.la || die
-		fi
+		mv ${PN}-shared/${library}/lib${library}.so{,.${LIVE_ABI_VERSION}} || die
+		dolib.so ${PN}-shared/${library}/lib${library}.so.${LIVE_ABI_VERSION} || die
+		dosym lib${library}.so.${LIVE_ABI_VERSION} /usr/$(get_libdir)/lib${library}.so || die
 
 		insinto /usr/include/${library}
-		doins ${library}/include/*h || die
+		doins ${PN}-shared/${library}/include/*h || die
 	done
 
 	# Should we really install these?
-	find testProgs -type f -perm +111 \
-		-exec libtool --mode=install install -c '{}' "${ED}"/usr/bin/ \; || die
+	dobin $(find ${PN}-shared/testProgs -type f -perm +111) || die
 
 	#install included live555MediaServer aplication
-	libtool --mode=install install -c mediaServer/live555MediaServer "${ED}"/usr/bin/ || die
+	dobin ${PN}-shared/mediaServer/live555MediaServer || die
 
 	# install docs
-	dodoc README || die
+	dodoc ${PN}-shared/README || die
 }
 
 pkg_postinst() {
