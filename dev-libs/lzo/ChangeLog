@@ -2,6 +2,10 @@
 # Copyright 1999-2011 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/dev-libs/lzo/ChangeLog,v 1.56 2011/03/22 20:41:40 ranger Exp $
 
+  24 Mar 2011; Nathan Phillip Brink (binki) <ohnobinki@ohnopublishing.net>
+  -lzo-2.02-r1.ebuild, -lzo-2.03.ebuild, lzo-2.04.ebuild:
+  Fix keywords to reflect that my ebuild is unstable and drop old ebuilds.
+
   22 Mar 2011; Brent Baude <ranger@gentoo.org> lzo-2.04.ebuild:
   Marking lzo-2.04 ppc for bug 353842
 
