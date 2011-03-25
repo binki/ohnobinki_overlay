@@ -4,6 +4,10 @@
 
 EAPI=2
 
+WANT_AUTOCONF=2.5
+
+inherit autotools eutils
+
 DESCRIPTION="An extremely fast compression and decompression library"
 HOMEPAGE="http://www.oberhumer.com/opensource/lzo/"
 SRC_URI="http://www.oberhumer.com/opensource/lzo/download/${P}.tar.gz"
@@ -12,6 +16,19 @@ LICENSE="GPL-2"
 SLOT="2"
 KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~sparc-fbsd ~x86-fbsd"
 IUSE="examples static-libs"
+
+RDEPEND=""
+DEPEND=">=sys-devel/autoconf-2.67"
+
+src_prepare() {
+	epatch "${FILESDIR}"/${P}-asm-makefile.patch
+
+	# lzo has some weird sort of mfx_* set of autoconf macros which may
+	# only be distributed with lzo itself? Rescue them and place them
+	# into acinclude.m4 because there doesn't seem to be an m4/...
+	sed -n -e '/^AC_DEFUN.*mfx_/,/^])#$/p' aclocal.m4 > acinclude.m4 || die "Unable to rescue mfx_* autoconf macros."
+	eautoreconf
+}
 
 src_configure() {
 	econf \

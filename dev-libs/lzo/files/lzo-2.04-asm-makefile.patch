@@ -1,0 +1,48 @@
+From: Nathan Phillip Brink <ohnobinki@ohnopublishing.net>
+
+Subject: Fix compilation of lzo on portage-multilib by removing asm compilation rules which ignored ASFLAGS
+
+--- a/configure.ac	x 
++++ b/configure.ac	x
+@@ -60,2 +60,3 @@
+ AC_PROG_CPP
++AM_PROG_AS
+ mfx_PROG_CPPFLAGS
+
+--- a/src/Makefile.am	Sun Oct 31 13:21:28 2010
++++ b/src/Makefile.am	Thu Mar 24 00:07:45 2011
+@@ -42,27 +42,14 @@
+     lzo1a_de.h lzo1b_cc.h lzo1b_de.h lzo1c_cc.h lzo_conf.h lzo_dict.h \
+     lzo_ptr.h stats1a.h stats1b.h stats1c.h miniacc.h
+ 
+-liblzo2_la_LIBADD = $(LZO_ASM_OBJECTS)
+-liblzo2_la_DEPENDENCIES = $(liblzo2_la_LIBADD)
+-
+-
+ # /***********************************************************************
+ # // assembler support
+ # ************************************************************************/
+ 
+ if LZO_USE_ASM
+-
+-LZO_ASM_OBJECTS = \
+-	lzo1c_s1.lo lzo1c_s2.lo \
+-	lzo1f_f1.lo lzo1f_f2.lo \
+-	lzo1x_f1.lo lzo1x_f2.lo lzo1x_s1.lo lzo1x_s2.lo \
+-	lzo1y_f1.lo lzo1y_f2.lo lzo1y_s1.lo lzo1y_s2.lo
+-
+-.S.o:
+-	$(AM_V_CC)$(CC) -c $<
+-
+-.S.lo:
+-	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) -c $<
+-
++liblzo2_la_SOURCES += \
++	lzo1c_s1.S lzo1c_s2.S \
++	lzo1f_f1.S lzo1f_f2.S \
++	lzo1x_f1.S lzo1x_f2.S lzo1x_s1.S lzo1x_s2.S \
++	lzo1y_f1.S lzo1y_f2.S lzo1y_s1.S lzo1y_s2.S
+ endif
+-
+
+
