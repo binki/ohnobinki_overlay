@@ -98,7 +98,6 @@ src_prepare() {
 		-e "/^CROSS_COMPILE/s:=.*:= ${CHOST}-:" \
 		-e "/^AR\>/s:=.*:= $(tc-getAR):" \
 		-e "/^CC\>/s:=.*:= $(tc-getCC):" \
-		-e "/^LD\>/s:=.*:= $(tc-getLD):" \
 		-e "/^HOSTCC/s:=.*:= $(tc-getBUILD_CC):" \
 		Makefile || die
 }

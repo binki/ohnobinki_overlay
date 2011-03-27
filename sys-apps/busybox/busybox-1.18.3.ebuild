@@ -71,8 +71,8 @@ busybox_config_option() {
 		y) sed -i -e "s:.*\<CONFIG_$2\>.*set:CONFIG_$2=y:g" .config;;
 		n) sed -i -e "s:CONFIG_$2=y:# CONFIG_$2 is not set:g" .config;;
 		*) use $1 \
-			   && busybox_config_option y $2 \
-			   || busybox_config_option n $2
+		       && busybox_config_option y $2 \
+		       || busybox_config_option n $2
 		   return 0
 		   ;;
 	esac
@@ -85,7 +85,6 @@ src_prepare() {
 
 	# patches go here!
 	epatch "${FILESDIR}"/busybox-1.18.0-bb.patch
-	epatch "${FILESDIR}"/busybox-1.18.1-ldflags.patch
 	epatch "${FILESDIR}"/busybox-${PV}-*.patch
 
 	# flag cleanup
@@ -99,7 +98,6 @@ src_prepare() {
 		-e "/^CROSS_COMPILE/s:=.*:= ${CHOST}-:" \
 		-e "/^AR\>/s:=.*:= $(tc-getAR):" \
 		-e "/^CC\>/s:=.*:= $(tc-getCC):" \
-		-e "/^LD\>/s:=.*:= $(tc-getLD):" \
 		-e "/^HOSTCC/s:=.*:= $(tc-getBUILD_CC):" \
 		Makefile || die
 }
