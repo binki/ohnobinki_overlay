@@ -2,6 +2,11 @@
 # Copyright 1999-2011 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/app-antivirus/clamav/ChangeLog,v 1.308 2008/09/13 22:48:04 dertobi123 Exp $
 
+  27 Mar 2011; Nathan Phillip Brink (binki) <ohnobinki@ohnopublishing.net>
+  -files/clamav-0.95.1-nls.patch, +clamav-0.97.ebuild,
+  +files/clamav-0.97-nls.patch:
+  Bump to clamav-0.97, trying to copy most changes from gentoo-x86.
+
   24 Mar 2011; Nathan Phillip Brink (binki) <ohnobinki@ohnopublishing.net>
   -clamav-0.96.1.ebuild:
   Drop old clamav-0.96.1, not in gentoo-x86 anymore.
