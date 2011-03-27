@@ -3,6 +3,11 @@
 # $Header: /var/cvsroot/gentoo-x86/app-antivirus/clamav/ChangeLog,v 1.308 2008/09/13 22:48:04 dertobi123 Exp $
 
   27 Mar 2011; Nathan Phillip Brink (binki) <ohnobinki@ohnopublishing.net>
+  -clamav-0.96.5.ebuild:
+  Drop clamav-0.96.5 which was broken because of the patch removed in
+  19f4c26f9f62.
+
+  27 Mar 2011; Nathan Phillip Brink (binki) <ohnobinki@ohnopublishing.net>
   -files/clamav-0.95.1-nls.patch, +clamav-0.97.ebuild,
   +files/clamav-0.97-nls.patch:
   Bump to clamav-0.97, trying to copy most changes from gentoo-x86.
