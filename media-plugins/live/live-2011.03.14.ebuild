@@ -23,17 +23,20 @@ S=${WORKDIR}
 LIVE_ABI_VERSION=3
 
 src_prepare() {
+	epatch "${FILESDIR}"/${PN}-2009.09.28-buildorder.patch
+	epatch "${FILESDIR}"/${PN}-recursive.patch
+
 	cp -pPR live live-shared || die
+	pushd live-shared || die
+	# To build shared libraries with proper NEEDED entries, we need
+	# these libraries to link to eachother. This patch does this.
+	epatch "${FILESDIR}"/${PN}-2009.06.02-libdeps.patch
+	popd || die
+
 	mv live live-static || die
 
 	cp "${FILESDIR}"/config.gentoo live-static/ || die
 	cp "${FILESDIR}"/config.gentoo-so-r1 live-shared/ || die
-
-	cd "${WORKDIR}"/${PN}-shared || die
-	epatch "${FILESDIR}"/${PN}-2009.09.28-buildorder.patch
-	epatch "${FILESDIR}"/${PN}-2009.06.02-libdeps.patch
-	epatch "${FILESDIR}"/${PN}-recursive.patch
-	cd "${WORKDIR}" || die
 
 	case ${CHOST} in
 		*-solaris*)
@@ -68,10 +71,10 @@ src_configure() {
 	export LIVE_ABI_VERSION LIBDIR=/usr/"$(get_libdir)"
 
 	cd "${WORKDIR}"/${PN}-static || die
-	./genMakefiles gentoo
+	./genMakefiles gentoo || die
 
 	cd "${WORKDIR}"/${PN}-shared || die
-	./genMakefiles gentoo-so-r1
+	./genMakefiles gentoo-so-r1 || die
 }
 
 src_compile() {
@@ -87,7 +90,6 @@ src_compile() {
 }
 
 src_install() {
-	dodir /usr/{$(get_libdir),bin} || die
 	for library in UsageEnvironment liveMedia BasicUsageEnvironment groupsock; do
 		dolib.a ${PN}-static/${library}/lib${library}.a || die
 
@@ -106,7 +108,7 @@ src_install() {
 	dobin ${PN}-shared/mediaServer/live555MediaServer || die
 
 	# install docs
-	dodoc ${PN}-shared/README || die
+	dodoc ${PN}-static/README || die
 }
 
 pkg_postinst() {

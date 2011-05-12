@@ -2,8 +2,8 @@ Author: Nathan Phillip Brink <ohnobinki@ohnopublishing.net>
 Purpose: To help get libtool working with live.
 
 diff -r a467df21e246 -r d1fda89b91cd BasicUsageEnvironment/Makefile.tail
---- a/BasicUsageEnvironment/Makefile.tail	Fri Mar 12 11:30:13 2010 -0500
-+++ b/BasicUsageEnvironment/Makefile.tail	Fri Mar 12 12:19:11 2010 -0500
+--- a/live/BasicUsageEnvironment/Makefile.tail	Fri Mar 12 11:30:13 2010 -0500
++++ b/live/BasicUsageEnvironment/Makefile.tail	Fri Mar 12 12:19:11 2010 -0500
 @@ -7,10 +7,11 @@
  OBJS = BasicUsageEnvironment0.$(OBJ) BasicUsageEnvironment.$(OBJ) \
  	BasicTaskScheduler0.$(OBJ) BasicTaskScheduler.$(OBJ) \
@@ -18,8 +18,8 @@ diff -r a467df21e246 -r d1fda89b91cd BasicUsageEnvironment/Makefile.tail
  .$(C).$(OBJ):
  	$(C_COMPILER) -c $(C_FLAGS) $<       
 diff -r a467df21e246 -r d1fda89b91cd groupsock/Makefile.tail
---- a/groupsock/Makefile.tail	Fri Mar 12 11:30:13 2010 -0500
-+++ b/groupsock/Makefile.tail	Fri Mar 12 12:19:11 2010 -0500
+--- a/live/groupsock/Makefile.tail	Fri Mar 12 11:30:13 2010 -0500
++++ b/live/groupsock/Makefile.tail	Fri Mar 12 12:19:11 2010 -0500
 @@ -10,6 +10,7 @@
  	$(CPLUSPLUS_COMPILER) -c $(CPLUSPLUS_FLAGS) $<
  
@@ -41,8 +41,8 @@ diff -r a467df21e246 -r d1fda89b91cd groupsock/Makefile.tail
  clean:
  	-rm -rf *.$(OBJ) $(ALL) core *.core *~ include/*~
 diff -r a467df21e246 -r d1fda89b91cd liveMedia/Makefile.tail
---- a/liveMedia/Makefile.tail	Fri Mar 12 11:30:13 2010 -0500
-+++ b/liveMedia/Makefile.tail	Fri Mar 12 12:19:11 2010 -0500
+--- a/live/liveMedia/Makefile.tail	Fri Mar 12 11:30:13 2010 -0500
++++ b/live/liveMedia/Makefile.tail	Fri Mar 12 12:19:11 2010 -0500
 @@ -42,11 +42,12 @@
  MISC_OBJS = DarwinInjector.$(OBJ) BitVector.$(OBJ) StreamParser.$(OBJ) DigestAuthentication.$(OBJ) our_md5.$(OBJ) our_md5hl.$(OBJ) Base64.$(OBJ) Locale.$(OBJ)
  
