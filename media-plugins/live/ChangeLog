@@ -3,6 +3,10 @@
 # $Header: /var/cvsroot/gentoo-x86/media-plugins/live/ChangeLog,v 1.126 2010/01/06 16:55:17 ranger Exp $
 
   12 May 2011; Nathan Phillip Brink <binki@gentoo.org>
+  live-2011.03.14.ebuild:
+  Fix LIVE_ABI_VERSION to match the gentoo-x86 ebuild and move to EAPI=4.
+
+  12 May 2011; Nathan Phillip Brink <binki@gentoo.org>
   -files/live-2009.06.02-as-needed.patch,
   -files/live-2009.06.02-buildorder.patch,
   files/live-2009.06.02-libdeps.patch,

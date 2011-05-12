@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI="3"
+EAPI=4
 
 inherit eutils eutils toolchain-funcs multilib
 
@@ -20,7 +20,7 @@ S=${WORKDIR}
 # Alexis Ballier <aballier@gentoo.org>
 # Be careful, bump this everytime you bump the package and the ABI has changed.
 # If you don't know, ask someone.
-LIVE_ABI_VERSION=3
+LIVE_ABI_VERSION=4
 
 src_prepare() {
 	epatch "${FILESDIR}"/${PN}-2009.09.28-buildorder.patch
@@ -79,36 +79,36 @@ src_configure() {
 
 src_compile() {
 	einfo "Beginning static library build"
-	emake -C ${PN}-static -j1 || die "failed to build static libraries"
+	emake -C ${PN}-static -j1
 
 	einfo "Beginning shared library build"
-	emake -C ${PN}-shared -j1 || die "failed to build shared libraries"
+	emake -C ${PN}-shared -j1
 
 	einfo "Beginning programs build"
-	emake -C ${PN}-shared/testProgs || die "failed to build test programs"
-	emake -C ${PN}-shared/mediaServer || die "failed to build the mediaserver"
+	emake -C ${PN}-shared/testProgs
+	emake -C ${PN}-shared/mediaServer
 }
 
 src_install() {
 	for library in UsageEnvironment liveMedia BasicUsageEnvironment groupsock; do
-		dolib.a ${PN}-static/${library}/lib${library}.a || die
+		dolib.a ${PN}-static/${library}/lib${library}.a
 
 		mv ${PN}-shared/${library}/lib${library}.so{,.${LIVE_ABI_VERSION}} || die
-		dolib.so ${PN}-shared/${library}/lib${library}.so.${LIVE_ABI_VERSION} || die
-		dosym lib${library}.so.${LIVE_ABI_VERSION} /usr/$(get_libdir)/lib${library}.so || die
+		dolib.so ${PN}-shared/${library}/lib${library}.so.${LIVE_ABI_VERSION}
+		dosym lib${library}.so.${LIVE_ABI_VERSION} /usr/$(get_libdir)/lib${library}.so
 
 		insinto /usr/include/${library}
-		doins ${PN}-shared/${library}/include/*h || die
+		doins ${PN}-shared/${library}/include/*h
 	done
 
 	# Should we really install these?
-	dobin $(find ${PN}-shared/testProgs -type f -perm +111) || die
+	dobin $(find ${PN}-shared/testProgs -type f -perm +111)
 
 	#install included live555MediaServer aplication
-	dobin ${PN}-shared/mediaServer/live555MediaServer || die
+	dobin ${PN}-shared/mediaServer/live555MediaServer
 
 	# install docs
-	dodoc ${PN}-static/README || die
+	dodoc ${PN}-static/README
 }
 
 pkg_postinst() {
