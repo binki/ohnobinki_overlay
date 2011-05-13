@@ -4,7 +4,7 @@
 
 EAPI=4
 
-inherit eutils eutils toolchain-funcs multilib
+inherit eutils toolchain-funcs multilib
 
 DESCRIPTION="Standards-based RTP/RTCP/RTSP multimedia streaming for embedded streaming applications"
 HOMEPAGE="http://www.live555.com/"
