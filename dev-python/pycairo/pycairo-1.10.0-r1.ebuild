@@ -84,7 +84,7 @@ waf-utils_waflibdir() {
 	local waf_binary=${WAF_BINARY}
 	[[ -n ${1} ]] && waf_binary=${1}
 
-	python -c "import imp, os, sys; sys.argv[0] = '${waf_binary}'; waflite = imp.load_source('waflite', '${waf_binary}'); print(waflite.find_lib());" \
+	python -c "import imp, sys; sys.argv[0] = '${waf_binary}'; waflite = imp.load_source('waflite', '${waf_binary}'); print(waflite.find_lib());" \
 		|| die "Unable to locate or unpack waflib module from the waf script at ${waf_binary}"
 }
 

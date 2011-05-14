@@ -3,6 +3,10 @@
 # $Header: /var/cvsroot/gentoo-x86/dev-python/pycairo/ChangeLog,v 1.100 2011/05/08 21:28:41 arfrever Exp $
 
   14 May 2011; Nathan Phillip Brink (binki) <ohnobinki@ohnopublishing.net>
+  pycairo-1.10.0-r1.ebuild:
+  Simplify the waflib patching hack slightly.
+
+  14 May 2011; Nathan Phillip Brink (binki) <ohnobinki@ohnopublishing.net>
   pycairo-1.10.0-r1.ebuild, +files/pycairo-1.10.0-waf-multilib.patch:
   Fix build issue on portage-multilib caused by /usr/bin/python-config being
   wrapped by abi-wrapper. waf expected python-config to be a python script,
