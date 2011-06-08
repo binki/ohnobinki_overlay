@@ -1,0 +1,17 @@
+From: Nathan Phillip Brink <binki@gentoo.org>
+Date: 2011/06/08
+Subject: Don't assume that /usr/bin/python-config* is a python
+	script. Fixes build on portage-multilib where abi-wrapper is a
+	bash script wrapping around the different python-configs.
+
+--- a/wafadmin/Tools/python.py
++++ b/wafadmin/Tools/python.py
+@@ -182,7 +182,7 @@
+ 		python_config=conf.find_program('python-config-%s'%('.'.join(env['PYTHON_VERSION'].split('.')[:2])),var='PYTHON_CONFIG')
+ 	includes=[]
+ 	if python_config:
+-		for incstr in Utils.cmd_output("%s %s --includes"%(python,python_config)).strip().split():
++		for incstr in Utils.cmd_output("%s --includes"%(python_config)).strip().split():
+ 			if(incstr.startswith('-I')or incstr.startswith('/I')):
+ 				incstr=incstr[2:]
+ 			if incstr not in includes:

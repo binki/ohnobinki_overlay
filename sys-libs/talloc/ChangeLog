@@ -2,6 +2,11 @@
 # Copyright 1999-2011 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/sys-libs/talloc/ChangeLog,v 1.24 2011/06/02 17:56:29 vostorga Exp $
 
+  08 Jun 2011; Nathan Phillip Brink <binki@gentoo.org> talloc-2.0.5.ebuild,
+  +files/talloc-2.0.5-waf-multilib.patch:
+  Add waf hack, fixes compilation on portage-multilib with abi-wrapped
+  python-config executables.
+
   02 Jun 2011; Víctor Ostorga <vostorga@gentoo.org> talloc-2.0.5.ebuild:
   Adding dependency dev-lang/python[threads] bug 363071
 
