@@ -2,6 +2,11 @@
 # Copyright 1999-2011 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/sys-libs/talloc/ChangeLog,v 1.24 2011/06/02 17:56:29 vostorga Exp $
 
+  08 Jun 2011; Nathan Phillip Brink <binki@gentoo.org> -talloc-1.3.0.ebuild,
+  -talloc-1.3.1.ebuild, -talloc-2.0.0.ebuild, -talloc-2.0.0-r1.ebuild,
+  -talloc-2.0.1.ebuild, -talloc-2.0.1-r1.ebuild:
+  Drop talloc versions not affected by waf.
+
   08 Jun 2011; Nathan Phillip Brink <binki@gentoo.org> talloc-2.0.5.ebuild,
   +files/talloc-2.0.5-waf-multilib.patch:
   Add waf hack, fixes compilation on portage-multilib with abi-wrapped
