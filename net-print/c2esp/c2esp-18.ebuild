@@ -42,5 +42,5 @@ src_compile() {
 }
 
 src_install() {
-	emake "${C2ESP_MAKE_OPTS[@]}" DESTDIR="${D}" FILTERBIN="${D}"/usr/libexec/cups/filter install
+	emake DESTDIR="${D}" FILTERBIN="${D}"/usr/libexec/cups/filter install
 }
