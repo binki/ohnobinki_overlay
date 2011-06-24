@@ -8,8 +8,8 @@ inherit toolchain-funcs
 
 MY_P=${PN}${PV}
 
-DESCRIPTION="A cups filter for Kodak ESP 5xxx and other printers"
-HOMEPAGE="http://cupskodakdriver.sf.net/"
+DESCRIPTION="A cups filter for Kodak ESP printers"
+HOMEPAGE="http://cupsdriverkodak.sf.net/"
 SRC_URI="mirror://sourceforge/cupsdriverkodak/files/${MY_P}.tar.gz"
 LICENSE="GPL-2"
 
