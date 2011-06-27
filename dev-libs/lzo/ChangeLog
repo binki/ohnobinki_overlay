@@ -2,6 +2,10 @@
 # Copyright 1999-2011 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/dev-libs/lzo/ChangeLog,v 1.56 2011/03/22 20:41:40 ranger Exp $
 
+  27 Jun 2011; Nathan Phillip Brink <binki@gentoo.org> +lzo-2.05.ebuild:
+  Commit the fix to bug #365407, which is a bump to lzo-2.05, which happens
+  to have upstream's fix to bug #360385 as well.
+
   25 Mar 2011; Nathan Phillip Brink (binki) <ohnobinki@ohnopublishing.net>
   -files/lzo-2.02-exec-stack.patch, lzo-2.04.ebuild,
   +files/lzo-2.04-asm-makefile.patch:
