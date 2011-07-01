@@ -15,7 +15,7 @@ SLOT="0"
 KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~sparc ~x86 ~x86-fbsd ~x86-freebsd ~amd64-linux ~ia64-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~sparc-solaris ~x86-solaris"
 IUSE=""
 
-S=${WORKDIR}
+S="${WORKDIR}"
 
 # Alexis Ballier <aballier@gentoo.org>
 # Be careful, bump this everytime you bump the package and the ABI has changed.
@@ -24,7 +24,7 @@ LIVE_ABI_VERSION=4
 
 src_prepare() {
 	epatch "${FILESDIR}"/${PN}-2009.09.28-buildorder.patch
-	epatch "${FILESDIR}"/${PN}-recursive.patch
+	epatch "${FILESDIR}/${PN}-recursive.patch"
 
 	cp -pPR live live-shared || die
 	pushd live-shared || die
@@ -91,24 +91,25 @@ src_compile() {
 
 src_install() {
 	for library in UsageEnvironment liveMedia BasicUsageEnvironment groupsock; do
-		dolib.a ${PN}-static/${library}/lib${library}.a
+		dolib.a live-static/${library}/lib${library}.a
 
 		mv ${PN}-shared/${library}/lib${library}.so{,.${LIVE_ABI_VERSION}} || die
 		dolib.so ${PN}-shared/${library}/lib${library}.so.${LIVE_ABI_VERSION}
 		dosym lib${library}.so.${LIVE_ABI_VERSION} /usr/$(get_libdir)/lib${library}.so
 
 		insinto /usr/include/${library}
-		doins ${PN}-shared/${library}/include/*h
+		doins live-shared/${library}/include/*h
 	done
 
 	# Should we really install these?
-	dobin $(find ${PN}-shared/testProgs -type f -perm +111)
+	find live-shared/testProgs -type f -perm +111 -print0 | \
+		xargs -0 dobin
 
 	#install included live555MediaServer aplication
-	dobin ${PN}-shared/mediaServer/live555MediaServer
+	dobin live-shared/mediaServer/live555MediaServer
 
 	# install docs
-	dodoc ${PN}-static/README
+	dodoc live-static/README
 }
 
 pkg_postinst() {
