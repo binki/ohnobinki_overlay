@@ -6,7 +6,7 @@ EAPI=4
 
 inherit eutils toolchain-funcs multilib
 
-DESCRIPTION="Standards-based RTP/RTCP/RTSP multimedia streaming for embedded streaming applications"
+DESCRIPTION="Source-code libraries for standards-based RTP/RTCP/RTSP multimedia streaming, suitable for embedded and/or low-cost streaming applications"
 HOMEPAGE="http://www.live555.com/"
 SRC_URI="http://www.live555.com/liveMedia/public/${P/-/.}.tar.gz"
 
