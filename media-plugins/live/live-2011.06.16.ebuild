@@ -35,16 +35,16 @@ src_prepare() {
 
 	mv live live-static || die
 
-	cp "${FILESDIR}"/config.gentoo live-static/ || die
-	cp "${FILESDIR}"/config.gentoo-so-r1 live-shared/ || die
+	cp "${FILESDIR}"/config.gentoo-r1 live-static/ || die
+	cp "${FILESDIR}"/config.gentoo-so-r2 live-shared/ || die
 
 	case ${CHOST} in
 		*-solaris*)
 			sed -i \
 				-e '/^COMPILE_OPTS /s/$/ -DSOLARIS/' \
 				-e '/^LIBS_FOR_CONSOLE_APPLICATION /s/$/ -lsocket -lnsl/' \
-				live-static/config.gentoo \
-				live-shared/config.gentoo-so-r1 \
+				live-static/config.gentoo-r1 \
+				live-shared/config.gentoo-so-r2 \
 				|| die
 		;;
 		*-darwin*)
@@ -53,14 +53,14 @@ src_prepare() {
 				-e '/^LINK /s/$/ /' \
 				-e '/^LIBRARY_LINK /s/$/ /' \
 				-e '/^LIBRARY_LINK_OPTS /s/-Bstatic//' \
-				live-static/config.gentoo \
+				live-static/config.gentoo-r1 \
 				|| die static
 			sed -i \
 				-e '/^COMPILE_OPTS /s/$/ -DBSD=1 -DHAVE_SOCKADDR_LEN=1/' \
 				-e '/^LINK /s/$/ /' \
 				-e '/^LIBRARY_LINK /s/=.*$/= $(CXX) -o /' \
 				-e '/^LIBRARY_LINK_OPTS /s:-shared.*$:-undefined suppress -flat_namespace -dynamiclib -install_name '"${EPREFIX}/usr/$(get_libdir)/"'$@:' \
-				live-shared/config.gentoo-so-r1 \
+				live-shared/config.gentoo-so-r2 \
 				|| die shared
 		;;
 	esac
@@ -71,10 +71,10 @@ src_configure() {
 	export LIVE_ABI_VERSION LIBDIR=/usr/"$(get_libdir)"
 
 	cd "${WORKDIR}"/${PN}-static || die
-	./genMakefiles gentoo || die
+	./genMakefiles gentoo-r1 || die
 
 	cd "${WORKDIR}"/${PN}-shared || die
-	./genMakefiles gentoo-so-r1 || die
+	./genMakefiles gentoo-so-r2 || die
 }
 
 src_compile() {
