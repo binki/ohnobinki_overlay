@@ -7,7 +7,7 @@ EAPI="2"
 DESCRIPTION="PHP captcha creator and validator library"
 HOMEPAGE="http://phpcaptcha.org/"
 # Upstream doesn't version the tarball, so I do. --binki
-SRC_URI="ftp://ohnopub.net/mirror/${P}.tar.gz
+SRC_URI="ftp://mirror.ohnopub.net/mirror/${P}.tar.gz
 	http://protofusion.org/mirror/${P}.tar.gz"
 
 LICENSE="GPL-2"
