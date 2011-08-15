@@ -103,6 +103,10 @@ src_compile() {
 	# sucks bad compared to ncurses
 	myconf="${myconf} --with-curses"
 
+	# bug #378941, don't use host's LDFLAGS for build-time
+	# binaries. Fixes portage-multilib.
+	myconf="${myconf} LDFLAGS_FOR_BUILD="
+
 	use plugins && append-ldflags -Wl,-rpath,/usr/$(get_libdir)/bash
 	econf \
 		$(use_with afs) \

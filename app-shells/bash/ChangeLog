@@ -2,6 +2,9 @@
 # Copyright 1999-2011 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/app-shells/bash/ChangeLog,v 1.290 2011/08/11 02:23:46 vapier Exp $
 
+  14 Aug 2011; Nathan Phillip Brink <binki@gentoo.org> bash-4.2_p10.ebuild:
+  Fix bug #378941 where buildtime binary mkbuiltins wouldn't build for ABI=x86.
+
   11 Aug 2011; Mike Frysinger <vapier@gentoo.org> bash-4.2_p8-r1.ebuild,
   bash-4.2_p10.ebuild:
   Pull in yacc due to .y changes #376591 by Bertrand Jacquin.
