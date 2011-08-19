@@ -2,6 +2,10 @@
 # Copyright 1999-2011 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/app-shells/bash/ChangeLog,v 1.290 2011/08/11 02:23:46 vapier Exp $
 
+  19 Aug 2011; Nathan Phillip Brink <binki@gentoo.org> bash-4.2_p10.ebuild,
+  +files/bash-4.2_p10-flags-for-build.patch:
+  Fix for bug #378941.
+
   14 Aug 2011; Nathan Phillip Brink <binki@gentoo.org> bash-4.2_p10.ebuild:
   Fix bug #378941 where buildtime binary mkbuiltins wouldn't build for ABI=x86.
 

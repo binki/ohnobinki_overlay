@@ -1,0 +1,24 @@
+From: Nathan Phillip Brink <binki@gentoo.org>
+Subject: Fix inconsistency between LDFLAGS_FOR_BUILD and
+	CFLAGS_FOR_BUILD so that both default to empty instead of
+	LDFLAGS_FOR_BUILD defaulting to LDFLAGS.
+
+--- a/configure.in
++++ b/configure.in
+@@ -471,14 +471,8 @@
+ 	fi
+ fi
+ 
+-if test "X$cross_compiling" = "Xno"; then
+-	CPPFLAGS_FOR_BUILD=${CPPFLAGS_FOR_BUILD-"$CPPFLAGS"}
+-	LDFLAGS_FOR_BUILD=${LDFLAGS_FOR_BUILD-'$(LDFLAGS)'}
+-else
+-	CPPFLAGS_FOR_BUILD=${CPPFLAGS_FOR_BUILD-""}
+-	LDFLAGS_FOR_BUILD=${LDFLAGS_FOR_BUILD-""}
+-fi
+-
++CPPFLAGS_FOR_BUILD=${CPPFLAGS_FOR_BUILD-""}
++LDFLAGS_FOR_BUILD=${LDFLAGS_FOR_BUILD-""}
+ test -z "$CFLAGS_FOR_BUILD" && CFLAGS_FOR_BUILD="-g"
+ 
+ AC_SUBST(CFLAGS)

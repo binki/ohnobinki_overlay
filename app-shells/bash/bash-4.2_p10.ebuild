@@ -4,7 +4,7 @@
 
 EAPI="1"
 
-inherit eutils flag-o-matic toolchain-funcs multilib
+inherit autotools eutils flag-o-matic toolchain-funcs multilib
 
 # Official patchlevel
 # See ftp://ftp.cwru.edu/pub/bash/bash-4.2-patches/
@@ -71,6 +71,9 @@ src_unpack() {
 	cd lib/readline
 	[[ ${READLINE_PLEVEL} -gt 0 ]] && epatch $(patches -s ${READLINE_PLEVEL} readline ${READLINE_VER})
 	cd ../..
+
+	epatch "${FILESDIR}"/${P}-flags-for-build.patch
+	eautoconf
 }
 
 src_compile() {
