@@ -1,0 +1,19 @@
+From: Nathan Phillip Brink <binki@gentoo.org>
+Subject: Remove silly universal binary support which happens to kill
+	portage-multilib support.
+
+--- a/configure.in
++++ b/configure.in
+@@ -286,10 +286,6 @@
+ AC_SUBST(COUTFLAG)
+ 
+ RUBY_MINGW32
+-RUBY_UNIVERSAL_ARCH
+-if test "$target_cpu" != "$host_cpu" -a "$GCC" = yes -a "$cross_compiling" = no -a "$universal_binary" = no; then
+-    RUBY_DEFAULT_ARCH("$target_cpu")
+-fi
+ 
+ AC_CHECK_TOOL(RANLIB, ranlib, :)
+ AC_CHECK_TOOL(AR, ar)
+
+Diff finished.  Wed Sep 14 22:47:35 2011
