@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
-	<maintainer>
-		<email>ohnobinki@ohnopublishing.net</email>
-	</maintainer>
+  <maintainer>
+    <email>binki@gentoo.org</email>
+    <name>Nathan Phillip Brink</name>
+    <description>I maintain the ohnobinki overlay and thus samsung-unified-linux-driver.</description>
+  </maintainer>
+  <use>
+    <flag name='splix'>Enable coexistence with <pkg>net-print/splix</pkg> which installs CMS files we otherwise need to install</flag>
+  </use>
 </pkgmetadata>
