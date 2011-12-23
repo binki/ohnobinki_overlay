@@ -2,6 +2,14 @@
 # Copyright 1999-2011 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/www-servers/apache/ChangeLog,v 1.174 2011/12/02 19:29:33 beandog Exp $
 
+*apache-2.2.21-r2 (23 Dec 2011)
+
+  23 Dec 2011; Nathan Phillip Brink <binki@gentoo.org>
+  +apache-2.2.21-r2.ebuild, +files/apache-2.2.21-peruser-config.m4.patch,
+  +files/apache-2.2.21-peruser-makefile.patch, metadata.xml:
+  Update apache to mpm_peruser.v16, an unofficial yet somewhat improved
+  version.
+
   02 Dec 2011; Steve Dibb <beandog@gentoo.org> -apache-2.2.14-r1.ebuild,
   -apache-2.2.15.ebuild, -apache-2.2.16.ebuild, -apache-2.2.16-r1.ebuild,
   -apache-2.2.17.ebuild, -apache-2.2.20.ebuild, -apache-2.2.21.ebuild:

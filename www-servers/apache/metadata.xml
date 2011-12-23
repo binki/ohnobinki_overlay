@@ -17,5 +17,7 @@
 	<use>
 		<flag name='suexec'>Install suexec with apache</flag>
 		<flag name='static'>Link in apache2 modules statically rather then plugins</flag>
+		<flag name='peruser_max_cpu_usage'>Enable MPM peruser MaxCPUUsage extension</flag>
+		<flag name='peruser_pam'>Enable MPM peruser's PAM session support</flag>
 	</use>
 </pkgmetadata>

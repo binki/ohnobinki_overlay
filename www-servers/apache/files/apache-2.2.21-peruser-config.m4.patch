@@ -1,0 +1,15 @@
+From: Nathan Phillip Brink <binki@gentoo.org>
+Subject: The changes to be made to server/mpm/config.m4 which are
+	incompatible in the upstream peruser patch.
+
+--- a/server/mpm/config.m4
++++ b/server/mpm/config.m4
+@@ -4,1 +4,1 @@
+-                          MPM={beos|event|worker|prefork|mpmt_os2|winnt}),[
++                          MPM={beos|event|worker|prefork|mpmt_os2|winnt|peruser}),[
+@@ -18,1 +18,1 @@
+-    if test "$apache_cv_mpm" = "worker" -o "$apache_cv_mpm" = "event" -o "$apache_cv_mpm" = "winnt" ; then
++    if test "$apache_cv_mpm" = "worker" -o "$apache_cv_mpm" = "event" -o "$apache_cv_mpm" = "winnt" -o "$apache_cv_mpm" = "peruser" ; then
+@@ -26,1 +26,1 @@
+-    if test "$apache_cv_mpm" = "event" ; then
++    if test "$apache_cv_mpm" = "event" -o "$apache_cv_mpm" = "peruser" ; then
