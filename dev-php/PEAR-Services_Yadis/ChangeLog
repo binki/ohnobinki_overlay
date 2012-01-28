@@ -1,6 +1,12 @@
 # ChangeLog for dev-php/PEAR-Services_Yadis
-# Copyright 1999-2009 Gentoo Foundation; Distributed under the GPL v2
+# Copyright 1999-2012 Gentoo Foundation; Distributed under the GPL v2
 # $Header: $
+
+*PEAR-Services_Yadis-0.5.1 (28 Jan 2012)
+
+  28 Jan 2012; Nathan Phillip Brink <binki@gentoo.org>
+  +PEAR-Services_Yadis-0.5.1.ebuild, metadata.xml:
+  Bump to PEAR-Services_Yadis-0.5.1.
 
   10 Aug 2009; Nathan Brink <ohnobinki@gentoo.org>
   +PEAR-Services_Yadis-0.2.3.ebuild, +metadata.xml:
