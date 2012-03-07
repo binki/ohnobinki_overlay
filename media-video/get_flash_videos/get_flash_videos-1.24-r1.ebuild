@@ -10,7 +10,8 @@ MY_P="${MY_PN}-${PV}"
 
 DESCRIPTION="Downloads videos from various Flash-based video hosting sites"
 HOMEPAGE="http://code.google.com/p/get-flash-videos/"
-SRC_URI="http://get-flash-videos.googlecode.com/files/${MY_P}.tar.gz"
+SRC_URI="http://get-flash-videos.googlecode.com/files/${MY_P}.tar.gz
+	ftp://mirror.ohnopub.net/mirror/get-flash-videos/get-flash-videos-focusonthefamily.patch"
 
 LICENSE="Apache-2.0"
 SLOT="0"
@@ -38,6 +39,9 @@ myinst="DESTDIR=${D}"
 src_prepare() {
 	# 405761
 	epatch "${FILESDIR}"/${PN}-youtubefix.patch
+
+	EPATCH_OPTS="${EPATCH_OPTS} -p1" epatch "${DISTDIR}"/${PN//_/-}-focusonthefamily.patch
+
 	perl-module_src_prepare
 }
 
