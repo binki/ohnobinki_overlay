@@ -93,6 +93,10 @@ src_prepare() {
 	# Make hash functions less predictable to prevent DoS
 	epatch "${FILESDIR}/${P}-hash-randomization.patch"
 
+	# Compatibility with sys-libs/pthreads-win32 (and, purportedly,
+	# x86_64-mingw32).
+	epatch "${FILESDIR}"/${P}-pthreads-win32.patch
+
 	# Please do not remove, as else we get references to PORTAGE_TMPDIR
 	# in /usr/lib/python?.?/site-packages/libxml2mod.la among things.
 	# We now need to run eautoreconf at the end to prevent maintainer mode.
