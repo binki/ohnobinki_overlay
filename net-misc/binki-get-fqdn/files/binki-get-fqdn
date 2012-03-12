@@ -1,0 +1,16 @@
+#!/bin/sh
+
+EPREFIX='@GENTOO_PORTAGE_EPREFIX@'
+
+HOSTNAME=$(hostname)
+HOSTNAMEFQDN=$(hostname).$(domainname)
+
+ip=$(ifconfig |grep -o -E inet\ addr:\[\[:digit:\]\]+\(\\.\[\[:digit:\]\]+\)\{3\} |grep -v 127.0.0.1 |sed -e 's/inet addr://g' -e 's/\n//g' | head -n 1)
+#the escape is intentional
+[ -z "${ip}" ] && { echo "Unable to determine IP address" >&2; exit 1; }
+
+cp /etc/hosts.pre /etc/hosts.tmp
+#the hostname reported by hostname has to be included for hostname -f
+#to accept the fqdn
+echo ${ip} ${HOSTNAME} ${HOSTNAMEFQDN} >> /etc/hosts.tmp
+mv /etc/hosts.tmp /etc/hosts
