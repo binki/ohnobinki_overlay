@@ -34,6 +34,14 @@ EOF
 	doexe "${T}"/${PN}
 }
 
+pkg_preinst() {
+	if [[ ! -f ${EROOT}/etc/hosts.pre ]]; then
+		ebegin "Setting /etc/hosts.pre to have the contents of /etc/hosts"
+		cp "${EROOT}"/etc/hosts{,.pre}
+		eend $?
+	fi
+}
+
 pkg_postinst() {
 	if [[ -z ${ROOT} || ${ROOT} = / ]]; then
 		# Get the FQDN for the first time...

@@ -9,7 +9,8 @@ ip=$(ifconfig |grep -o -E inet\ addr:\[\[:digit:\]\]+\(\\.\[\[:digit:\]\]+\)\{3\
 #the escape is intentional
 [ -z "${ip}" ] && { echo "Unable to determine IP address" >&2; exit 1; }
 
-cp /etc/hosts.pre /etc/hosts.tmp
+echo "# Generated file: Please edit /etc/hosts.pre" > /etc/hosts.tmp
+cat /etc/hosts.pre >> /etc/hosts.tmp
 #the hostname reported by hostname has to be included for hostname -f
 #to accept the fqdn
 echo ${ip} ${HOSTNAME} ${HOSTNAMEFQDN} >> /etc/hosts.tmp
