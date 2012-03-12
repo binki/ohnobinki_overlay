@@ -16,7 +16,7 @@ KEYWORDS="amd64 x86"
 IUSE=""
 
 RDEPEND="sys-apps/net-tools
-	>=sys-apps/openrc-0.9"
+	>=sys-apps/openrc-0.8"
 
 S=${WORKDIR}
 
@@ -32,4 +32,13 @@ src_install() {
 ${EPREFIX}/etc/cron.hourly/${PN}
 EOF
 	doexe "${T}"/${PN}
+}
+
+pkg_postinst() {
+	if [[ -z ${ROOT} || ${ROOT} = / ]]; then
+		# Get the FQDN for the first time...
+		ebegin "Setting the FQDN..."
+		"${ROOT}"/etc/cron.hourly/${PN}
+		eend $?
+	fi
 }
