@@ -27,11 +27,11 @@ src_install() {
 	doexe "${FILESDIR}"/${PN}
 
 	exeinto /etc/local.d
-	cat <<EOF > "${T}"/${PN}
+	cat <<EOF > "${T}"/${PN}.start
 #!${EPREFIX}/bin/bash
 ${EPREFIX}/etc/cron.hourly/${PN}
 EOF
-	doexe "${T}"/${PN}
+	doexe "${T}"/${PN}.start
 }
 
 pkg_preinst() {
