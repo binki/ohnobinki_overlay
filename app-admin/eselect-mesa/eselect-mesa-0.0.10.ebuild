@@ -23,7 +23,7 @@ RDEPEND=">=app-admin/eselect-1.2.4
 
 src_prepare() {
 	# Support multilib-nosymlink and arbitrary ABIs
-	epatch "${DISTDIR}"/${P}-multilib-binki.patc
+	epatch "${DISTDIR}"/${P}-multilib-binki.patch
 }
 
 src_install() {
