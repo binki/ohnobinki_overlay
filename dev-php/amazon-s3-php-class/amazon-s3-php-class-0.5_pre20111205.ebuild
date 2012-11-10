@@ -17,7 +17,7 @@ SRC_URI="https://github.com/${GITHUB_USER}/amazon-s3-php-class/tarball/${GIT_COM
 
 LICENSE="BSD-2"
 SLOT="0"
-KEYWORDS="~amd64"
+KEYWORDS="~amd64 ~x86"
 IUSE=""
 
 S="${WORKDIR}/${GITHUB_USER}-${PN}-${GIT_COMMIT:0:7}"
