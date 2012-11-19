@@ -1,6 +1,11 @@
 # ChangeLog for games-arcade/supertux
-# Copyright 1999-2011 Gentoo Foundation; Distributed under the GPL v2
+# Copyright 1999-2012 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/games-arcade/supertux/ChangeLog,v 1.33 2009/02/23 01:02:56 mr_bones_ Exp $
+
+  19 Nov 2012; Nathan Brink <ohnobinki@gentoo.org> supertux-9999.ebuild:
+  games-arcade/supertux: Fix https://ohnopub.net/bugzilla/show_bug.cgi?id=34
+  submitted by blackstar86 by updating ebuild to point to git and fixing
+  findlocale patch against git HEAD.
 
   21 Feb 2011; Nathan Brink <ohnobinki@gentoo.org> supertux-0.3.3.ebuild:
   Add ~x86 keyword.
@@ -169,4 +174,3 @@
 
   09 Sep 2003; Michael Sterrett <msterret@gentoo.org> supertux-0.0.4.ebuild:
   initial commit; ebuild from mikami and then modified (bug 28251)
-

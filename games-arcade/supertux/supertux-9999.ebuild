@@ -1,17 +1,16 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/games-arcade/supertux/supertux-0.1.3.ebuild,v 1.14 2009/02/23 01:02:56 mr_bones_ Exp $
 
-EAPI=2
+EAPI=4
 
-inherit cmake-utils eutils games subversion
+inherit cmake-utils eutils games git-2
 
 DESCRIPTION="A game similar to Super Mario Bros."
 HOMEPAGE="http://super-tux.sourceforge.net"
-SRC_URI="ftp://ohnopub.net/mirror/supertux-r6591-crazy-system-findlocale-notinygettext.patch"
+SRC_URI="http://dev.gentoo.org/~binki/distfiles/${CATEGORY}/${PN}/${PN}-c7cab5080-system-findlocale-notinygettext.patch"
 
-ESVN_REPO_URI="http://supertux.lethargik.org/svn/supertux/trunk/supertux"
-ESVN_PROJECT="${PN}"
+EGIT_REPO_URI="https://code.google.com/p/supertux/"
 
 LICENSE="GPL-2"
 SLOT="1"
@@ -37,7 +36,7 @@ DEPEND="${RDEPEND}
 
 src_prepare() {
 	epatch "${FILESDIR}/supertux-9999-tinygettext-external.patch"
-	epatch "${DISTDIR}/supertux-r6591-crazy-system-findlocale-notinygettext.patch"
+	epatch "${DISTDIR}/${PN}-c7cab5080-system-findlocale-notinygettext.patch"
 
 	rm -rf externals/{findlocale,tinygettext} || die
 }
