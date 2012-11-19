@@ -1,6 +1,10 @@
 # ChangeLog for app-dicts/sword-esv
-# Copyright 1999-2010 Gentoo Foundation; Distributed under the GPL v2
+# Copyright 1999-2012 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/app-dicts/sword-kjv/ChangeLog,v 1.1 2008/02/27 17:24:57 beandog Exp $
+
+  19 Nov 2012; Nathan Phillip Brink <binki@gentoo.org> sword-esv-1.0.1.ebuild:
+  app-dicts/sword-esv: Remove last reference to mirror://ohnoproto/ so that
+  thirdpartymirrors can be updated.
 
   28 Sep 2010; Nathan Phillip Brink (ohnobinki)
   <ohnobinki@ohnopublishing.net> -sword-esv-1.0.ebuild,
@@ -12,4 +16,3 @@
   29 Dec 2009; Nathan Brink <ohnobinki@ohnopublishing.net> +metadata.xml,
   +sword-esv-1.0.ebuild:
   Initial commit - adapted from Gentoo Portage's app-dicts/sword-kjv
-
