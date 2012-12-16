@@ -7,6 +7,7 @@ app-emacs
 app-text
 dev-db
 dev-embedded
+dev-java
 dev-libs
 dev-php
 dev-tcltk
