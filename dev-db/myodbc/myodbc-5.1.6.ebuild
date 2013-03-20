@@ -3,7 +3,7 @@
 # $Header: /var/cvsroot/gentoo-x86/dev-db/myodbc/myodbc-5.1.6.ebuild,v 1.7 2013/03/02 19:50:00 hwoarang Exp $
 
 EAPI=2
-inherit eutils versionator autotools
+inherit eutils flag-o-matic multilib versionator autotools
 
 MAJOR="$(get_version_component_range 1-2 $PV)"
 MY_PN="mysql-connector-odbc"
@@ -33,6 +33,10 @@ src_unpack() {
 }
 
 src_prepare() {
+	# Remove “LDFLAGS=@EXTRA_LDFLAGS@ ” line which would drop our
+	# append-ldflags call in driver/Makefile.am (EXTRA_LDFLAGS is only
+	# set by --with-ldflags which… is ridik)…
+	sed -i -e '/^LDFLAGS=@EXTRA_LDFLAGS@ $/d' driver/Makefile.am || die
 	eautoreconf
 }
 
@@ -48,6 +52,11 @@ src_configure() {
 	myconf="${myconf}
 			$(use_enable qt4 gui)
 			$(use_with qt4 qt-libraries /usr/$(get_libdir)/qt4/)"
+
+	# Make sure that the first -L flag that libtool sees is for our
+	# ABI-specific libdir so that it finds the correct libltdl.la
+	# instead of the wrong one…
+	append-ldflags -L/usr/"$(get_libdir)"
 
 	econf \
 		--libexecdir=/usr/sbin \
