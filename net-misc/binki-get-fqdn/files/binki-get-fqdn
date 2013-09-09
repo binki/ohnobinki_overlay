@@ -5,7 +5,7 @@ EPREFIX='@GENTOO_PORTAGE_EPREFIX@'
 HOSTNAME=$(hostname)
 HOSTNAMEFQDN=$(hostname).$(domainname)
 
-ip=$(ifconfig | sed -e 's/ addr://g' | grep -o -E inet\ \[\[:digit:\]\]+\(\\.\[\[:digit:\]\]+\)\{3\} | grep -v 127.0.0.1 | sed -e 's/inet addr://g' -e 's/\n//g' | head -n 1)
+ip=$(ifconfig | sed -e 's/ addr://g' | grep -o -E inet\ \[\[:digit:\]\]+\(\\.\[\[:digit:\]\]+\)\{3\} | grep -v 127.0.0.1 | sed -e 's/inet//g' -e 's/\n//g' | head -n 1)
 #the escape is intentional
 [ -z "${ip}" ] && { echo "Unable to determine IP address" >&2; exit 1; }
 
