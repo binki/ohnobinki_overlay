@@ -12,12 +12,9 @@ SRC_URI="http://org.downloadcenter.samsung.com/downloadfile/ContentsFile.aspx?CD
 
 LICENSE="SAMSUNG-ELECTRONICS-software-1.06"
 SLOT="0"
-KEYWORDS="~amd64 ~arm ~x86 -*"
+#KEYWORDS="~amd64 ~arm ~x86 -*"
+KEYWORDS="~amd64 ~x86 -*"
 IUSE="+splix"
-
-# Don’t depend on splix when ~arm because splix is missing the ~arm
-# keyword.
-REQUIRED_USE="arm? ( !splix )"
 
 S=${WORKDIR}/uld
 
@@ -26,7 +23,7 @@ S=${WORKDIR}/uld
 # files. The splix useflag allows the two packages to not clobber
 # eachother.
 RDEPEND="net-print/cups
-	splix? ( !arm? ( net-print/splix ) )
+	splix? ( net-print/splix )
 	!splix? ( !net-print/splix )"
 
 QA_PRESTRIPPED='/usr/libexec/cups/filter/rastertosamsung.* /usr/lib[0-9]*/libscmssc.so'
