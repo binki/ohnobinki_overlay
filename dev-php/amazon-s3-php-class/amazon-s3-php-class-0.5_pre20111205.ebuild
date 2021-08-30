@@ -1,12 +1,7 @@
-# Copyright 1999-2011 Gentoo Foundation
+# Copyright 1999-2021 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
 
-EAPI=4
-
-PHP_LIB_NAME=S3
-
-inherit depend.php php-lib-r1
+EAPI=5
 
 GITHUB_USER=tpyo
 GIT_COMMIT=390ea1a454456d27784fa01264d34ed13c57a95a
@@ -20,25 +15,13 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE=""
 
+RDEPEND="dev-lang/php:*[curl,ssl]"
+
 S="${WORKDIR}/${GITHUB_USER}-${PN}-${GIT_COMMIT:0:7}"
 
-pkg_setup() {
-	# based on curl, calls openssl_pkey_get_private()
-	require_php_with_use curl ssl
-}
-
 src_install() {
-	# based on php-lib-r1_src_install()
-	has_php
-
-	if [[ -n "${PHP_SHARED_CAT}" ]]; then
-		PHP_LIB_DIR=/usr/share/"${PHP_SHARED_CAT}"
-	else
-		PHP_LIB_DIR=/usr/share/php
-	fi
-
-	insinto "${PHP_LIB_DIR}"
-	doins ${PHP_LIB_NAME}.php
+	insinto /usr/share/php
+	doins S3.php
 
 	dodoc README.txt
 
