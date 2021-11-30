@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<repositories version="1.0">
+  <repo quality="experimental" status="unofficial">
+    <name>ohnobinki</name>
+    <desccription>My personal utilities to aid with system setup.</desccription>
+    <homepage>https://github.com/binki/ohnobinki_overlay</homepage>
+    <owner>
+      <email>ohnobinki@ohnopublishing.net</email>
+      <name>Nathan Phillip Brink</name>
+    </owner>
+    <source type="git">https://github.com/ohnobinki/ohnobinki_overlay</source>
+  </repo>
+</repositories>
