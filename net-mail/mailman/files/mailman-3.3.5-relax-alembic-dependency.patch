@@ -1,3 +1,7 @@
+From: Nathan Phillip Brink <ohnobinki@ohnopublishing.net>
+Subject: Fix dependency on alembic to allow newer versions which are compatible.
+
+Only 1.7.0 had an issue. See https://gitlab.com/mailman/mailman/-/commit/bca316448c72868b696cfb06fbd4b3ca3a3580ba#note_790399774 .
 --- a/setup.py
 +++ b/setup.py
 @@ -111,7 +111,7 @@
@@ -5,7 +9,7 @@
      install_requires = [
          'aiosmtpd>=1.4.1',
 -        'alembic>=1.6.2,<1.7',
-+        'alembic>=1.6.2',
++        'alembic>=1.6.2,!=1.7.0',
          'atpublic',
          'authheaders>=0.9.2',
          'authres>=1.0.1',
