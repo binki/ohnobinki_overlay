@@ -51,6 +51,7 @@ BDEPEND="
 
 PATCHES=(
 	"${FILESDIR}/${P}-py3.9-importlib.patch"
+	"${FILESDIR}/${P}-relax-alembic-dependency.patch"
 )
 
 python_test() {
