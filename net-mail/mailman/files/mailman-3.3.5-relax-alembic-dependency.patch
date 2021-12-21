@@ -1,15 +1,25 @@
-From: Nathan Phillip Brink <ohnobinki@ohnopublishing.net>
-Subject: Fix dependency on alembic to allow newer versions which are compatible.
+From 637a2e1e1030b6f842a336102d4d1013480c3ec7 Mon Sep 17 00:00:00 2001
+From: Mark Sapiro <mark@msapiro.net>
+Date: Mon, 20 Dec 2021 20:14:30 +0000
+Subject: [PATCH] Alembic issue with 1.7.0 fixed in 1.7.1.
 
-Only 1.7.0 had an issue. See https://gitlab.com/mailman/mailman/-/commit/bca316448c72868b696cfb06fbd4b3ca3a3580ba#note_790399774 .
+---
+ setup.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/setup.py b/setup.py
+index c2ad69b5d..91ad51a93 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -111,7 +111,7 @@
+@@ -111,7 +111,7 @@ case second 'm'.  Any other spelling is incorrect.""",
          },
      install_requires = [
          'aiosmtpd>=1.4.1',
 -        'alembic>=1.6.2,<1.7',
 +        'alembic>=1.6.2,!=1.7.0',
          'atpublic',
-         'authheaders>=0.9.2',
+         'authheaders>=0.14.0',
          'authres>=1.0.1',
+-- 
+GitLab
+
